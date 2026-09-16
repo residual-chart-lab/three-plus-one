@@ -21,25 +21,25 @@ initialization could not escape.
 
 All hidden units begin with the same incoming weights:
 
-\[
+$$
 B_i^{(0)} = b_0
-\]
+$$
 
 The outgoing hidden-to-output weights begin as:
 
-\[
+$$
 a_i^{(0)} = a_0 + \varepsilon s_i
-\]
+$$
 
 For the default four-hidden-unit case,
 
-\[
+$$
 s=(0,0,0,1)
-\]
+$$
 
 so
 
-\[
+$$
 a^{(0)}
 =
 \begin{bmatrix}
@@ -47,14 +47,14 @@ a_0\\
 a_0\\
 a_0\\
 a_0+\varepsilon
-\end{bmatrix}.
-\]
+\end{bmatrix}
+$$
 
 That is the **3+1 seed**.
 
-More generally, with \(n\) hidden units this is an \((n-1)+1\) construction.
+More generally, with $n$ hidden units this is an $(n-1)+1$ construction.
 
-The important control is \(\varepsilon=0\): then all hidden units are exactly
+The important control is $\varepsilon=0$: then all hidden units are exactly
 symmetric.
 
 ---
@@ -66,28 +66,28 @@ backpropagation preserves symmetry when the outgoing weights are identical.
 
 For one output unit, a hidden delta contains the factor
 
-\[
+$$
 \delta_i^{(h)}
 =
-h_i(1-h_i)\,\delta^{(o)}\,a_i.
-\]
+h_i(1-h_i)\,\delta^{(o)}\,a_i
+$$
 
-If \(h_i=h_j\) and \(a_i=a_j\), then the two units receive the same update.
+If $h_i=h_j$ and $a_i=a_j$, then the two units receive the same update.
 
 But if
 
-\[
+$$
 a_i-a_j=\varepsilon(s_i-s_j),
-\]
+$$
 
 then, whenever the remaining factors are nonzero,
 
-\[
+$$
 \delta_i^{(h)}-\delta_j^{(h)}
 =
 h(1-h)\,\delta^{(o)}\,
-\varepsilon(s_i-s_j).
-\]
+\varepsilon(s_i-s_j)
+$$
 
 A tiny outgoing-weight asymmetry therefore creates an immediate difference in
 the hidden updates. Whether that difference is useful is task-dependent; the
@@ -171,9 +171,9 @@ c = ThreePlusOneMLP(
 
 The framework therefore studies a broader family:
 
-\[
-a^{(0)} = a_0\mathbf{1}+\varepsilon s.
-\]
+$$
+a^{(0)} = a_0\mathbf{1}+\varepsilon s
+$$
 
 ---
 
@@ -186,7 +186,7 @@ The contribution of this small package is narrower:
 
 - isolate a historically observed accidental asymmetry as an explicit operator,
 - make the symmetric control first-class,
-- make the perturbation magnitude \(\varepsilon\) sweepable,
+- make the perturbation magnitude $\varepsilon$ sweepable,
 - expose post-training hidden-unit grouping and hidden-weight spread,
 - keep the system small enough that the entire mechanism is inspectable.
 

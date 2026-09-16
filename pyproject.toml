@@ -1,0 +1,24 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "three-plus-one"
+version = "0.1.1"
+description = "A minimal experimental framework for symmetry breaking in small neural networks."
+readme = "README.md"
+requires-python = ">=3.9"
+license = {text = "MIT"}
+authors = [
+  {name = "The Three Plus One Network contributors"}
+]
+dependencies = []
+
+[project.scripts]
+three-plus-one = "threeplusone.cli:main"
+
+[tool.setuptools]
+package-dir = {"" = "src"}
+
+[tool.setuptools.packages.find]
+where = ["src"]

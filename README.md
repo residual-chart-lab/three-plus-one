@@ -43,9 +43,9 @@ $$
 a^{(0)}
 =
 \begin{bmatrix}
-a_0\\
-a_0\\
-a_0\\
+a_0\\\\
+a_0\\\\
+a_0\\\\
 a_0+\varepsilon
 \end{bmatrix}
 $$

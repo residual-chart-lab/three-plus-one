@@ -39,16 +39,7 @@ $$
 
 so
 
-$$
-a^{(0)}
-=
-\begin{bmatrix}
-a_0\\\\
-a_0\\\\
-a_0\\\\
-a_0+\varepsilon
-\end{bmatrix}
-$$
+$$ a^{(0)} = \begin{bmatrix} a_0 \\ a_0 \\ a_0 \\ a_0+\varepsilon \end{bmatrix} $$
 
 That is the **3+1 seed**.
 

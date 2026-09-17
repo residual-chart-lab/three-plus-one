@@ -69,12 +69,7 @@ $$
 
 then, whenever the remaining factors are nonzero,
 
-$$
-\delta_i^{(h)}-\delta_j^{(h)}
-=
-h(1-h)\,\delta^{(o)}\,
-\varepsilon(s_i-s_j)
-$$
+$$ \delta_i^{(h)}-\delta_j^{(h)}=h(1-h)\,\delta^{(o)}\,\varepsilon(s_i-s_j) $$
 
 A tiny outgoing-weight asymmetry therefore creates an immediate difference in
 the hidden updates. Whether that difference is useful is task-dependent; the

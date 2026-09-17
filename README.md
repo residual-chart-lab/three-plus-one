@@ -57,11 +57,7 @@ backpropagation preserves symmetry when the outgoing weights are identical.
 
 For one output unit, a hidden delta contains the factor
 
-$$
-\delta_i^{(h)}
-=
-h_i(1-h_i)\,\delta^{(o)}\,a_i
-$$
+$$ \delta_i^{(h)}=h_i(1-h_i)\,\delta^{(o)}\,a_i $$
 
 If $h_i=h_j$ and $a_i=a_j$, then the two units receive the same update.
 

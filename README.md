@@ -117,16 +117,16 @@ three-plus-one demo --epsilon 1
 
 Sweep the seed magnitude:
 
-\`\`\`bash
+```bash
 three-plus-one sweep
-\`\`\`
+```
 
 ### Centered 3+1 control
 
 The default singleton seed changes both symmetry and the sum of the outgoing
 weights. To isolate symmetry breaking more cleanly, use the centered seed
 
-$
+$$
 s_c =
 \left(
 -\frac{1}{n},
@@ -134,13 +134,13 @@ s_c =
 -\frac{1}{n},
 1-\frac{1}{n}
 \right),
-$
+$$
 
 for which
 
-$
+$$
 \sum_i s_{c,i}=0.
-$
+$$
 
 At the initial symmetric hidden state, all hidden activations are equal, so a
 zero-sum seed preserves the output preactivation while still making one hidden
@@ -148,16 +148,16 @@ unit dynamically distinct from the others.
 
 For four hidden units,
 
-$
+$$
 s_c=(-0.25,-0.25,-0.25,0.75).
-$
+$$
 
 Run the centered control:
 
-\`\`\`bash
+```bash
 three-plus-one demo --epsilon 1 --centered
 three-plus-one sweep --centered 0 0.01 0.05 0.1 0.2 0.5 1 2
-\`\`\`
+```
 
 In the deterministic XNOR setup, the centered 3+1 seed also reaches the target
 MSE while the exactly symmetric control does not. This removes the simple

@@ -55,3 +55,38 @@ Use custom `seed_pattern` values to compare:
 
 This is the path from the historical 3+1 observation to a general controlled
 symmetry-breaking laboratory.
+
+
+## Experiment E — centered three plus one
+
+The default singleton seed changes the sum of the hidden-to-output weights.
+The centered control removes that change while preserving the 3+1 asymmetry.
+
+```bash
+three-plus-one demo --epsilon 1 --centered
+```
+
+For four hidden units the seed is
+
+```text
+(-0.25, -0.25, -0.25, 0.75)
+```
+
+and its entries sum to zero.
+
+Expected qualitative result:
+
+- the centered seed has the same initial network predictions as the
+  `epsilon=0` symmetric control
+- hidden symmetry still breaks after the first nonzero gradient signal
+- the deterministic XNOR run reaches the default target MSE
+- the first three hidden units remain grouped and the fourth separates
+
+A centered sweep is also available:
+
+```bash
+three-plus-one sweep --centered 0 0.01 0.05 0.1 0.2 0.5 1 2
+```
+
+This is the cleaner control when the question is whether symmetry breaking
+itself matters, rather than a simultaneous shift in the initial output.

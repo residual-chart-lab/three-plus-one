@@ -1,6 +1,11 @@
 import unittest
 
-from threeplusone import ThreePlusOneMLP, epsilon_sweep, xnor
+from threeplusone import (
+    ThreePlusOneMLP,
+    centered_singleton_seed,
+    epsilon_sweep,
+    xnor,
+)
 
 
 class ThreePlusOneTests(unittest.TestCase):
@@ -21,6 +26,27 @@ class ThreePlusOneTests(unittest.TestCase):
         self.assertAlmostEqual(result.mse, 0.009981583676939314, places=14)
         self.assertEqual(net.hidden_groups(), [[1, 2, 3], [4]])
         self.assertGreater(net.hidden_spread(), 0.0)
+
+    def test_centered_seed_preserves_initial_function_and_still_learns(self):
+        seed = centered_singleton_seed(4)
+        self.assertEqual(seed, (-0.25, -0.25, -0.25, 0.75))
+        self.assertEqual(sum(seed), 0.0)
+
+        control = ThreePlusOneMLP(epsilon=0.0)
+        centered = ThreePlusOneMLP(epsilon=1.0, seed_pattern=seed)
+
+        for x, _ in xnor():
+            self.assertAlmostEqual(
+                control.predict(x),
+                centered.predict(x),
+                places=15,
+            )
+
+        result = centered.fit(xnor())
+        self.assertTrue(result.converged)
+        self.assertLessEqual(result.mse, centered.target_mse)
+        self.assertEqual(centered.hidden_groups(), [[1, 2, 3], [4]])
+        self.assertGreater(centered.hidden_spread(), 0.0)
 
     def test_seed_pattern_is_explicit(self):
         net = ThreePlusOneMLP(

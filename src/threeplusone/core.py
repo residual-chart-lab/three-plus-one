@@ -17,6 +17,25 @@ def _sigmoid(x: float) -> float:
     return z / (1.0 + z)
 
 
+def centered_singleton_seed(hidden: int) -> tuple[float, ...]:
+    """
+    Return the centered (n-1)+1 seed.
+
+    Starting from the default singleton seed (0, ..., 0, 1), subtract its
+    mean so that the seed sums to zero:
+
+        (-1/n, ..., -1/n, 1 - 1/n)
+
+    When hidden activations are initially identical, this preserves the
+    initial output preactivation while still breaking permutation symmetry.
+    """
+    if hidden < 2:
+        raise ValueError("centered singleton seed requires at least 2 hidden units")
+
+    mean = 1.0 / hidden
+    return tuple([-mean] * (hidden - 1) + [1.0 - mean])
+
+
 @dataclass(frozen=True)
 class EpochRecord:
     epoch: int

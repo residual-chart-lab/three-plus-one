@@ -74,7 +74,62 @@ a_0+\varepsilon
 \end{bmatrix}.
 \]
 
-## 3. First-step divergence
+## 3. Centered symmetry-breaking control
+
+The default singleton seed
+
+\[
+s=(0,\dots,0,1)
+\]
+
+has nonzero sum. Therefore changing \(\varepsilon\) also changes the initial
+sum of hidden-to-output weights.
+
+To separate this from symmetry breaking, center the singleton seed:
+
+\[
+s_c
+=
+s-\frac{1}{n}\mathbf 1
+=
+\left(
+-\frac{1}{n},
+\dots,
+-\frac{1}{n},
+1-\frac{1}{n}
+\right).
+\]
+
+Then
+
+\[
+\sum_i s_{c,i}=0.
+\]
+
+At initialization, all hidden activations are equal to some common value \(h\).
+The output preactivation contains the hidden contribution
+
+\[
+h\sum_i a_i
+=
+h\left(
+na_0+\varepsilon\sum_i s_{c,i}
+\right)
+=
+hna_0.
+\]
+
+Thus the centered seed leaves the initial network function unchanged while
+still producing unequal outgoing weights and therefore unequal hidden
+gradients.
+
+For \(n=4\),
+
+\[
+s_c=(-0.25,-0.25,-0.25,0.75).
+\]
+
+## 4. First-step divergence
 
 For sigmoid hidden activation \(h_i\) and output delta \(\delta^{(o)}\),
 
@@ -109,7 +164,7 @@ h(1-h)\delta^{(o)}\neq 0.
 
 This is the precise mechanism implemented by the package.
 
-## 4. What this does not prove
+## 5. What this does not prove
 
 A nonzero \(\varepsilon\) does not guarantee successful learning.
 

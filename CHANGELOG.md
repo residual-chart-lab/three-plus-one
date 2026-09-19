@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.1.2 — 2026-09-19
+
+- add zero-sum centered `(n-1)+1` seed helper
+- add `--centered` controls to the demo and epsilon sweep
+- verify that centered 3+1 preserves the initial network function
+- verify that the centered 3+1 seed still learns deterministic XNOR
+- document the centered control as a cleaner symmetry-breaking experiment
+
 ## 0.1.1 — 2026-09-17
 
 - add scaling hypothesis for approximate group synchronization in wide models

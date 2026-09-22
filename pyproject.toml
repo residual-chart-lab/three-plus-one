@@ -4,8 +4,8 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "three-plus-one"
-version = "0.1.2"
-description = "A minimal experimental framework for symmetry breaking in small neural networks."
+version = "0.2.0"
+description = "A small laboratory for 3+1 symmetry breaking, axis generation, and dual-frame dynamics."
 readme = "README.md"
 requires-python = ">=3.9"
 license = {text = "MIT"}

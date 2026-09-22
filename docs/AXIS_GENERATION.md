@@ -1,10 +1,20 @@
 # Axis generation from the 3+1 split
 
-Status: established geometric step + interpretive working hypothesis.
+Status: standard-representation geometry + project-specific interpretation.
 
-This note records the first geometric layer of the project. The later
-dual-frame rotation model is developed in
-\`docs/DUAL_TETRAHEDRAL_DYNAMICS.md\`.
+The zero-sum contrast space used here is the standard representation of the
+symmetric group.  The regular-tetrahedron geometry of the four centered
+singleton contrasts is therefore imported structure, not a novelty claim.
+
+What this note contributes to the project is the concrete identification of
+that geometry with the controlled centered 3+1 intervention and the later
+XNOR residual coordinates.
+
+See [`PRIOR_ART_AND_POSITIONING.md`](PRIOR_ART_AND_POSITIONING.md) for the
+literature boundary.
+
+The separate dual-frame rotation model is developed in
+[`DUAL_TETRAHEDRAL_DYNAMICS.md`](DUAL_TETRAHEDRAL_DYNAMICS.md).
 
 ---
 
@@ -220,7 +230,7 @@ $$
 }
 $$
 
-See \`docs/DUAL_TETRAHEDRAL_DYNAMICS.md\` for the full construction.
+See `docs/DUAL_TETRAHEDRAL_DYNAMICS.md` for the full construction.
 
 ---
 
@@ -257,7 +267,7 @@ residual directions by itself. The current 0.3 reduced model therefore keeps a
 small hidden historical residual and amplifies it when the residual branch
 state becomes unstable.
 
-See \`docs/NEXT_ONE_SELECTION.md\`.
+See `docs/NEXT_ONE_SELECTION.md`.
 
 The remaining empirical question is whether that hidden residual and its
 instability can be read directly from the original learning dynamics.

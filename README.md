@@ -441,6 +441,8 @@ Start here:
   separate exploratory geometry
 - [`SCALING_HYPOTHESIS.md`](docs/SCALING_HYPOTHESIS.md) —
   unverified scaling questions
+- [`FUTURE_ADMISSIBILITY_HANDOFF.md`](docs/FUTURE_ADMISSIBILITY_HANDOFF.md) —
+  handoff from symmetry-constrained future operations to retained differences and the persistence gap
 - [`PROVENANCE.md`](docs/PROVENANCE.md) —
   historical source separation
 

@@ -703,3 +703,73 @@ See XNOR_TRANSVERSE_EXTRACTION.md for the derivation and measurements.
 The remaining bridge to a fully endogenous next 1 is now narrower:
 the nonlinear \(S_3\)-equivariant terms must be extracted and tested for true
 three-basin locking.
+
+
+---
+
+## 14. Version 0.5 update: the branch anisotropy is also present in XNOR
+
+The nonlinear threefold term is no longer only a reduced-model assumption.
+
+Residual \(C_3\) symmetry forces the actual quadratic transverse map into
+
+$$
+\boxed{
+F(Z)
+=
+LZ
++
+Q(\bar Z,\bar Z)
++
+O(\|Z\|^3).
+}
+$$
+
+Direct phase-Fourier extraction from the centered-XNOR training course finds
+the expected nonzero \(-2\) harmonic.
+
+In the original hidden-to-output residual channel,
+
+$$
+\lambda_{\mathrm{out}}
+\approx15.15569,
+\qquad
+\nu_{\mathrm{out}}
+\approx+6.65860.
+$$
+
+The induced phase motion is
+
+$$
+\Delta\theta
+=
+-\frac{\nu}{\lambda}r\sin3\theta
++
+O(r^2),
+$$
+
+and it points toward the three oriented singleton rays.
+
+The full nonlinear network quantitatively matches this phase law at small
+amplitude and shows three-sector angular contraction at finite amplitude.
+
+So the reduced next-one chain now has direct XNOR counterparts for:
+
+$$
+\boxed{
+\text{residual}
+\rightarrow
+\text{transport}
+\rightarrow
+\text{amplification}
+\rightarrow
+\text{threefold directional sorting}.
+}
+$$
+
+The remaining limitation is persistence, not branch anisotropy.
+
+Centered XNOR eventually converges and its updates become too small to drive a
+generic off-ray residual all the way to exact asymptotic locking.
+
+See XNOR_QUADRATIC_ANISOTROPY.md.

@@ -29,7 +29,7 @@ a_0\mathbf1+\varepsilon s.
 
 ## 2. Deliberate source-code separation
 
-\`three-plus-one\` is not a source translation.
+`three-plus-one` is not a source translation.
 
 It does not contain:
 
@@ -62,7 +62,7 @@ These ideas are now treated as imported mathematical infrastructure rather
 than as project novelty.
 
 See
-[\`PRIOR_ART_AND_POSITIONING.md\`](PRIOR_ART_AND_POSITIONING.md).
+[`PRIOR_ART_AND_POSITIONING.md`](PRIOR_ART_AND_POSITIONING.md).
 
 ---
 

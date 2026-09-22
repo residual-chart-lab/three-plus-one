@@ -778,11 +778,23 @@ $$
 }
 $$
 
-Still open:
+The next layer is developed in
+\`docs/NEXT_ONE_SELECTION.md\`.
+
+At the reduced-model level, the selection problem is sharpened to
 
 $$
 \boxed{
-\text{what endogenous event selects the next 1?}
+\text{exact symmetric present}
+\;\not\Rightarrow\;
+\text{deterministic branch selection}.
+}
 $$
 
-That is now the sharp edge of the model.
+A retained historical residual is therefore introduced as the branch selector
+when the symmetric branch state loses stability. The current 0.3 model gives
+one explicit barrier-coupled realization of that mechanism.
+
+What remains open empirically is whether the same residual, transport, and
+instability can be extracted directly from the original XNOR learning
+dynamics.

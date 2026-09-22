@@ -19,6 +19,19 @@ from .dynamics import (
     simulate_dual_rotor,
     total_momentum,
 )
+from .selection import (
+    NextOneParams,
+    NextOneState,
+    branch_lock_error,
+    branch_phase,
+    branch_rhs,
+    c3_rotate,
+    energy_dissipation_rate,
+    growth_rate,
+    rotor_energy,
+    selected_branch,
+    simulate_next_one,
+)
 
 __all__ = [
     "ThreePlusOneMLP",
@@ -41,5 +54,16 @@ __all__ = [
     "relative_winding",
     "simulate_dual_rotor",
     "total_momentum",
+    "NextOneParams",
+    "NextOneState",
+    "branch_lock_error",
+    "branch_phase",
+    "branch_rhs",
+    "c3_rotate",
+    "energy_dissipation_rate",
+    "growth_rate",
+    "rotor_energy",
+    "selected_branch",
+    "simulate_next_one",
 ]
-__version__ = "0.2.0"
+__version__ = "0.3.0"

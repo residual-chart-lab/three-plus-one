@@ -6,11 +6,12 @@ A small experimental framework that began with one question:
 > What happens when a perfectly symmetric hidden population receives one
 > deliberately asymmetric seed?
 
-The project started from a tiny neural-network observation and now keeps two
+The project started from a tiny neural-network observation and now keeps three
 connected layers in one repository:
 
 1. a reproducible 3+1 symmetry-breaking experiment,
-2. a geometric/dynamical model of what the 3+1 split creates.
+2. a geometric/dynamical model of what the 3+1 split creates,
+3. a history-seeded model for how one residual branch can become the next 1.
 
 This project is **not** a port of the 1996 AMOS program that inspired it.
 It is a new implementation of the underlying phenomenon.
@@ -386,33 +387,135 @@ See <code>docs/DUAL_TETRAHEDRAL_DYNAMICS.md</code>.
 
 ## The next 1
 
-The geometry of a possible next axis is already fixed once one of the three
-residual branches is selected:
+The next-branch problem has one structural obstruction.
+
+Let the unresolved branch variable be
 
 $$
-a'_k
+z\in\mathbb C,
+$$
+
+with the residual threefold symmetry
+
+$$
+z\mapsto\omega z,
+\qquad
+\omega=e^{2\pi i/3}.
+$$
+
+For any deterministic \(C_3\)-equivariant vector field,
+
+$$
+F(\omega z)=\omega F(z),
+$$
+
+the exactly symmetric state obeys
+
+$$
+\boxed{
+F(0)=0.
+}
+$$
+
+So an exactly symmetric **current configuration alone** cannot choose one of
+three equivalent branches.
+
+The minimal branch field used in version 0.3 is
+
+$$
+\dot z
 =
--\frac13a
+\mu z
 +
-\frac{2\sqrt2}{3}
-R_a(\theta_*)b_k.
+\nu\bar z^2
+-
+\beta|z|^2z.
 $$
 
-Every child axis therefore leaves the parent at the tetrahedral angle
+For positive \(\nu\), its three stable rays are
 
 $$
-\arccos\left(-\frac13\right)
-\approx109.47^\circ.
+\theta_k=\frac{2\pi k}{3},
+\qquad
+k=0,1,2.
 $$
 
-The current open problem is **not** the geometry of the child axis.
+A small hidden residual can therefore remain dynamically insignificant while
+the symmetric state is stable, then be amplified when that state loses
+stability.
 
-It is the endogenous selection law:
+The reduced coupled model uses the already existing rotor barrier
 
-> What dynamical event turns one of the three equivalent candidate directions
-> into the next historically persistent 1?
+$$
+E_c=2\kappa
+$$
 
-That boundary is kept explicit.
+as one explicit candidate trigger:
+
+$$
+\mu(E_r)
+=
+\sigma(2\kappa-E_r).
+$$
+
+Weak rotor dissipation gives
+
+$$
+\dot E_r
+=
+-\gamma\dot\phi^2
+\le0.
+$$
+
+A transported hidden residual then evolves by
+
+$$
+\boxed{
+\dot z
+=
+\left[
+\mu(E_r)
++
+i\eta\dot\phi
+\right]z
++
+\nu\bar z^2
+-
+\beta|z|^2z.
+}
+$$
+
+The model therefore implements
+
+$$
+\boxed{
+\text{hidden historical difference}
+\rightarrow
+\text{history transport}
+\rightarrow
+\text{instability}
+\rightarrow
+\text{one persistent branch}
+\rightarrow
+\text{next 1}.
+}
+$$
+
+Crucially, if the hidden residual is exactly zero, deterministic selection does
+not occur. The selector is not a post-hoc argmax over the current state; it is
+a retained difference that becomes dynamically relevant later.
+
+Run:
+
+~~~bash
+python examples/next_one_selection.py
+~~~
+
+See <code>docs/NEXT_ONE_SELECTION.md</code>.
+
+The barrier-coupled growth law is a reduced-model closure, not yet a result of
+the original XNOR network. The next empirical task is to identify the hidden
+residual and instability parameter directly in the learning dynamics.
 
 ---
 
@@ -452,7 +555,13 @@ The contribution is narrower:
 - expose oriented area/parity as the invariant structure that a
   configuration-only snapshot can discard,
 - derive an exact conservative rotation threshold,
-- keep the unresolved next-1 selection law separate from the solved geometry.
+- prove that an exactly symmetric deterministic present cannot choose a
+  residual branch by itself,
+- add the minimal (C_3)-equivariant next-branch normal form,
+- show how a retained hidden residual can be transported and amplified into a
+  persistent next-1 branch,
+- keep the barrier-coupled instability law explicitly provisional until it is
+  extracted from the original learning dynamics.
 
 It remains a laboratory object, not a production ML library.
 

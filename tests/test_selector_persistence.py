@@ -92,7 +92,12 @@ class SelectorPersistenceTests(unittest.TestCase):
             0.0839642,
             places=5,
         )
-        self.assertAlmostEqual(\n            at_100000.cumulative_selector_action,\n            0.1049100,\n            places=5,\n        )\n        self.assertAlmostEqual(at_728.probe_output_phase, 0.4829183, places=5)
+        self.assertAlmostEqual(
+            at_100000.cumulative_selector_action,
+            0.1049100,
+            places=5,
+        )
+        self.assertAlmostEqual(at_728.probe_output_phase, 0.4829183, places=5)
         self.assertAlmostEqual(at_5000.probe_output_phase, 0.4498922, places=5)
         self.assertAlmostEqual(at_10000.probe_output_phase, 0.4431109, places=5)
         self.assertAlmostEqual(at_100000.probe_output_phase, 0.4245341, places=5)

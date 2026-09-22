@@ -618,3 +618,88 @@ The next empirical question is stronger:
 > than introduced only in the reduced model?**
 
 That is the next test.
+
+
+---
+
+## 13. Version 0.4 update: the XNOR residual and instability are now explicit
+
+The abstract residual and instability from this note have now been extracted
+from the actual centered XNOR learning rule.
+
+For the first three hidden units define local states
+
+$$
+q_i=(a_i,b_i,w_{i1},w_{i2})\in\mathbb R^4,
+$$
+
+and branch-aligned copy-space basis vectors
+
+$$
+c_R=\frac1{\sqrt6}(2,-1,-1),
+\qquad
+c_I=\frac1{\sqrt2}(0,1,-1).
+$$
+
+The actual hidden residual is
+
+$$
+\boxed{
+Z=
+\sum_{i=1}^3
+(c_{R,i}+i c_{I,i})q_i
+\in\mathbb C^4.
+}
+$$
+
+On the exact three-copy symmetric trajectory, the existing SGD rule gives
+
+$$
+\boxed{
+Z_{e+1}
+=
+M_e Z_e
++
+O(\|Z_e\|^2),
+}
+$$
+
+where \(M_e\) is the exact four-channel transverse Jacobian of epoch \(e\).
+
+Thus the actual XNOR counterpart of the reduced growth parameter is
+
+$$
+\boxed{
+\mu_e=\log\sigma_1(M_e).
+}
+$$
+
+For the centered XNOR run, \(\mu_e>0\) at every epoch through the ordinary
+convergence point at epoch 728.
+
+Therefore the barrier-coupled law
+
+$$
+\mu(E_r)=\sigma(2\kappa-E_r)
+$$
+
+should **not** be read as the XNOR mechanism. It remains one toy closure for
+the dual-rotor model.
+
+The actual XNOR system has a more striking structure:
+
+$$
+\boxed{
+Z=0\text{ is exactly invariant, while every observed epoch has a transverse
+expanding direction.}
+}
+$$
+
+So exact symmetry survives only because the historical residual is exactly
+zero. A nonzero residual can be amplified by the unmodified training rule.
+
+See XNOR_TRANSVERSE_EXTRACTION.md for the derivation and measurements.
+
+The remaining bridge to a fully endogenous next 1 is now narrower:
+the nonlinear \(S_3\)-equivariant terms must be extracted and tested for true
+three-basin locking.

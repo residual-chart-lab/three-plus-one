@@ -1,5 +1,18 @@
 # Changelog
 
+## 0.3.0 — 2026-09-22
+
+- prove the no-selection result for an exactly symmetric deterministic current state
+- add the minimal real-reflection-symmetric `C3` branch normal form
+- model the next 1 as amplification of a retained hidden historical residual
+- add weakly damped relative-rotor dynamics with monotone energy loss
+- add a barrier-coupled instability closure using the existing `2*kappa` rotor threshold
+- transport the hidden residual with signed relative angular velocity
+- add regression tests showing exact zero history never self-selects
+- add regression tests showing three `C3`-related hidden histories select three related branches
+- add an executable next-one selection example
+- keep the barrier/instability coupling explicitly provisional pending extraction from the original XNOR dynamics
+
 ## 0.2.0 — 2026-09-22
 
 - expose the regular-tetrahedron geometry of the four centered 3+1 directions

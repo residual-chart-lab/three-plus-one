@@ -250,14 +250,14 @@ $$
 }
 $$
 
-The open problem has moved forward. It is no longer merely "can the transverse
-plane rotate?"
+The selection problem has now moved to the next layer.
 
-The sharper question is:
+A deterministic exactly symmetric current state cannot select one of the three
+residual directions by itself. The current 0.3 reduced model therefore keeps a
+small hidden historical residual and amplifies it when the residual branch
+state becomes unstable.
 
-$$
-\boxed{
-\text{what endogenous event selects one of the three equivalent directions
-as the next historically persistent 1?}
-}
-$$
+See \`docs/NEXT_ONE_SELECTION.md\`.
+
+The remaining empirical question is whether that hidden residual and its
+instability can be read directly from the original learning dynamics.

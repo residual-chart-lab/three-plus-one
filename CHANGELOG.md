@@ -1,5 +1,19 @@
 # Changelog
 
+## 0.4.0 — 2026-09-22
+
+- extract the actual hidden three-copy residual as a complex four-channel variable
+- derive the exact one-sample transverse Jacobian of the existing XNOR SGD update
+- factor the transverse tangent space into copy-space orientation and parameter-channel dynamics
+- define the actual finite-time instability rate from transverse singular growth
+- verify that centered XNOR is transversely amplifying at every epoch through convergence
+- measure the expanding-channel dimension sequence 2 -> 3 -> 2 -> 1
+- measure cumulative transverse gains on the unmodified centered XNOR trajectory
+- verify that a 1e-6 hidden residual is amplified by the actual training rule
+- correct the version-0.3 barrier-coupled instability law: it remains a reduced-model closure, not the XNOR instability mechanism
+- add dependency-free transverse diagnostics and regression tests
+- move the sharp edge to extraction of the nonlinear C3 anisotropy / branch-locking term
+
 ## 0.3.0 — 2026-09-22
 
 - prove the no-selection result for an exactly symmetric deterministic current state

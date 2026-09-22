@@ -1,7 +1,7 @@
 # three-plus-one
 ## Controlled symmetry breaking in a tiny neural network
 
-\`three-plus-one\` is a small research laboratory for one concrete question:
+`three-plus-one` is a small research laboratory for one concrete question:
 
 > What exactly happens to a symmetric hidden population when one controlled
 > difference is retained, transported, amplified, and nonlinearly sorted?
@@ -45,7 +45,7 @@ In particular, this project does **not** claim novelty for:
 - the fact that an exactly equivariant deterministic map cannot select a
   branch from an exactly symmetric fixed state.
 
-See [\`docs/PRIOR_ART_AND_POSITIONING.md\`](docs/PRIOR_ART_AND_POSITIONING.md)
+See [`docs/PRIOR_ART_AND_POSITIONING.md`](docs/PRIOR_ART_AND_POSITIONING.md)
 for the literature map and claim boundary.
 
 ---
@@ -157,7 +157,7 @@ Choosing one singleton direction creates a distinguished axis. The residual
 three-copy sector is the orthogonal two-dimensional plane carrying the
 standard representation of \(S_3\).
 
-See [\`docs/AXIS_GENERATION.md\`](docs/AXIS_GENERATION.md).
+See [`docs/AXIS_GENERATION.md`](docs/AXIS_GENERATION.md).
 
 ---
 
@@ -214,7 +214,7 @@ M_eZ_e+O(\|Z_e\|^2).
 modified optimizer is introduced.
 
 See
-[\`docs/XNOR_TRANSVERSE_EXTRACTION.md\`](docs/XNOR_TRANSVERSE_EXTRACTION.md).
+[`docs/XNOR_TRANSVERSE_EXTRACTION.md`](docs/XNOR_TRANSVERSE_EXTRACTION.md).
 
 ---
 
@@ -347,7 +347,7 @@ rays
 \]
 
 See
-[\`docs/XNOR_QUADRATIC_ANISOTROPY.md\`](docs/XNOR_QUADRATIC_ANISOTROPY.md).
+[`docs/XNOR_QUADRATIC_ANISOTROPY.md`](docs/XNOR_QUADRATIC_ANISOTROPY.md).
 
 Run:
 
@@ -415,7 +415,7 @@ Nothing in the current repository establishes that standard SGD literally
 implements the dual-tetrahedral rotor.
 
 See
-[\`docs/DUAL_TETRAHEDRAL_DYNAMICS.md\`](docs/DUAL_TETRAHEDRAL_DYNAMICS.md).
+[`docs/DUAL_TETRAHEDRAL_DYNAMICS.md`](docs/DUAL_TETRAHEDRAL_DYNAMICS.md).
 
 ---
 
@@ -423,25 +423,25 @@ See
 
 Start here:
 
-- [\`PRIOR_ART_AND_POSITIONING.md\`](docs/PRIOR_ART_AND_POSITIONING.md) —
+- [`PRIOR_ART_AND_POSITIONING.md`](docs/PRIOR_ART_AND_POSITIONING.md) —
   established theory vs repository-specific claims
-- [\`MATHEMATICS.md\`](docs/MATHEMATICS.md) —
+- [`MATHEMATICS.md`](docs/MATHEMATICS.md) —
   symmetry decomposition and controlled seed
-- [\`EXPERIMENTS.md\`](docs/EXPERIMENTS.md) —
+- [`EXPERIMENTS.md`](docs/EXPERIMENTS.md) —
   reproducible controls
-- [\`AXIS_GENERATION.md\`](docs/AXIS_GENERATION.md) —
+- [`AXIS_GENERATION.md`](docs/AXIS_GENERATION.md) —
   tetrahedral contrast geometry
-- [\`XNOR_TRANSVERSE_EXTRACTION.md\`](docs/XNOR_TRANSVERSE_EXTRACTION.md) —
+- [`XNOR_TRANSVERSE_EXTRACTION.md`](docs/XNOR_TRANSVERSE_EXTRACTION.md) —
   exact hidden residual and tangent dynamics
-- [\`XNOR_QUADRATIC_ANISOTROPY.md\`](docs/XNOR_QUADRATIC_ANISOTROPY.md) —
+- [`XNOR_QUADRATIC_ANISOTROPY.md`](docs/XNOR_QUADRATIC_ANISOTROPY.md) —
   nonlinear phase harmonic
-- [\`NEXT_ONE_SELECTION.md\`](docs/NEXT_ONE_SELECTION.md) —
+- [`NEXT_ONE_SELECTION.md`](docs/NEXT_ONE_SELECTION.md) —
   reduced branch-selection model and its corrections
-- [\`DUAL_TETRAHEDRAL_DYNAMICS.md\`](docs/DUAL_TETRAHEDRAL_DYNAMICS.md) —
+- [`DUAL_TETRAHEDRAL_DYNAMICS.md`](docs/DUAL_TETRAHEDRAL_DYNAMICS.md) —
   separate exploratory geometry
-- [\`SCALING_HYPOTHESIS.md\`](docs/SCALING_HYPOTHESIS.md) —
+- [`SCALING_HYPOTHESIS.md`](docs/SCALING_HYPOTHESIS.md) —
   unverified scaling questions
-- [\`PROVENANCE.md\`](docs/PROVENANCE.md) —
+- [`PROVENANCE.md`](docs/PROVENANCE.md) —
   historical source separation
 
 ---
@@ -453,7 +453,7 @@ Lee Atkins recovered from Aminet.
 
 The original source is not included or relicensed here.
 
-\`three-plus-one\` is a new implementation using conventional backpropagation
+`three-plus-one` is a new implementation using conventional backpropagation
 and a controlled seed family
 
 \[
@@ -462,7 +462,7 @@ a^{(0)}
 a_0\mathbf1+\varepsilon s.
 \]
 
-See [\`docs/PROVENANCE.md\`](docs/PROVENANCE.md).
+See [`docs/PROVENANCE.md`](docs/PROVENANCE.md).
 
 ---
 

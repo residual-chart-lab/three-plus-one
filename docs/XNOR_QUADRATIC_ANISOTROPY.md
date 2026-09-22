@@ -1,7 +1,17 @@
 # XNOR quadratic anisotropy
 
-Status: symmetry derivation + direct extraction from the existing centered-XNOR
-training map.
+Status: established equivariant form + direct coefficient extraction from the
+existing centered-XNOR training map.
+
+The conjugate-square quadratic harmonic is standard equivariant structure for
+the residual threefold representation.  This note does not claim the form
+(ar z^2) itself as new.
+
+The repository-specific result is the direct Fourier extraction of its
+coefficient from the actual deterministic XNOR course and the quantitative
+check of the resulting phase drift.
+
+See [`PRIOR_ART_AND_POSITIONING.md`](PRIOR_ART_AND_POSITIONING.md).
 
 Version 0.4 extracted the actual hidden residual
 

@@ -703,3 +703,181 @@ def projected_course_phase(
         for i in range(4)
     )
     return math.atan2(projected.imag, projected.real)
+
+
+@dataclass(frozen=True)
+class SelectorPersistenceRecord:
+    """
+    Finite-course branch-lock diagnostic for one transverse seed amplitude.
+
+    phase_contraction:
+        derivative d theta_out / d theta_in at the phase-0 singleton ray,
+        estimated by a centered finite difference.
+    cumulative_selector_action:
+        -log(abs(phase_contraction))/3.  In the reduced phase law
+        dtheta/dt = -A(t) sin(3 theta), this is the accumulated selector
+        action.
+    probe_lock_error:
+        angular distance of a finite off-ray probe from the phase-0 singleton
+        ray after the indicated number of epochs.
+    """
+
+    epoch: int
+    mse: float
+    linear_gain: float
+    phase_contraction: float
+    cumulative_selector_action: float
+    probe_phase: float
+    probe_output_phase: float
+    probe_lock_error: float
+    projected_residual_amplitude: float
+
+
+def _wrapped_angle(value: float) -> float:
+    return math.atan2(math.sin(float(value)), math.cos(float(value)))
+
+
+def _projected_residual(
+    net: ThreePlusOneMLP,
+    output_direction: Sequence[float],
+) -> complex:
+    residual = transverse_residual(net)
+    return sum(
+        float(output_direction[i]) * residual[i]
+        for i in range(4)
+    )
+
+
+def scan_selector_persistence(
+    net: ThreePlusOneMLP,
+    samples: Iterable[Sample],
+    *,
+    checkpoints: Sequence[int],
+    amplitude: float = 0.1,
+    phase_delta: float = 1e-4,
+    probe_phase: float = math.pi / 6.0,
+    input_direction: Sequence[float] = (1.0, 0.0, 0.0, 0.0),
+) -> Tuple[SelectorPersistenceRecord, ...]:
+    """
+    Measure whether threefold branch sorting continues after task convergence.
+
+    The phase-0 singleton ray is probed with two nearby histories at
+    +/- phase_delta.  Their output phase separation gives the finite-course
+    phase derivative rho_N.  Define
+
+        A_N = -(1/3) log |rho_N|.
+
+    For the ideal reduced phase equation
+
+        d theta / dt = -a(t) sin(3 theta),
+
+    exact asymptotic locking requires A_N -> infinity.  A finite limiting
+    A_N leaves a nonzero phase offset.
+
+    A third finite probe, by default theta=pi/6, tracks actual movement toward
+    the singleton ray.  All three nonlinear histories are evolved under the
+    unmodified training rule.
+
+    The projection direction at each checkpoint is the normalized linear
+    response of the cumulative transverse tangent map to input_direction.
+    """
+    data = list(samples)
+    if not data:
+        raise ValueError("samples must not be empty")
+    if amplitude <= 0.0:
+        raise ValueError("amplitude must be positive")
+    if phase_delta <= 0.0:
+        raise ValueError("phase_delta must be positive")
+    if len(input_direction) != 4:
+        raise ValueError("input_direction must have length 4")
+
+    requested = sorted({int(epoch) for epoch in checkpoints})
+    if not requested or requested[0] < 1:
+        raise ValueError("checkpoints must contain positive epochs")
+
+    base = deepcopy(net)
+    plus = deepcopy(net)
+    minus = deepcopy(net)
+    probe = deepcopy(net)
+
+    add_transverse_vector_seed(
+        plus,
+        direction=input_direction,
+        amplitude=amplitude,
+        phase=phase_delta,
+    )
+    add_transverse_vector_seed(
+        minus,
+        direction=input_direction,
+        amplitude=amplitude,
+        phase=-phase_delta,
+    )
+    add_transverse_vector_seed(
+        probe,
+        direction=input_direction,
+        amplitude=amplitude,
+        phase=probe_phase,
+    )
+
+    cumulative = _identity(4)
+    records = []
+    checkpoint_index = 0
+    final_epoch = requested[-1]
+
+    for epoch in range(1, final_epoch + 1):
+        for x, target in data:
+            step = sample_transverse_matrix(base, x, target)
+            cumulative = _matmul(step, cumulative)
+
+            base.train_one(x, target)
+            plus.train_one(x, target)
+            minus.train_one(x, target)
+            probe.train_one(x, target)
+
+        if epoch != requested[checkpoint_index]:
+            continue
+
+        response = _matvec(cumulative, input_direction)
+        linear_gain = math.sqrt(sum(value * value for value in response))
+        if linear_gain == 0.0:
+            raise ValueError("linear response vanished at a requested checkpoint")
+        output_direction = tuple(value / linear_gain for value in response)
+
+        z_plus = _projected_residual(plus, output_direction)
+        z_minus = _projected_residual(minus, output_direction)
+        z_probe = _projected_residual(probe, output_direction)
+
+        phase_plus = math.atan2(z_plus.imag, z_plus.real)
+        phase_minus = math.atan2(z_minus.imag, z_minus.real)
+        output_probe_phase = math.atan2(z_probe.imag, z_probe.real)
+
+        phase_contraction = (
+            _wrapped_angle(phase_plus - phase_minus)
+            / (2.0 * phase_delta)
+        )
+
+        magnitude = abs(phase_contraction)
+        if magnitude == 0.0:
+            selector_action = math.inf
+        else:
+            selector_action = -math.log(magnitude) / 3.0
+
+        records.append(
+            SelectorPersistenceRecord(
+                epoch=epoch,
+                mse=base.mse(data),
+                linear_gain=float(linear_gain),
+                phase_contraction=float(phase_contraction),
+                cumulative_selector_action=float(selector_action),
+                probe_phase=float(probe_phase),
+                probe_output_phase=float(output_probe_phase),
+                probe_lock_error=abs(_wrapped_angle(output_probe_phase)),
+                projected_residual_amplitude=float(abs(z_probe)),
+            )
+        )
+
+        checkpoint_index += 1
+        if checkpoint_index == len(requested):
+            break
+
+    return tuple(records)

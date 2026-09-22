@@ -5,7 +5,7 @@ existing centered-XNOR training map.
 
 The conjugate-square quadratic harmonic is standard equivariant structure for
 the residual threefold representation.  This note does not claim the form
-(ar z^2) itself as new.
+(\bar z^2) itself as new.
 
 The repository-specific result is the direct Fourier extraction of its
 coefficient from the actual deterministic XNOR course and the quantitative

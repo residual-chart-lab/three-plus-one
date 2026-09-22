@@ -4,7 +4,7 @@ This note keeps the core formulas used by the repository in one place and
 marks which parts are standard theory versus system-specific derivations.
 
 For literature positioning, see
-[\`PRIOR_ART_AND_POSITIONING.md\`](PRIOR_ART_AND_POSITIONING.md).
+[`PRIOR_ART_AND_POSITIONING.md`](PRIOR_ART_AND_POSITIONING.md).
 
 ---
 
@@ -201,7 +201,7 @@ representation
 H_2\cong\mathbb R^2.
 \]
 
-See [\`AXIS_GENERATION.md\`](AXIS_GENERATION.md).
+See [`AXIS_GENERATION.md`](AXIS_GENERATION.md).
 
 ---
 
@@ -322,7 +322,7 @@ This matrix is a system-specific exact linearization of the current sigmoid
 XNOR implementation.
 
 See
-[\`XNOR_TRANSVERSE_EXTRACTION.md\`](XNOR_TRANSVERSE_EXTRACTION.md).
+[`XNOR_TRANSVERSE_EXTRACTION.md`](XNOR_TRANSVERSE_EXTRACTION.md).
 
 ---
 
@@ -476,7 +476,7 @@ In the original hidden-to-output residual channel of the current XNOR run,
 The corresponding phase law agrees with the measured nonlinear training map.
 
 See
-[\`XNOR_QUADRATIC_ANISOTROPY.md\`](XNOR_QUADRATIC_ANISOTROPY.md).
+[`XNOR_QUADRATIC_ANISOTROPY.md`](XNOR_QUADRATIC_ANISOTROPY.md).
 
 ---
 

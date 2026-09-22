@@ -1,5 +1,17 @@
 # Changelog
 
+## 0.2.0 — 2026-09-22
+
+- expose the regular-tetrahedron geometry of the four centered 3+1 directions
+- derive the distinguished axis and canonical two-dimensional transverse plane
+- add dual oppositely oriented tetrahedral frames with independent rotations
+- add the oriented transverse area form and unlabeled threefold parity observable
+- add a conservative two-rotor Hamiltonian with exact libration/rotation threshold
+- add a symplectic velocity-Verlet simulator and regression tests
+- derive the exact tetrahedral child-axis geometry and branch angle
+- keep the endogenous next-1 selection law explicitly open
+- repair math rendering in the axis-generation documentation
+
 ## 0.1.2 — 2026-09-19
 
 - add zero-sum centered `(n-1)+1` seed helper

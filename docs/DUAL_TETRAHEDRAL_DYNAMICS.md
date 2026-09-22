@@ -9,6 +9,29 @@ step precise without confusing three different statements:
 2. what follows exactly from a two-frame conservative rotor model,
 3. what is still only a candidate mechanism for generating the next 1.
 
+## Research provenance
+
+The paired, oppositely oriented, independently rotating tetrahedra are a
+reused geometric device from earlier Spark Engine work by the project author.
+The present note does not claim that geometric motif was first invented here.
+What is new in this derivation is the explicit connection
+
+[
+\text{3+1 contrast geometry}
+\rightarrow
+\text{dual tetrahedral frames}
+\rightarrow
+\text{oriented area/parity}
+\rightarrow
+\text{relative-rotation dynamics}.
+]
+
+This separation is useful: the older construction supplies a previously tested
+geometric move, while the present model exposes the algebra that makes the move
+work.
+
+---
+
 The central new object is **not** "second-order Markov memory". The more
 invariant object is an **oriented area form**. A history pair, a velocity,
 a momentum, or a second rotating frame are different ways of carrying that
@@ -585,16 +608,23 @@ $$
 a\cdot a'_k=-\frac13.
 $$
 
-Thus every child axis leaves its parent at the fixed tetrahedral angle
+Thus every **oriented child vector** leaves its parent at the fixed tetrahedral angle
 
-$$
+$
 \boxed{
 \alpha_T
 =
 \arccos\left(-\frac13\right)
 \approx109.47^\circ.
 }
-$$
+$
+
+If the axis is regarded as an unoriented line rather than an oriented vector,
+the corresponding acute line angle is
+
+$
+180^\circ-\alpha_T\approx70.53^\circ.
+$
 
 So the geometry of the next axis is solved.
 

@@ -234,6 +234,34 @@ See `docs/PROVENANCE.md`.
 
 ---
 
+## Axis generation from the 3+1 split
+
+The centered 3+1 seed has an additional geometric reading. In the zero-sum
+four-unit contrast space, the direction
+
+[
+(-1,-1,-1,3)
+]
+
+defines a distinguished axis, while the residual three-copy sector forms a
+canonical two-dimensional transverse plane.
+
+This establishes the geometric step
+
+[
+	ext{symmetry breaking}
+ightarrow
+	ext{axis generation}.
+]
+
+A separate research note asks whether the transverse sector can support
+rotation and a later persistent split. Those later steps are hypotheses, not
+results of the current deterministic XNOR experiment.
+
+See `docs/AXIS_GENERATION.md`.
+
+---
+
 ## Scaling question
 
 The tiny 3+1 system suggests a larger experimental question: do wide networks

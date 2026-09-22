@@ -1,9 +1,18 @@
 # Dual tetrahedral dynamics
 
-Status: mathematical model + executable toy dynamics.
+Status: separate exploratory mathematical model + executable toy dynamics.
 
-This note continues \`AXIS_GENERATION.md\`. The goal is to make the next
-step precise without confusing three different statements:
+This note is **not** part of the established neural-network symmetry theory and
+is **not** currently derived from standard SGD.  It is kept as a distinct
+geometric model motivated by earlier Spark Engine work.
+
+The standard-representation and XNOR layers are documented separately in
+[`PRIOR_ART_AND_POSITIONING.md`](PRIOR_ART_AND_POSITIONING.md) and
+[`XNOR_TRANSVERSE_EXTRACTION.md`](XNOR_TRANSVERSE_EXTRACTION.md).
+
+This note continues [`AXIS_GENERATION.md`](AXIS_GENERATION.md). The goal is
+to make the exploratory layer precise without confusing three different
+statements:
 
 1. what follows exactly from the centered 3+1 geometry,
 2. what follows exactly from a two-frame conservative rotor model,
@@ -714,15 +723,15 @@ XNOR network.
 
 The package now includes:
 
-- \`threeplusone.geometry.centered_contrast_vertices\`
-- \`threeplusone.geometry.tetrahedron_vertices\`
-- \`threeplusone.geometry.dual_tetrahedra\`
-- \`threeplusone.geometry.oriented_area\`
-- \`threeplusone.geometry.tetrahedral_relative_order\`
-- \`threeplusone.geometry.child_axes\`
-- \`threeplusone.dynamics.DualRotorState\`
-- \`threeplusone.dynamics.DualRotorParams\`
-- \`threeplusone.dynamics.simulate_dual_rotor\`
+- `threeplusone.geometry.centered_contrast_vertices`
+- `threeplusone.geometry.tetrahedron_vertices`
+- `threeplusone.geometry.dual_tetrahedra`
+- `threeplusone.geometry.oriented_area`
+- `threeplusone.geometry.tetrahedral_relative_order`
+- `threeplusone.geometry.child_axes`
+- `threeplusone.dynamics.DualRotorState`
+- `threeplusone.dynamics.DualRotorParams`
+- `threeplusone.dynamics.simulate_dual_rotor`
 
 The regression tests check:
 
@@ -779,7 +788,7 @@ $$
 $$
 
 The next layer is developed in
-\`docs/NEXT_ONE_SELECTION.md\`.
+`docs/NEXT_ONE_SELECTION.md`.
 
 At the reduced-model level, the selection problem is sharpened to
 

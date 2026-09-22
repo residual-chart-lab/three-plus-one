@@ -33,12 +33,20 @@ from .selection import (
     simulate_next_one,
 )
 from .transverse import (
+    TransverseAnisotropyResult,
     TransverseEpochRecord,
     add_transverse_seed,
+    add_transverse_vector_seed,
+    cumulative_transverse_matrix,
+    dominant_course_anisotropy,
+    dominant_singular_pair,
     epoch_transverse_matrix,
+    projected_course_phase,
+    projected_training_harmonic,
     sample_transverse_matrix,
     scan_transverse_growth,
     singular_values,
+    training_harmonic_vector,
     transverse_residual,
     transverse_residual_norm,
 )
@@ -75,13 +83,21 @@ __all__ = [
     "rotor_energy",
     "selected_branch",
     "simulate_next_one",
+    "TransverseAnisotropyResult",
     "TransverseEpochRecord",
     "add_transverse_seed",
+    "add_transverse_vector_seed",
+    "cumulative_transverse_matrix",
+    "dominant_course_anisotropy",
+    "dominant_singular_pair",
     "epoch_transverse_matrix",
+    "projected_course_phase",
+    "projected_training_harmonic",
     "sample_transverse_matrix",
     "scan_transverse_growth",
     "singular_values",
+    "training_harmonic_vector",
     "transverse_residual",
     "transverse_residual_norm",
 ]
-__version__ = "0.4.0"
+__version__ = "0.5.0"

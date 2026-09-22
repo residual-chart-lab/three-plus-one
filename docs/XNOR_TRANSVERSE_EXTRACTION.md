@@ -563,36 +563,62 @@ All three come from the existing learning rule.
 
 ---
 
-## 12. What is still missing
+## 12. Version 0.5 update
 
-At linear order, the actual XNOR map is blind to the copy-space phase:
+The nonlinear term has now been extracted directly.
 
-$$
-\Re Z
-\quad\text{and}\quad
-\Im Z
-$$
-
-receive the same channel map.
-
-That is exactly why historical orientation survives.
-
-But linear growth alone does not turn an arbitrary phase into one of three
-discrete singleton rays.
-
-That requires the nonlinear \(S_3\)-equivariant terms.
-
-The reduced model represented them by
+Residual \(C_3\) symmetry forces the quadratic transverse map to have
+conjugate-square form:
 
 $$
-\nu\bar z^2.
+F(Z)
+=
+LZ
++
+Q(\bar Z,\bar Z)
++
+O(\|Z\|^3).
 $$
 
-The next sharp test is therefore:
+A phase Fourier extraction of the full 728-epoch XNOR map finds a clean,
+nonzero \(-2\) harmonic and numerical suppression of the forbidden low
+harmonics.
 
-> **Extract the quadratic \(C_3\) anisotropy directly from the actual XNOR
-> epoch map and determine whether it is strong enough to produce genuine
-> three-basin branch locking.**
+In the original hidden-to-output residual channel,
 
-That is now the remaining bridge between amplified hidden history and a fully
-endogenous next 1.
+$$
+\lambda_{\mathrm{out}}
+\approx15.15569,
+$$
+
+$$
+\nu_{\mathrm{out}}
+\approx+6.65860.
+$$
+
+The resulting phase law
+
+$$
+\Delta\theta
+=
+-\frac{\nu}{\lambda}r\sin3\theta
++
+O(r^2)
+$$
+
+quantitatively matches the actual nonlinear XNOR phase drift and points toward
+the three oriented singleton rays.
+
+See \`XNOR_QUADRATIC_ANISOTROPY.md\`.
+
+The remaining gap has therefore moved again. It is no longer the existence of
+a nonlinear threefold branch bias.
+
+The sharper question is:
+
+> **What mechanism keeps the update alive long enough for an arbitrarily small
+> retained residual to complete asymptotic locking onto one singleton ray?**
+
+The present centered XNOR task sorts and sharpens a nonzero history, but its
+updates eventually die away before generic off-ray residuals reach exact
+locking.

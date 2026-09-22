@@ -370,3 +370,336 @@ def scan_transverse_growth(
         )
 
     return tuple(records)
+
+
+@dataclass(frozen=True)
+class TransverseAnisotropyResult:
+    """
+    Dominant-channel nonlinear transverse reduction over a fixed training course.
+
+    input_direction:
+        dominant right singular direction of the cumulative linear map
+    output_direction:
+        corresponding dominant left singular direction
+    linear_gain:
+        projected +1 Fourier harmonic divided by amplitude
+    quadratic_coefficient:
+        projected -2 Fourier harmonic divided by amplitude^2
+
+    The -2 harmonic is the C3-equivariant quadratic anisotropy:
+        z -> lambda z + nu conjugate(z)^2 + O(|z|^3).
+    """
+
+    epochs: int
+    amplitude: float
+    input_direction: Tuple[float, float, float, float]
+    output_direction: Tuple[float, float, float, float]
+    linear_gain: complex
+    quadratic_coefficient: complex
+
+
+def add_transverse_vector_seed(
+    net: ThreePlusOneMLP,
+    *,
+    direction: Sequence[float],
+    amplitude: float,
+    phase: float,
+    group: Sequence[int] = (0, 1, 2),
+) -> None:
+    """
+    Add an arbitrary four-channel complex transverse residual
+
+        Z = amplitude * exp(i*phase) * direction
+
+    where direction is real in parameter-channel space.
+    """
+    if len(group) != 3:
+        raise ValueError("add_transverse_vector_seed requires exactly three units")
+    if len(direction) != 4:
+        raise ValueError("direction must contain four channel values")
+
+    c = math.cos(float(phase))
+    s = math.sin(float(phase))
+    values = [float(amplitude) * float(v) for v in direction]
+
+    for pos, unit in enumerate(group):
+        unit = int(unit)
+        copy_factor = _BRANCH_REAL[pos] * c + _BRANCH_IMAG[pos] * s
+
+        for channel, value in enumerate(values):
+            delta = value * copy_factor
+            if channel == 0:
+                net.output_w[unit + 1] += delta
+            else:
+                net.hidden_w[unit][channel - 1] += delta
+
+
+def cumulative_transverse_matrix(
+    net: ThreePlusOneMLP,
+    samples: Iterable[Sample],
+    *,
+    epochs: int,
+) -> Matrix:
+    """Compose the exact linear transverse maps over a fixed training course."""
+    if epochs < 1:
+        raise ValueError("epochs must be positive")
+
+    data = list(samples)
+    if not data:
+        raise ValueError("samples must not be empty")
+
+    work = deepcopy(net)
+    cumulative = _identity(4)
+
+    for _ in range(epochs):
+        matrix = epoch_transverse_matrix(work, data)
+        cumulative = _matmul(matrix, cumulative)
+        for x, target in data:
+            work.train_one(x, target)
+
+    return tuple(tuple(row) for row in cumulative)
+
+
+def _matvec(
+    matrix: Sequence[Sequence[float]],
+    vector: Sequence[float],
+) -> list[float]:
+    return [
+        sum(float(row[j]) * float(vector[j]) for j in range(len(vector)))
+        for row in matrix
+    ]
+
+
+def _normalize_real(vector: Sequence[float]) -> list[float]:
+    n2 = sum(float(v) * float(v) for v in vector)
+    if n2 <= 0.0:
+        raise ValueError("cannot normalize the zero vector")
+    scale = 1.0 / math.sqrt(n2)
+    return [float(v) * scale for v in vector]
+
+
+def dominant_singular_pair(
+    matrix: Sequence[Sequence[float]],
+    *,
+    iterations: int = 200,
+) -> tuple[float, tuple[float, ...], tuple[float, ...]]:
+    """
+    Dependency-free dominant singular triplet (sigma, left, right).
+
+    The sign convention is fixed by requiring the largest-magnitude component
+    of the right singular vector to be positive.
+    """
+    ata = _matmul(_transpose(matrix), matrix)
+    v = _normalize_real((1.0, 0.5, -0.25, 0.75))
+
+    for _ in range(iterations):
+        next_v = _matvec(ata, v)
+        v = _normalize_real(next_v)
+
+    pivot = max(range(len(v)), key=lambda i: abs(v[i]))
+    if v[pivot] < 0.0:
+        v = [-x for x in v]
+
+    mv = _matvec(matrix, v)
+    sigma = math.sqrt(sum(x * x for x in mv))
+    if sigma == 0.0:
+        raise ValueError("dominant singular value is zero")
+
+    u = [x / sigma for x in mv]
+    return sigma, tuple(u), tuple(v)
+
+
+def training_harmonic_vector(
+    net: ThreePlusOneMLP,
+    samples: Iterable[Sample],
+    *,
+    epochs: int,
+    input_direction: Sequence[float],
+    amplitude: float,
+    harmonic: int,
+    phase_samples: int = 12,
+) -> ComplexVector:
+    """
+    Vector-valued copy-space Fourier coefficient of the actual nonlinear
+    training map.
+    """
+    if epochs < 1:
+        raise ValueError("epochs must be positive")
+    if amplitude <= 0.0:
+        raise ValueError("amplitude must be positive")
+    if phase_samples < 6 or phase_samples % 3 != 0:
+        raise ValueError("phase_samples must be a multiple of 3 and at least 6")
+    if len(input_direction) != 4:
+        raise ValueError("input_direction must have length 4")
+
+    data = list(samples)
+    if not data:
+        raise ValueError("samples must not be empty")
+
+    total = [0j, 0j, 0j, 0j]
+
+    for sample_index in range(phase_samples):
+        phase = 2.0 * math.pi * sample_index / phase_samples
+        work = deepcopy(net)
+        add_transverse_vector_seed(
+            work,
+            direction=input_direction,
+            amplitude=amplitude,
+            phase=phase,
+        )
+
+        for _ in range(epochs):
+            for x, target in data:
+                work.train_one(x, target)
+
+        factor = complex(
+            math.cos(-harmonic * phase),
+            math.sin(-harmonic * phase),
+        )
+        residual = transverse_residual(work)
+
+        for channel in range(4):
+            total[channel] += residual[channel] * factor
+
+    return tuple(value / phase_samples for value in total)
+
+
+def projected_training_harmonic(
+    net: ThreePlusOneMLP,
+    samples: Iterable[Sample],
+    *,
+    epochs: int,
+    input_direction: Sequence[float],
+    output_direction: Sequence[float],
+    amplitude: float,
+    harmonic: int,
+    phase_samples: int = 12,
+) -> complex:
+    """
+    Fourier coefficient of the actual nonlinear training map.
+
+    If the projected map has
+
+        y(theta)
+          = lambda * eps * exp(i theta)
+          + nu * eps^2 * exp(-2 i theta)
+          + ...
+
+    then harmonic=1 extracts the linear term and harmonic=-2 extracts the
+    C3-equivariant quadratic anisotropy.
+    """
+    if epochs < 1:
+        raise ValueError("epochs must be positive")
+    if amplitude <= 0.0:
+        raise ValueError("amplitude must be positive")
+    if phase_samples < 6 or phase_samples % 3 != 0:
+        raise ValueError("phase_samples must be a multiple of 3 and at least 6")
+    if len(input_direction) != 4 or len(output_direction) != 4:
+        raise ValueError("input_direction and output_direction must have length 4")
+
+    vector = training_harmonic_vector(
+        net,
+        samples,
+        epochs=epochs,
+        input_direction=input_direction,
+        amplitude=amplitude,
+        harmonic=harmonic,
+        phase_samples=phase_samples,
+    )
+    return sum(
+        float(output_direction[i]) * vector[i]
+        for i in range(4)
+    )
+
+
+def dominant_course_anisotropy(
+    net: ThreePlusOneMLP,
+    samples: Iterable[Sample],
+    *,
+    epochs: int,
+    amplitude: float = 1e-4,
+    phase_samples: int = 12,
+) -> TransverseAnisotropyResult:
+    """
+    Reduce the actual fixed-course nonlinear map onto its dominant linear
+    channel and extract the +1 and -2 copy-space Fourier harmonics.
+    """
+    cumulative = cumulative_transverse_matrix(
+        net,
+        samples,
+        epochs=epochs,
+    )
+    _, output_direction, input_direction = dominant_singular_pair(cumulative)
+
+    linear = projected_training_harmonic(
+        net,
+        samples,
+        epochs=epochs,
+        input_direction=input_direction,
+        output_direction=output_direction,
+        amplitude=amplitude,
+        harmonic=1,
+        phase_samples=phase_samples,
+    ) / amplitude
+
+    quadratic = projected_training_harmonic(
+        net,
+        samples,
+        epochs=epochs,
+        input_direction=input_direction,
+        output_direction=output_direction,
+        amplitude=amplitude,
+        harmonic=-2,
+        phase_samples=phase_samples,
+    ) / (amplitude * amplitude)
+
+    return TransverseAnisotropyResult(
+        epochs=epochs,
+        amplitude=float(amplitude),
+        input_direction=(
+            float(input_direction[0]),
+            float(input_direction[1]),
+            float(input_direction[2]),
+            float(input_direction[3]),
+        ),
+        output_direction=(
+            float(output_direction[0]),
+            float(output_direction[1]),
+            float(output_direction[2]),
+            float(output_direction[3]),
+        ),
+        linear_gain=linear,
+        quadratic_coefficient=quadratic,
+    )
+
+
+def projected_course_phase(
+    net: ThreePlusOneMLP,
+    samples: Iterable[Sample],
+    *,
+    epochs: int,
+    input_direction: Sequence[float],
+    output_direction: Sequence[float],
+    amplitude: float,
+    phase: float,
+) -> float:
+    """Projected output phase after a fixed nonlinear training course."""
+    data = list(samples)
+    work = deepcopy(net)
+    add_transverse_vector_seed(
+        work,
+        direction=input_direction,
+        amplitude=amplitude,
+        phase=phase,
+    )
+
+    for _ in range(epochs):
+        for x, target in data:
+            work.train_one(x, target)
+
+    residual = transverse_residual(work)
+    projected = sum(
+        float(output_direction[i]) * residual[i]
+        for i in range(4)
+    )
+    return math.atan2(projected.imag, projected.real)

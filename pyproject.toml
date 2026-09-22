@@ -4,8 +4,8 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "three-plus-one"
-version = "0.4.0"
-description = "A laboratory for 3+1 symmetry breaking, tetrahedral dynamics, history transport, and transverse instability."
+version = "0.5.0"
+description = "A laboratory for 3+1 symmetry breaking, transverse history, and nonlinear threefold branch anisotropy."
 readme = "README.md"
 requires-python = ">=3.9"
 license = {text = "MIT"}

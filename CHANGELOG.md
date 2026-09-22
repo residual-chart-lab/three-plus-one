@@ -1,5 +1,19 @@
 # Changelog
 
+## 0.5.0 — 2026-09-22
+
+- derive that C3/S3 equivariance forces the quadratic transverse term to have conjugate-square form
+- add nonlinear phase-Fourier extraction for the actual XNOR training map
+- extract a nonzero -2 harmonic from the dominant 728-epoch transverse channel
+- measure the dominant-course coefficients lambda ~= 34.70306 and nu ~= -87.21614 in the fixed channel orientation
+- extract the original hidden-to-output residual channel coefficients lambda ~= 15.15569 and nu ~= +6.65860
+- verify that the extracted quadratic coefficient predicts the measured nonlinear phase shift
+- verify C3 covariance of the full nonlinear 728-epoch course
+- verify finite-amplitude angular attraction toward the three oriented singleton rays
+- keep the exact-zero no-selection theorem intact
+- make explicit that centered XNOR exhibits directional sorting but not complete asymptotic locking from a generic off-ray residual
+- move the remaining gap to persistence: what keeps the update alive long enough to complete the next-1 lock?
+
 ## 0.4.0 — 2026-09-22
 
 - extract the actual hidden three-copy residual as a complex four-channel variable

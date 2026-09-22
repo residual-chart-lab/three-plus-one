@@ -132,6 +132,66 @@ class XNORQuadraticAnisotropyTests(unittest.TestCase):
             angle_distance(initial_b, target_b),
         )
 
+
+    def test_original_output_weight_channel_has_positive_threefold_anisotropy(self):
+        net = centered_net()
+        matrix = cumulative_transverse_matrix(net, xnor(), epochs=728)
+
+        input_direction = (1.0, 0.0, 0.0, 0.0)
+        linear_response = [
+            sum(matrix[i][j] * input_direction[j] for j in range(4))
+            for i in range(4)
+        ]
+        linear_gain = math.sqrt(sum(value * value for value in linear_response))
+        output_direction = tuple(value / linear_gain for value in linear_response)
+
+        amplitude = 1e-4
+        linear = projected_training_harmonic(
+            net,
+            xnor(),
+            epochs=728,
+            input_direction=input_direction,
+            output_direction=output_direction,
+            amplitude=amplitude,
+            harmonic=1,
+            phase_samples=12,
+        ) / amplitude
+        quadratic = projected_training_harmonic(
+            net,
+            xnor(),
+            epochs=728,
+            input_direction=input_direction,
+            output_direction=output_direction,
+            amplitude=amplitude,
+            harmonic=-2,
+            phase_samples=12,
+        ) / (amplitude * amplitude)
+
+        self.assertAlmostEqual(linear.real, 15.1556910, places=5)
+        self.assertAlmostEqual(quadratic.real, 6.65860, places=4)
+        self.assertAlmostEqual(linear.imag, 0.0, places=8)
+        self.assertAlmostEqual(quadratic.imag, 0.0, places=5)
+
+        probe_amplitude = 0.01
+        theta = math.pi / 6.0
+        predicted = (
+            theta
+            - (quadratic.real / linear.real)
+            * probe_amplitude
+            * math.sin(3.0 * theta)
+        )
+        measured = projected_course_phase(
+            net,
+            xnor(),
+            epochs=728,
+            input_direction=input_direction,
+            output_direction=output_direction,
+            amplitude=probe_amplitude,
+            phase=theta,
+        )
+
+        self.assertAlmostEqual(measured, predicted, places=4)
+
     def test_full_nonlinear_course_respects_c3_rotation(self):
         net = centered_net()
         matrix = cumulative_transverse_matrix(net, xnor(), epochs=728)

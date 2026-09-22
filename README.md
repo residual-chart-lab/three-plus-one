@@ -384,16 +384,27 @@ Z_0=0
 Z_e=0.
 \]
 
-Second, ordinary XNOR training eventually converges, so its updates weaken
-before a generic tiny off-ray residual necessarily reaches exact asymptotic
-locking.
+Second, a direct persistence scan shows that ordinary task convergence does
+**not** immediately terminate branch sorting.  For a finite off-ray residual,
+the branch-ray phase contraction continues to accumulate through at least
+100,000 epochs while the residual itself remains present.
 
-The present sharp question is therefore:
+The sharp question is therefore no longer simply whether the drive survives.
+It is whether cumulative selector action is summable:
 
-> **What mechanism keeps a retained transverse difference dynamically active
-> long enough to become a persistent specialized state?**
+\[
+\boxed{
+\mathcal A_\infty<\infty
+\quad\text{or}\quad
+\mathcal A_\infty=\infty.
+}
+\]
 
-That is the next research step.
+If the action diverges, the existing XNOR dynamics can in principle produce
+asymptotic branch locking even though the instantaneous updates tend to zero.
+
+See
+[`docs/SELECTOR_PERSISTENCE.md`](docs/SELECTOR_PERSISTENCE.md).
 
 ---
 
@@ -443,6 +454,8 @@ Start here:
   unverified scaling questions
 - [`FUTURE_ADMISSIBILITY_HANDOFF.md`](docs/FUTURE_ADMISSIBILITY_HANDOFF.md) —
   handoff from symmetry-constrained future operations to retained differences and the persistence gap
+- [`SELECTOR_PERSISTENCE.md`](docs/SELECTOR_PERSISTENCE.md) —
+  direct test of residual survival and cumulative branch-selector action after task convergence
 - [`PROVENANCE.md`](docs/PROVENANCE.md) —
   historical source separation
 

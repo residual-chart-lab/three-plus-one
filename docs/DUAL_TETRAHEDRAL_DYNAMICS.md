@@ -2,15 +2,15 @@
 
 Status: mathematical model + executable toy dynamics.
 
-This note continues `AXIS_GENERATION.md`.  The goal is to make the next
+This note continues \`AXIS_GENERATION.md\`. The goal is to make the next
 step precise without confusing three different statements:
 
 1. what follows exactly from the centered 3+1 geometry,
 2. what follows exactly from a two-frame conservative rotor model,
 3. what is still only a candidate mechanism for generating the next 1.
 
-The central new object is **not** "second-order Markov memory".  The more
-invariant object is an **oriented area form**.  A history pair, a velocity,
+The central new object is **not** "second-order Markov memory". The more
+invariant object is an **oriented area form**. A history pair, a velocity,
 a momentum, or a second rotating frame are different ways of carrying that
 orientation without collapsing it into one configuration snapshot.
 
@@ -20,38 +20,37 @@ orientation without collapsing it into one configuration snapshot.
 
 In the zero-sum contrast space
 
-[
+$$
 V
 =
-left{
-xinmathbb R^4:
-sum_i x_i=0
-ight}
-congmathbb R^3,
-]
+\left\{
+x\in\mathbb R^4:
+\sum_i x_i=0
+\right\}
+\cong\mathbb R^3,
+$$
 
 define
 
-[
+$$
 v_i
 =
-rac{4e_i-mathbf 1}{sqrt{12}},
-qquad
+\frac{4e_i-\mathbf 1}{\sqrt{12}},
+\qquad
 i=1,2,3,4.
-]
+$$
 
 Then
 
-[
-|v_i|=1,
-]
+$$
+\|v_i\|=1,
+$$
 
-and for (i
-eq j),
+and for \(i\neq j\),
 
-[
-langle v_i,v_jangle=-rac13.
-]
+$$
+\langle v_i,v_j\rangle=-\frac13.
+$$
 
 So the four normalized centered singleton directions are the vertices of a
 regular tetrahedron.
@@ -63,82 +62,81 @@ choices.
 
 ## 2. The first 1 generates an axis and a transverse plane
 
-Choose one vertex as the first distinguished direction.  Write
+Choose one vertex as the first distinguished direction. Write
 
-[
+$$
 a=v_4.
-]
+$$
 
 Then
 
-[
+$$
 V
 =
-operatorname{span}(a)
-oplus
+\operatorname{span}(a)
+\oplus
 P_a,
-]
+$$
 
 where
 
-[
-P_a=a^perpcap V
-congmathbb R^2.
-]
+$$
+P_a=a^\perp\cap V
+\cong\mathbb R^2.
+$$
 
 The other three tetrahedral vertices decompose as
 
-[
+$$
 v_k
 =
--rac13 a
+-\frac13 a
 +
-rac{2sqrt2}{3}b_k,
-qquad
+\frac{2\sqrt2}{3}b_k,
+\qquad
 k=1,2,3,
-]
+$$
 
 where
 
-[
-b_kin P_a,
-qquad
-|b_k|=1,
-]
+$$
+b_k\in P_a,
+\qquad
+\|b_k\|=1,
+$$
 
 and
 
-[
-langle b_i,b_jangle=-rac12
-qquad(i
-eq j).
-]
+$$
+\langle b_i,b_j\rangle=-\frac12
+\qquad(i\neq j).
+$$
 
 Thus the residual three-copy sector is an equilateral three-direction
 geometry in a two-dimensional plane.
 
 This makes 3+1 minimal in a precise sense.
 
-For a centered ((n-1)+1) split,
+For a centered \((n-1)+1\) split,
 
-[
-dim V_n=n-1
-]
+$$
+\dim V_n=n-1
+$$
 
 and after the distinguished axis is removed,
 
-[
-dim P_n=n-2.
-]
+$$
+\dim P_n=n-2.
+$$
 
-For 2+1, (P_n) is only one-dimensional: there is no continuous angle around
+For 2+1, \(P_n\) is only one-dimensional: there is no continuous angle around
 the new axis.
 
 For 3+1,
 
-[
-oxed{dim P_4=2,}
-]
+$$
+\boxed{\dim P_4=2,}
+$$
 
 so a genuine transverse phase first becomes possible.
 
@@ -146,149 +144,148 @@ so a genuine transverse phase first becomes possible.
 
 ## 3. Dual tetrahedral lift
 
-Let (R_a(	heta)) denote rotation around the generated axis (a).
+Let \(R_a(\theta)\) denote rotation around the generated axis \(a\).
 
 Define an upper tetrahedral frame
 
-[
-T_+(	heta_+)
+$$
+T_+(\theta_+)
 =
-left{
-a,;
--rac13a
+\left\{
+a,\;
+-\frac13a
 +
-rac{2sqrt2}{3}
-R_a(	heta_+)b_k
-ight}_{k=1}^3
-]
+\frac{2\sqrt2}{3}
+R_a(\theta_+)b_k
+\right\}_{k=1}^3
+$$
 
 and an oppositely oriented lower frame
 
-[
-T_-(	heta_-)
+$$
+T_-(\theta_-)
 =
-left{
--a,;
-rac13a
+\left\{
+-a,\;
+\frac13a
 -
-rac{2sqrt2}{3}
-R_a(	heta_-)b_k
-ight}_{k=1}^3.
-]
+\frac{2\sqrt2}{3}
+R_a(\theta_-)b_k
+\right\}_{k=1}^3.
+$$
 
 When
 
-[
-	heta_+=	heta_-,
-]
+$$
+\theta_+=\theta_-,
+$$
 
 the two tetrahedra are exact central inversions:
 
-[
+$$
 T_-=-T_+.
-]
+$$
 
 The important extension is to allow
 
-[
-	heta_+
-eq	heta_-.
-]
+$$
+\theta_+\neq\theta_-.
+$$
 
 The two frames now have independent rotations around one shared axis.
 
-The fixed top/bottom inversion is part of the construction.  The dynamical
+The fixed top/bottom inversion is part of the construction. The dynamical
 relative phase is therefore taken **after factoring out that fixed inversion**:
 
-[
-phi=	heta_+-	heta_-.
-]
+$$
+\phi=\theta_+-\theta_-.
+$$
 
 ---
 
 ## 4. The universal object: oriented area
 
-Once (a) orients the transverse plane (P_a), define
+Once \(a\) orients the transverse plane \(P_a\), define
 
-[
-oxed{
-omega_a(u,v)
+$$
+\boxed{
+\omega_a(u,v)
 =
-acdot(u	imes v)
+a\cdot(u\times v)
 }
-]
+$$
 
-for (u,vin P_a).
+for \(u,v\in P_a\).
 
 This is the oriented area 2-form on the transverse plane.
 
 It has the essential antisymmetry
 
-[
-omega_a(u,v)
+$$
+\omega_a(u,v)
 =
--omega_a(v,u).
-]
+-\omega_a(v,u).
+$$
 
 So reversing the order of two states reverses parity.
 
 For a discrete trajectory,
 
-[
-mathcal A_t
+$$
+\mathcal A_t
 =
-omega_a(u_t,u_{t+1})
-]
+\omega_a(u_t,u_{t+1})
+$$
 
 is the signed area spanned by two successive transverse states.
 
-For a continuous trajectory (u(t)),
+For a continuous trajectory \(u(t)\),
 
-[
+$$
 J(t)
 =
-omega_a(u,dot u)
-]
+\omega_a(u,\dot u)
+$$
 
 is the infinitesimal oriented sweep.
 
 If
 
-[
+$$
 u(t)
 =
 r
-left(
-cos	heta(t)e_1
+\left(
+\cos\theta(t)e_1
 +
-sin	heta(t)e_2
-ight),
-]
+\sin\theta(t)e_2
+\right),
+$$
 
 then
 
-[
-oxed{
-J=r^2dot	heta.
+$$
+\boxed{
+J=r^2\dot\theta.
 }
-]
+$$
 
 So the sign of the oriented area sweep is exactly the local rotation
 orientation.
 
 ### Why this is not fundamentally a Markov-order claim
 
-A configuration-only state (u_t) cannot determine an oriented sweep by
+A configuration-only state \(u_t\) cannot determine an oriented sweep by
 itself:
 
-[
-omega_a(u_t,u_t)=0.
-]
+$$
+\omega_a(u_t,u_t)=0.
+$$
 
-A second time slice (u_{t-1}), a tangent (dot u_t), a momentum, or a
+A second time slice \(u_{t-1}\), a tangent \(\dot u_t\), a momentum, or a
 second frame can restore the missing orientation.
 
-But nothing requires the final theory to be non-Markovian.  The dynamics may
+But nothing requires the final theory to be non-Markovian. The dynamics may
 be first-order Markov on a sufficiently rich phase space.
 
 The invariant content is:
@@ -302,44 +299,44 @@ The invariant content is:
 
 Each base triangle is unchanged, up to relabeling, under
 
-[
-	hetamapsto	heta+rac{2pi}{3}.
-]
+$$
+\theta\mapsto\theta+\frac{2\pi}{3}.
+$$
 
-Therefore the raw phase (phi) contains label gauge.
+Therefore the raw phase \(\phi\) contains label gauge.
 
 The lowest unlabeled relative order parameter is
 
-[
-oxed{
+$$
+\boxed{
 q
 =
-e^{3iphi}.
+e^{3i\phi}.
 }
-]
+$$
 
 Write
 
-[
-C=Re q=cos3phi,
-]
+$$
+C=\Re q=\cos3\phi,
+$$
 
-[
-Pi=Im q=sin3phi.
-]
+$$
+\Pi=\Im q=\sin3\phi.
+$$
 
 Then:
 
-- (C) is even under frame exchange,
-- (Pi) is odd under frame exchange,
-- both are invariant under independent (2pi/3) relabelings of either
+- \(C\) is even under frame exchange,
+- \(\Pi\) is odd under frame exchange,
+- both are invariant under independent \(2\pi/3\) relabelings of either
   triangular base.
 
-Thus (Pi) is a natural tetrahedral parity observable.
+Thus \(\Pi\) is a natural tetrahedral parity observable.
 
 It is important to distinguish this static parity observable from the
-dynamical chirality (J).  A rotating trajectory can pass through
-(Pi=0) while retaining a definite sign of (J).
+dynamical chirality \(J\). A rotating trajectory can pass through
+\(\Pi=0\) while retaining a definite sign of \(J\).
 
 ---
 
@@ -347,73 +344,73 @@ dynamical chirality (J).  A rotating trajectory can pass through
 
 Give the two frames inertias
 
-[
+$$
 I_+>0,
-qquad
+\qquad
 I_->0,
-]
+$$
 
-angles (	heta_+,	heta_-), and conjugate momenta (p_+,p_-).
+angles \(\theta_+,\theta_-\), and conjugate momenta \(p_+,p_-\).
 
 The lowest interaction compatible with the unlabeled threefold symmetry is
 
-[
-V(phi)
+$$
+V(\phi)
 =
-kappa
-left(
-1-cos3phi
-ight),
-qquad
-kappage0.
-]
+\kappa
+\left(
+1-\cos3\phi
+\right),
+\qquad
+\kappa\ge0.
+$$
 
 Take the Hamiltonian
 
-[
+$$
 H
 =
-rac{p_+^2}{2I_+}
+\frac{p_+^2}{2I_+}
 +
-rac{p_-^2}{2I_-}
+\frac{p_-^2}{2I_-}
 +
-kappa
-left(
-1-cos3phi
-ight).
-]
+\kappa
+\left(
+1-\cos3\phi
+\right).
+$$
 
 Hamilton's equations give
 
-[
-dot	heta_+
+$$
+\dot\theta_+
 =
-rac{p_+}{I_+},
-qquad
-dot	heta_-
+\frac{p_+}{I_+},
+\qquad
+\dot\theta_-
 =
-rac{p_-}{I_-},
-]
+\frac{p_-}{I_-},
+$$
 
-[
-dot p_+
+$$
+\dot p_+
 =
--3kappasin3phi,
-]
+-3\kappa\sin3\phi,
+$$
 
-[
-dot p_-
+$$
+\dot p_-
 =
-+3kappasin3phi.
-]
++3\kappa\sin3\phi.
+$$
 
 Immediately,
 
-[
-oxed{
+$$
+\boxed{
 P=p_++p_-
 }
-]
+$$
 
 is conserved.
 
@@ -425,77 +422,77 @@ So the absolute common rotation separates from the relative rotation.
 
 Define the reduced inertia
 
-[
+$$
 I_r
 =
-rac{I_+I_-}{I_++I_-},
-]
+\frac{I_+I_-}{I_++I_-},
+$$
 
 and
 
-[
-ell
+$$
+\ell
 =
-I_rdotphi.
-]
+I_r\dot\phi.
+$$
 
 The relative energy is
 
-[
-oxed{
+$$
+\boxed{
 E_r
 =
-rac{ell^2}{2I_r}
+\frac{\ell^2}{2I_r}
 +
-kappa
-left(
-1-cos3phi
-ight).
+\kappa
+\left(
+1-\cos3\phi
+\right).
 }
-]
+$$
 
 The threefold potential has barrier height
 
-[
-V_{max}=2kappa.
-]
+$$
+V_{\max}=2\kappa.
+$$
 
-Therefore the conservative model has three exact regimes:
+Therefore the conservative model has three exact regimes.
 
 ### Libration
 
-[
-E_r<2kappa.
-]
+$$
+E_r<2\kappa.
+$$
 
-The relative phase remains trapped in one well.  The relative angular momentum
+The relative phase remains trapped in one well. The relative angular momentum
 reaches zero at turning points and reverses sign.
 
 ### Separatrix
 
-[
-E_r=2kappa.
-]
+$$
+E_r=2\kappa.
+$$
 
 The trajectory lies on the boundary between trapped and circulating motion.
 
 ### Persistent relative rotation
 
-[
-oxed{
-E_r>2kappa.
+$$
+\boxed{
+E_r>2\kappa.
 }
-]
+$$
 
 The kinetic term can never vanish because
 
-[
-E_r-V(phi)>0
-]
+$$
+E_r-V(\phi)>0
+$$
 
 for every phase.
 
-Therefore (ell) cannot change sign continuously, and (phi) winds
+Therefore \(\ell\) cannot change sign continuously, and \(\phi\) winds
 indefinitely in one direction.
 
 This produces sustained rotation without inserting a one-way angular drift
@@ -503,33 +500,33 @@ term by hand.
 
 For the symmetric case
 
-[
+$$
 I_+=I_-=1,
-]
+$$
 
 with initial state
 
-[
-phi(0)=0,
-qquad
+$$
+\phi(0)=0,
+\qquad
 p_+(0)=p,
-qquad
+\qquad
 p_-(0)=-p,
-]
+$$
 
 one has
 
-[
+$$
 E_r=p^2.
-]
+$$
 
 So the exact rotation threshold is
 
-[
-oxed{
-|p|>sqrt{2kappa}.
+$$
+\boxed{
+|p|>\sqrt{2\kappa}.
 }
-]
+$$
 
 ---
 
@@ -540,22 +537,22 @@ persistent handed relational structure.
 
 The dual construction supplies two independently evolving frames.
 
-The relevant quantity is not "two tetrahedra" as an object count.  It is the
+The relevant quantity is not "two tetrahedra" as an object count. It is the
 relative transformation between them.
 
-If (R_+) and (R_-) are the two frame rotations, define
+If \(R_+\) and \(R_-\) are the two frame rotations, define
 
-[
-oxed{
+$$
+\boxed{
 Q
 =
 R_-^{-1}R_+.
 }
-]
+$$
 
-For the shared-axis model, (Q) reduces to the relative phase (phi).
+For the shared-axis model, \(Q\) reduces to the relative phase \(\phi\).
 
-In a future non-coaxial extension, (Qin SO(3)) remains meaningful even when
+In a future non-coaxial extension, \(Q\in SO(3)\) remains meaningful even when
 a single scalar phase no longer does.
 
 This is the natural route from the present planar transverse dynamics to a
@@ -568,36 +565,36 @@ full moving-frame model.
 The current model does **not** yet derive the event that chooses the next
 distinguished member.
 
-But once a branch (kin{1,2,3}) is selected at phase (	heta_*), the
+But once a branch \(k\in\{1,2,3\}\) is selected at phase \(\theta_*\), the
 next axis is already fixed by tetrahedral geometry:
 
-[
-oxed{
+$$
+\boxed{
 a'_k
 =
--rac13a
+-\frac13a
 +
-rac{2sqrt2}{3}
-R_a(	heta_*)b_k.
+\frac{2\sqrt2}{3}
+R_a(\theta_*)b_k.
 }
-]
+$$
 
 It is unit length and satisfies
 
-[
-acdot a'_k=-rac13.
-]
+$$
+a\cdot a'_k=-\frac13.
+$$
 
 Thus every child axis leaves its parent at the fixed tetrahedral angle
 
-[
-oxed{
-alpha_T
+$$
+\boxed{
+\alpha_T
 =
-arccosleft(-rac13ight)
-approx109.47^circ.
+\arccos\left(-\frac13\right)
+\approx109.47^\circ.
 }
-]
+$$
 
 So the geometry of the next axis is solved.
 
@@ -612,12 +609,12 @@ This should not be inserted by hand and is kept as the next open problem.
 
 ## 10. Recursive spring extension
 
-Suppose a branch event has produced an axis (a_n) with transverse basis
-(e_{n,1},e_{n,2}).
+Suppose a branch event has produced an axis \(a_n\) with transverse basis
+\(e_{n,1},e_{n,2}\).
 
 A local trajectory can be written
 
-[
+$$
 X_n(s)
 =
 c_n
@@ -625,55 +622,55 @@ c_n
 h_n(s)a_n
 +
 r_n
-left(
-cos	heta_n(s)e_{n,1}
+\left(
+\cos\theta_n(s)e_{n,1}
 +
-sin	heta_n(s)e_{n,2}
-ight).
-]
+\sin\theta_n(s)e_{n,2}
+\right).
+$$
 
 If
 
-[
+$$
 h_n(s)=v_ns,
-qquad
-	heta_n(s)=omega_ns,
-]
+\qquad
+\theta_n(s)=\omega_ns,
+$$
 
-this is a helix around (a_n).
+this is a helix around \(a_n\).
 
-At a selected event (s=s_*), choose one tetrahedral child axis (a_{n+1}),
+At a selected event \(s=s_*\), choose one tetrahedral child axis \(a_{n+1}\),
 set
 
-[
+$$
 c_{n+1}=X_n(s_*),
-]
+$$
 
 construct its new transverse plane, and repeat.
 
 If the dimensionless generation law is reused and the scales obey
 
-[
-r_{n+1}=lambda r_n,
-qquad
-v_{n+1}=lambda v_n,
-qquad
-0<lambda<1,
-]
+$$
+r_{n+1}=\lambda r_n,
+\qquad
+v_{n+1}=\lambda v_n,
+\qquad
+0<\lambda<1,
+$$
 
 then the resulting geometry is self-similar by construction:
 
-[
-oxed{
-	ext{helix}
-ightarrow
-	ext{tetrahedral branch}
-ightarrow
-	ext{smaller helix}
-ightarrow
-cdots
+$$
+\boxed{
+\text{helix}
+\rightarrow
+\text{tetrahedral branch}
+\rightarrow
+\text{smaller helix}
+\rightarrow
+\cdots
 }
-]
+$$
 
 This gives a mathematically explicit route to a multiscale spring/tree
 geometry.
@@ -687,21 +684,21 @@ XNOR network.
 
 The package now includes:
 
-- `threeplusone.geometry.centered_contrast_vertices`
-- `threeplusone.geometry.tetrahedron_vertices`
-- `threeplusone.geometry.dual_tetrahedra`
-- `threeplusone.geometry.oriented_area`
-- `threeplusone.geometry.tetrahedral_relative_order`
-- `threeplusone.geometry.child_axes`
-- `threeplusone.dynamics.DualRotorState`
-- `threeplusone.dynamics.DualRotorParams`
-- `threeplusone.dynamics.simulate_dual_rotor`
+- \`threeplusone.geometry.centered_contrast_vertices\`
+- \`threeplusone.geometry.tetrahedron_vertices\`
+- \`threeplusone.geometry.dual_tetrahedra\`
+- \`threeplusone.geometry.oriented_area\`
+- \`threeplusone.geometry.tetrahedral_relative_order\`
+- \`threeplusone.geometry.child_axes\`
+- \`threeplusone.dynamics.DualRotorState\`
+- \`threeplusone.dynamics.DualRotorParams\`
+- \`threeplusone.dynamics.simulate_dual_rotor\`
 
 The regression tests check:
 
 1. exact regular-tetrahedron inner products,
 2. central inversion of the dual frames,
-3. (C_3) gauge invariance of the relative order parameter,
+3. \(C_3\) gauge invariance of the relative order parameter,
 4. odd parity under frame exchange,
 5. the tetrahedral child angle,
 6. momentum conservation of the symplectic rotor integrator,
@@ -715,48 +712,47 @@ The regression tests check:
 
 Established by geometry:
 
-[
-oxed{
-	ext{centered 3+1}
-ightarrow
-	ext{regular tetrahedron}
-ightarrow
-	ext{axis}
-ightarrow
-	ext{two-dimensional transverse plane}.
+$$
+\boxed{
+\text{centered 3+1}
+\rightarrow
+\text{regular tetrahedron}
+\rightarrow
+\text{axis}
+\rightarrow
+\text{two-dimensional transverse plane}.
 }
-]
+$$
 
 Established by the dual-frame model:
 
-[
-oxed{
-	ext{dual frames}
-ightarrow
-	ext{oriented area/parity}
-ightarrow
-	ext{relative angular momentum}
-ightarrow
-	ext{persistent rotation above an exact threshold}.
+$$
+\boxed{
+\text{dual frames}
+\rightarrow
+\text{oriented area/parity}
+\rightarrow
+\text{relative angular momentum}
+\rightarrow
+\text{persistent rotation above an exact threshold}.
 }
-]
+$$
 
 Established as an exact conditional branch geometry:
 
-[
-oxed{
-	ext{selected branch}
-ightarrow
-	ext{next tetrahedral axis}.
+$$
+\boxed{
+\text{selected branch}
+\rightarrow
+\text{next tetrahedral axis}.
 }
-]
+$$
 
 Still open:
 
-[
-oxed{
-	ext{what endogenous event selects the next 1?}
-}
-]
+$$
+\boxed{
+\text{what endogenous event selects the next 1?}
+$$
 
 That is now the sharp edge of the model.

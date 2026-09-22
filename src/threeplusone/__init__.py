@@ -32,6 +32,16 @@ from .selection import (
     selected_branch,
     simulate_next_one,
 )
+from .transverse import (
+    TransverseEpochRecord,
+    add_transverse_seed,
+    epoch_transverse_matrix,
+    sample_transverse_matrix,
+    scan_transverse_growth,
+    singular_values,
+    transverse_residual,
+    transverse_residual_norm,
+)
 
 __all__ = [
     "ThreePlusOneMLP",
@@ -65,5 +75,13 @@ __all__ = [
     "rotor_energy",
     "selected_branch",
     "simulate_next_one",
+    "TransverseEpochRecord",
+    "add_transverse_seed",
+    "epoch_transverse_matrix",
+    "sample_transverse_matrix",
+    "scan_transverse_growth",
+    "singular_values",
+    "transverse_residual",
+    "transverse_residual_norm",
 ]
-__version__ = "0.3.0"
+__version__ = "0.4.0"

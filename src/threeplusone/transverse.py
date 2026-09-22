@@ -424,14 +424,10 @@ def add_transverse_vector_seed(
 
     for pos, unit in enumerate(group):
         unit = int(unit)
-        copy_factor_re = _BRANCH_REAL[pos] * c + _BRANCH_IMAG[pos] * s
-        copy_factor_im = 0.0
-        # direction is real, so the desired complex residual phase is carried
-        # entirely by the copy-space basis.
-        del copy_factor_im
+        copy_factor = _BRANCH_REAL[pos] * c + _BRANCH_IMAG[pos] * s
 
         for channel, value in enumerate(values):
-            delta = value * copy_factor_re
+            delta = value * copy_factor
             if channel == 0:
                 net.output_w[unit + 1] += delta
             else:
@@ -513,6 +509,61 @@ def dominant_singular_pair(
     return sigma, tuple(u), tuple(v)
 
 
+def training_harmonic_vector(
+    net: ThreePlusOneMLP,
+    samples: Iterable[Sample],
+    *,
+    epochs: int,
+    input_direction: Sequence[float],
+    amplitude: float,
+    harmonic: int,
+    phase_samples: int = 12,
+) -> ComplexVector:
+    """
+    Vector-valued copy-space Fourier coefficient of the actual nonlinear
+    training map.
+    """
+    if epochs < 1:
+        raise ValueError("epochs must be positive")
+    if amplitude <= 0.0:
+        raise ValueError("amplitude must be positive")
+    if phase_samples < 6 or phase_samples % 3 != 0:
+        raise ValueError("phase_samples must be a multiple of 3 and at least 6")
+    if len(input_direction) != 4:
+        raise ValueError("input_direction must have length 4")
+
+    data = list(samples)
+    if not data:
+        raise ValueError("samples must not be empty")
+
+    total = [0j, 0j, 0j, 0j]
+
+    for sample_index in range(phase_samples):
+        phase = 2.0 * math.pi * sample_index / phase_samples
+        work = deepcopy(net)
+        add_transverse_vector_seed(
+            work,
+            direction=input_direction,
+            amplitude=amplitude,
+            phase=phase,
+        )
+
+        for _ in range(epochs):
+            for x, target in data:
+                work.train_one(x, target)
+
+        factor = complex(
+            math.cos(-harmonic * phase),
+            math.sin(-harmonic * phase),
+        )
+        residual = transverse_residual(work)
+
+        for channel in range(4):
+            total[channel] += residual[channel] * factor
+
+    return tuple(value / phase_samples for value in total)
+
+
 def projected_training_harmonic(
     net: ThreePlusOneMLP,
     samples: Iterable[Sample],
@@ -546,37 +597,19 @@ def projected_training_harmonic(
     if len(input_direction) != 4 or len(output_direction) != 4:
         raise ValueError("input_direction and output_direction must have length 4")
 
-    data = list(samples)
-    if not data:
-        raise ValueError("samples must not be empty")
-
-    total = 0j
-
-    for sample_index in range(phase_samples):
-        phase = 2.0 * math.pi * sample_index / phase_samples
-        work = deepcopy(net)
-        add_transverse_vector_seed(
-            work,
-            direction=input_direction,
-            amplitude=amplitude,
-            phase=phase,
-        )
-
-        for _ in range(epochs):
-            for x, target in data:
-                work.train_one(x, target)
-
-        residual = transverse_residual(work)
-        projected = sum(
-            float(output_direction[i]) * residual[i]
-            for i in range(4)
-        )
-        total += projected * complex(
-            math.cos(-harmonic * phase),
-            math.sin(-harmonic * phase),
-        )
-
-    return total / phase_samples
+    vector = training_harmonic_vector(
+        net,
+        samples,
+        epochs=epochs,
+        input_direction=input_direction,
+        amplitude=amplitude,
+        harmonic=harmonic,
+        phase_samples=phase_samples,
+    )
+    return sum(
+        float(output_direction[i]) * vector[i]
+        for i in range(4)
+    )
 
 
 def dominant_course_anisotropy(

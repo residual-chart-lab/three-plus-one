@@ -16,7 +16,7 @@ reused geometric device from earlier Spark Engine work by the project author.
 The present note does not claim that geometric motif was first invented here.
 What is new in this derivation is the explicit connection
 
-[
+$
 \text{3+1 contrast geometry}
 \rightarrow
 \text{dual tetrahedral frames}
@@ -24,7 +24,7 @@ What is new in this derivation is the explicit connection
 \text{oriented area/parity}
 \rightarrow
 \text{relative-rotation dynamics}.
-]
+$
 
 This separation is useful: the older construction supplies a previously tested
 geometric move, while the present model exposes the algebra that makes the move

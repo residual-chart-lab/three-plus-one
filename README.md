@@ -6,13 +6,14 @@ A small experimental framework that began with one question:
 > What happens when a perfectly symmetric hidden population receives one
 > deliberately asymmetric seed?
 
-The project started from a tiny neural-network observation and now keeps four
+The project started from a tiny neural-network observation and now keeps five
 connected layers in one repository:
 
 1. a reproducible 3+1 symmetry-breaking experiment,
 2. a geometric/dynamical model of what the 3+1 split creates,
 3. a history-seeded model for how one residual branch can become the next 1,
-4. an exact transverse linearization of the original XNOR learning dynamics.
+4. an exact transverse linearization of the original XNOR learning dynamics,
+5. a direct extraction of the nonlinear threefold anisotropy of that same map.
 
 This project is **not** a port of the 1996 AMOS program that inspired it.
 It is a new implementation of the underlying phenomenon.
@@ -604,8 +605,125 @@ Run the diagnostics from Python with
 
 See <code>docs/XNOR_TRANSVERSE_EXTRACTION.md</code>.
 
-The remaining sharp edge is nonlinear: extract the actual \(C_3\) anisotropy
-that can turn an amplified historical phase into a discrete three-way branch.
+Version 0.5 performs that nonlinear extraction directly.
+
+---
+
+## Actual XNOR quadratic anisotropy
+
+Residual \(C_3\) symmetry does more than permit a threefold term. At quadratic
+order it forces the copy-space harmonic.
+
+If
+
+$
+Z\mapsto\omega Z,
+\qquad
+\omega=e^{2\pi i/3},
+$
+
+then an equivariant quadratic transverse map cannot use \(ZZ\) or
+\(Z\bar Z\). The only quadratic term that transforms like \(Z\) is
+
+$
+\boxed{
+Q(\bar Z,\bar Z).
+}
+$
+
+Thus the reduced-model term
+
+$
+\nu\bar z^2
+$
+
+is the unique quadratic copy-space harmonic allowed by the residual threefold
+symmetry.
+
+The coefficient can be extracted directly from the actual nonlinear training
+map by a phase Fourier transform.
+
+For a seeded channel direction \(v\),
+
+$
+Z_0=\varepsilon e^{i\theta}v,
+$
+
+and a projected output \(y(\theta)\),
+
+$
+y(\theta)
+=
+\lambda\varepsilon e^{i\theta}
++
+\nu\varepsilon^2e^{-2i\theta}
++
+O(\varepsilon^3).
+$
+
+For the dominant 728-epoch linear channel, the measured coefficients are
+
+$
+\lambda\approx34.70306,
+\qquad
+\nu\approx-87.21614
+$
+
+in the fixed code orientation.
+
+For the original hidden-to-output residual channel,
+
+$
+\boxed{
+\lambda_{\mathrm{out}}\approx15.15569,
+\qquad
+\nu_{\mathrm{out}}\approx+6.65860.
+}
+$
+
+That positive coefficient gives the small-amplitude phase law
+
+$
+\boxed{
+\Delta\theta
+=
+-\frac{\nu}{\lambda}
+r\sin3\theta
++
+O(r^2),
+}
+$
+
+which points toward the three oriented singleton rays
+
+$
+0,\qquad
++\frac{2\pi}{3},\qquad
+-\frac{2\pi}{3}.
+$
+
+For example, with input amplitude \(0.01\) and phase \(\pi/6\), the extracted
+quadratic model predicts
+
+$
+\theta_{\mathrm{out}}\approx0.5192053,
+$
+
+while the full nonlinear XNOR run gives
+
+$
+\theta_{\mathrm{out}}\approx0.5192082.
+$
+
+The actual network therefore contains the same threefold anisotropy that the
+reduced model required.
+
+What it does **not** yet do is complete exact asymptotic locking from a generic
+off-ray residual before the ordinary XNOR updates die away. It transports,
+amplifies, and directionally sorts a nonzero history; it still does not create
+history from exact zero.
+
+See <code>docs/XNOR_QUADRATIC_ANISOTROPY.md</code>.
 
 ---
 
@@ -655,7 +773,12 @@ The contribution is narrower:
 - derive its exact transverse Jacobian and finite-time growth rates,
 - verify that the exact symmetric manifold is invariant but transversely
   amplifying throughout centered XNOR training,
-- move the remaining open problem to the nonlinear (C_3) branch-locking term.
+- derive the symmetry-forced quadratic conjugate-square harmonic,
+- extract its coefficient directly from the nonlinear XNOR course,
+- verify the predicted threefold phase drift against the full network,
+- verify angular attraction toward the three oriented singleton rays,
+- move the remaining open problem from anisotropy to persistence: how a tiny
+  residual keeps receiving updates long enough to complete the next-1 lock.
 
 It remains a laboratory object, not a production ML library.
 

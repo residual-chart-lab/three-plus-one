@@ -456,6 +456,8 @@ Start here:
   handoff from symmetry-constrained future operations to retained differences and the persistence gap
 - [`SELECTOR_PERSISTENCE.md`](docs/SELECTOR_PERSISTENCE.md) —
   direct test of residual survival and cumulative branch-selector action after task convergence
+- [`SELECTOR_ASYMPTOTICS.md`](docs/SELECTOR_ASYMPTOTICS.md) —
+  long-horizon evidence for logarithmic-logarithmic cumulative selector action
 - [`PROVENANCE.md`](docs/PROVENANCE.md) —
   historical source separation
 

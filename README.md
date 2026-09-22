@@ -1,819 +1,474 @@
 # three-plus-one
-## The Three Plus One Network
+## Controlled symmetry breaking in a tiny neural network
 
-A small experimental framework that began with one question:
+`three-plus-one` is a small research laboratory for one concrete question:
 
-> What happens when a perfectly symmetric hidden population receives one
-> deliberately asymmetric seed?
+> What exactly happens to a symmetric hidden population when one controlled
+> difference is retained, transported, amplified, and nonlinearly sorted?
 
-The project started from a tiny neural-network observation and now keeps five
-connected layers in one repository:
+The project began from a 3+1 asymmetry observed while reconstructing a small
+1996 AMOS neural-network example. It now separates three things that are easy
+to mix together:
 
-1. a reproducible 3+1 symmetry-breaking experiment,
-2. a geometric/dynamical model of what the 3+1 split creates,
-3. a history-seeded model for how one residual branch can become the next 1,
-4. an exact transverse linearization of the original XNOR learning dynamics,
-5. a direct extraction of the nonlinear threefold anisotropy of that same map.
+1. **established symmetry theory** that should be imported rather than
+   rediscovered,
+2. **exact measurements of one deterministic sigmoid-XNOR network**,
+3. **exploratory geometric models** that go beyond what has been derived from
+   SGD.
 
-This project is **not** a port of the 1996 AMOS program that inspired it.
-It is a new implementation of the underlying phenomenon.
+The current package version is **0.5.0**.
 
 ---
 
-## Core construction
+## 1. What is not new
 
-All hidden units begin with the same incoming weights:
+Several central ingredients have established literature.
 
-$$
-B_i^{(0)} = b_0.
-$$
+Neural-network initialization has long used asymmetry to prevent hidden units
+from remaining exact copies. Hidden-unit permutation symmetry and its breaking
+have been studied for decades. The zero-sum difference space is the standard
+representation of the symmetric group, and equivariant bifurcation theory
+already contains the quadratic structures relevant to the residual
+threefold symmetry.
 
-The outgoing hidden-to-output weights begin as
+In particular, this project does **not** claim novelty for:
 
-$$
-a_i^{(0)} = a_0 + \varepsilon s_i.
-$$
+- random initialization as symmetry breaking,
+- hidden-unit permutation symmetry or specialization,
+- the standard representation
+  \[
+  H_{n-1}=\{x\in\mathbb R^n:\sum_i x_i=0\},
+  \]
+- symmetry-adapted Hessian / curvature decompositions,
+- the existence of quadratic equivariants,
+- the \(C_3\) conjugate-square form \(\bar z^2\),
+- the fact that an exactly equivariant deterministic map cannot select a
+  branch from an exactly symmetric fixed state.
 
-For the default four-hidden-unit case,
+See [`docs/PRIOR_ART_AND_POSITIONING.md`](docs/PRIOR_ART_AND_POSITIONING.md)
+for the literature map and claim boundary.
 
-$$
-s=(0,0,0,1),
-$$
+---
 
-so
+## 2. The controlled 3+1 experiment
 
-$$
+All hidden units begin with identical incoming weights,
+
+\[
+B_i^{(0)}=b_0.
+\]
+
+The hidden-to-output weights are
+
+\[
 a^{(0)}
 =
-\begin{bmatrix}
-a_0\\
-a_0\\
-a_0\\
-a_0+\varepsilon
-\end{bmatrix}.
-$$
+a_0\mathbf 1+\varepsilon s.
+\]
 
-That is the **3+1 seed**.
+The default four-unit seed is
 
-More generally, with \(n\) hidden units this is an \((n-1)+1\) construction.
+\[
+s=(0,0,0,1).
+\]
 
-The important control is
+The exact symmetric control is
 
-$$
-\varepsilon=0,
-$$
+\[
+\varepsilon=0.
+\]
 
-where all hidden units are exactly symmetric.
+A cleaner centered control subtracts the seed mean:
 
----
-
-## Why this can matter
-
-With deterministic data order and identical hidden units, standard
-backpropagation preserves symmetry when the outgoing weights are identical.
-
-For one output unit, a hidden delta contains the factor
-
-$$
-\delta_i^{(h)}
-=
-h_i(1-h_i)\,\delta^{(o)}\,a_i.
-$$
-
-If \(h_i=h_j\) and \(a_i=a_j\), the two hidden units receive the same update.
-
-But if
-
-$$
-a_i-a_j
-=
-\varepsilon(s_i-s_j),
-$$
-
-then, whenever the remaining factors are nonzero,
-
-$$
-\delta_i^{(h)}-\delta_j^{(h)}
-=
-h(1-h)\,\delta^{(o)}\,
-\varepsilon(s_i-s_j).
-$$
-
-A tiny outgoing-weight asymmetry therefore creates an immediate difference in
-the hidden updates. Whether that difference is useful is task-dependent; the
-framework is designed to measure it rather than assume it.
-
----
-
-## XNOR demo
-
-Install locally:
-
-~~~bash
-python -m pip install -e .
-~~~
-
-Run:
-
-~~~bash
-three-plus-one demo
-~~~
-
-Default configuration:
-
-- 2 inputs
-- 4 hidden units
-- 1 output
-- identical incoming hidden weights
-- sigmoid activation
-- standard backpropagation
-- explicit seed <code>s=(0,0,0,1)</code>
-- <code>epsilon=1</code>
-
-On the deterministic XNOR demo, the default 3+1 run converges while the
-perfectly symmetric control does not reach the same error target within the
-same budget.
-
-Compare:
-
-~~~bash
-three-plus-one demo --epsilon 0
-three-plus-one demo --epsilon 1
-~~~
-
-Sweep the seed magnitude:
-
-~~~bash
-three-plus-one sweep
-~~~
-
----
-
-## Centered 3+1 control
-
-The default singleton seed changes both symmetry and the sum of the outgoing
-weights.
-
-To isolate symmetry breaking more cleanly, use the centered seed
-
-$$
+\[
 s_c
 =
 \left(
--\frac1n,
-\dots,
--\frac1n,
-1-\frac1n
-\right),
-$$
+-\frac14,-\frac14,-\frac14,\frac34
+\right).
+\]
 
-for which
+Because
 
-$$
-\sum_i s_{c,i}=0.
-$$
+\[
+\sum_i s_{c,i}=0,
+\]
 
-At the initial symmetric hidden state, all hidden activations are equal, so a
-zero-sum seed preserves the initial output preactivation while still making
-one hidden unit dynamically distinct from the others.
+the centered seed preserves the initial network output while still breaking
+the hidden-unit permutation symmetry.
 
-For four hidden units,
-
-$$
-s_c=(-0.25,-0.25,-0.25,0.75).
-$$
-
-Run:
+Run the basic controls:
 
 ~~~bash
+python -m pip install -e .
+
+three-plus-one demo --epsilon 0
+three-plus-one demo --epsilon 1
 three-plus-one demo --epsilon 1 --centered
-three-plus-one sweep --centered 0 0.01 0.05 0.1 0.2 0.5 1 2
 ~~~
 
-In the deterministic XNOR setup, the centered 3+1 seed also reaches the target
-MSE while the exactly symmetric control does not. This removes the simple
-explanation that the effect comes only from shifting the network's initial
-output.
+For the deterministic XNOR setup, the symmetric control does not reach the
+default target MSE within the same budget, while the 3+1 and centered-3+1 runs
+do.
+
+This is a controlled example, not a universal claim that a 3+1 seed is
+generally optimal.
 
 ---
 
-## Generalized seeds
+## 3. Standard-representation geometry
 
-The code accepts arbitrary seed patterns.
+For four interchangeable units, the centered contrast space is
 
-~~~python
-from threeplusone import ThreePlusOneMLP
-
-# 3+1
-a = ThreePlusOneMLP(
-    hidden=4,
-    epsilon=1.0,
-    seed_pattern=[0, 0, 0, 1],
-)
-
-# 2+2
-b = ThreePlusOneMLP(
-    hidden=4,
-    epsilon=1.0,
-    seed_pattern=[0, 0, 1, 1],
-)
-
-# graded asymmetry
-c = ThreePlusOneMLP(
-    hidden=4,
-    epsilon=0.25,
-    seed_pattern=[0, 1, 2, 3],
-)
-~~~
-
-The broader family is
-
-$$
-a^{(0)}
+\[
+V
 =
-a_0\mathbf 1
-+
-\varepsilon s.
-$$
+\left\{
+x\in\mathbb R^4:
+\sum_i x_i=0
+\right\}
+\cong\mathbb R^3.
+\]
 
----
+The four normalized singleton contrasts are
 
-## Axis generation from centered 3+1
-
-For the four possible centered singleton directions, define
-
-$$
+\[
 v_i
 =
-\frac{4e_i-\mathbf 1}{\sqrt{12}}.
-$$
+\frac{4e_i-\mathbf1}{\sqrt{12}}.
+\]
 
 They satisfy
 
-$$
+\[
 \|v_i\|=1,
-$$
-
-and
-
-$$
+\qquad
 \langle v_i,v_j\rangle=-\frac13
-\qquad(i\neq j).
-$$
+\quad(i\neq j),
+\]
 
-So the four possible centered 3+1 directions form a regular tetrahedron in the
-three-dimensional zero-sum contrast space.
+so they form a regular tetrahedron.
 
-Choosing one 1 creates a distinguished axis. After that axis is removed, the
-remaining three-copy sector is a canonical two-dimensional transverse plane.
+This tetrahedral geometry is an elementary realization of the
+\(S_4\) standard representation. It is not presented as a new mathematical
+object.
 
-In compressed form:
+Choosing one singleton direction creates a distinguished axis. The residual
+three-copy sector is the orthogonal two-dimensional plane carrying the
+standard representation of \(S_3\).
 
-$$
-\boxed{
-\text{centered 3+1}
-\rightarrow
-\text{regular tetrahedron}
-\rightarrow
-\text{axis}
-\rightarrow
-\text{2D transverse plane}.
-}
-$$
-
-See <code>docs/AXIS_GENERATION.md</code>.
+See [`docs/AXIS_GENERATION.md`](docs/AXIS_GENERATION.md).
 
 ---
 
-## Dual tetrahedral dynamics
+## 4. The actual hidden residual in XNOR
 
-Version 0.2 adds an explicit two-frame model.
+For the first three hidden units, collect local parameter states
 
-Two oppositely oriented regular tetrahedra share the generated axis and rotate
-independently around it.
+\[
+q_i=(a_i,b_i,w_{i1},w_{i2})\in\mathbb R^4.
+\]
 
-The universal transverse object is the oriented area form
+Using an orthonormal basis of the mean-zero three-copy space,
 
-$$
-\omega_a(u,v)
-=
-a\cdot(u\times v).
-$$
+\[
+c_R=\frac1{\sqrt6}(2,-1,-1),
+\qquad
+c_I=\frac1{\sqrt2}(0,1,-1),
+\]
 
-For a rotating transverse vector,
+define
 
-$$
-u(t)
-=
-r
-\left(
-\cos\theta(t)e_1
-+
-\sin\theta(t)e_2
-\right),
-$$
-
-one obtains
-
-$$
-\omega_a(u,\dot u)
-=
-r^2\dot\theta.
-$$
-
-So the sign of the oriented area sweep is the local rotation orientation.
-
-The unlabeled relative phase of the two tetrahedral frames is encoded by
-
-$$
-q
-=
-e^{3i(\theta_+-\theta_-)}.
-$$
-
-Its real and imaginary parts give a threefold alignment/parity pair that is
-invariant under relabeling of either triangular base.
-
-The conservative relative-rotation model uses
-
-$$
-V(\phi)
-=
-\kappa(1-\cos3\phi),
-$$
-
-with
-
-$$
-\phi=\theta_+-\theta_-.
-$$
-
-The reduced relative energy is
-
-$$
-E_r
-=
-\frac{\ell^2}{2I_r}
-+
-\kappa(1-\cos3\phi).
-$$
-
-Because the potential barrier is \(2\kappa\),
-
-$$
+\[
 \boxed{
-E_r>2\kappa
+Z
+=
+\sum_{i=1}^3
+(c_{R,i}+ic_{I,i})q_i
+\in\mathbb C^4.
 }
-$$
+\]
 
-gives persistent relative rotation, while
+Then
 
-$$
-E_r<2\kappa
-$$
+\[
+Z=0
+\]
 
-gives libration.
+exactly when those three local states coincide.
 
-This produces sustained rotation without inserting a one-way angular drift
-term by hand.
+A mean-zero transverse residual is invisible to the network output at first
+order, but it has its own tangent dynamics.
 
-Run the executable example:
+For one ordered XNOR epoch,
 
-~~~bash
-python examples/dual_tetrahedral_rotor.py
-~~~
+\[
+\boxed{
+Z_{e+1}
+=
+M_eZ_e+O(\|Z_e\|^2).
+}
+\]
 
-See <code>docs/DUAL_TETRAHEDRAL_DYNAMICS.md</code>.
+\(M_e\) is derived from the existing SGD update; no auxiliary memory variable or
+modified optimizer is introduced.
+
+See
+[`docs/XNOR_TRANSVERSE_EXTRACTION.md`](docs/XNOR_TRANSVERSE_EXTRACTION.md).
 
 ---
 
-## The next 1
+## 5. Measured transverse growth
 
-The next-branch problem has one structural obstruction.
+Along the centered deterministic XNOR trajectory through ordinary convergence
+at epoch 728,
 
-Let the unresolved branch variable be
+\[
+\sigma_1(M_e)>1
+\]
 
-$$
-z\in\mathbb C,
-$$
+at every measured epoch.
 
-with the residual threefold symmetry
+The number of instantaneously expanding channel directions follows
 
-$$
-z\mapsto\omega z,
-\qquad
-\omega=e^{2\pi i/3}.
-$$
+\[
+2\rightarrow3\rightarrow2\rightarrow1
+\]
 
-For any deterministic \(C_3\)-equivariant vector field,
+over epochs
 
-$$
-F(\omega z)=\omega F(z),
-$$
+- 1–8,
+- 9–131,
+- 132–558,
+- 559–728.
 
-the exactly symmetric state obeys
+At epoch 728, the accumulated transverse singular values are approximately
 
-$$
-\boxed{
-F(0)=0.
-}
-$$
+\[
+(34.7030,\;24.1998,\;0.3200,\;7.18\times10^{-8}).
+\]
 
-So an exactly symmetric **current configuration alone** cannot choose one of
-three equivalent branches.
+A direct \(10^{-6}\) mean-zero hidden-to-output residual is amplified by about
 
-The minimal branch field used in version 0.3 is
+\[
+15.156\times
+\]
 
-$$
-\dot z
-=
-\mu z
-+
-\nu\bar z^2
--
-\beta|z|^2z.
-$$
+under the unmodified training rule by epoch 728.
 
-For positive \(\nu\), its three stable rays are
+So the exact symmetric manifold is invariant,
 
-$$
-\theta_k=\frac{2\pi k}{3},
-\qquad
-k=0,1,2.
-$$
+\[
+Z=0\Rightarrow Z'=0,
+\]
 
-A small hidden residual can therefore remain dynamically insignificant while
-the symmetric state is stable, then be amplified when that state loses
-stability.
-
-The reduced coupled model uses the already existing rotor barrier
-
-$$
-E_c=2\kappa
-$$
-
-as one explicit candidate trigger:
-
-$$
-\mu(E_r)
-=
-\sigma(2\kappa-E_r).
-$$
-
-Weak rotor dissipation gives
-
-$$
-\dot E_r
-=
--\gamma\dot\phi^2
-\le0.
-$$
-
-A transported hidden residual then evolves by
-
-$$
-\boxed{
-\dot z
-=
-\left[
-\mu(E_r)
-+
-i\eta\dot\phi
-\right]z
-+
-\nu\bar z^2
--
-\beta|z|^2z.
-}
-$$
-
-The model therefore implements
-
-$$
-\boxed{
-\text{hidden historical difference}
-\rightarrow
-\text{history transport}
-\rightarrow
-\text{instability}
-\rightarrow
-\text{one persistent branch}
-\rightarrow
-\text{next 1}.
-}
-$$
-
-Crucially, if the hidden residual is exactly zero, deterministic selection does
-not occur. The selector is not a post-hoc argmax over the current state; it is
-a retained difference that becomes dynamically relevant later.
+while nearby nonzero histories are transversely amplified.
 
 Run:
 
 ~~~bash
-python examples/next_one_selection.py
+python examples/xnor_transverse_scan.py
 ~~~
 
-See <code>docs/NEXT_ONE_SELECTION.md</code>.
-
-The barrier-coupled growth law is a reduced-model closure, not yet a result of
-the original XNOR network. The next empirical task is to identify the hidden
-residual and instability parameter directly in the learning dynamics.
-
 ---
 
-## Actual XNOR transverse extraction
+## 6. The actual nonlinear threefold term
 
-Version 0.4 returns from the reduced model to the original centered XNOR
-network.
+Residual threefold symmetry acts by
 
-For hidden units 1, 2 and 3, collect the local parameter vectors
-
-$
-q_i=(a_i,b_i,w_{i1},w_{i2})\in\mathbb R^4.
-$
-
-Using the branch-aligned copy-space basis
-
-$
-c_R=\frac1{\sqrt6}(2,-1,-1),
-\qquad
-c_I=\frac1{\sqrt2}(0,1,-1),
-$
-
-define the actual hidden residual
-
-$
-\boxed{
-Z=
-\sum_{i=1}^3
-(c_{R,i}+i c_{I,i})q_i
-\in\mathbb C^4.
-}
-$
-
-On the exact three-copy symmetric trajectory, the existing SGD rule gives
-
-$
-\boxed{
-Z_{e+1}=M_eZ_e+O(\|Z_e\|^2),
-}
-$
-
-where \(M_e\) is the exact epoch transverse Jacobian.
-
-A finite-time instability rate is therefore available directly from the
-network:
-
-$
-\boxed{
-\mu_e=\log\sigma_1(M_e).
-}
-$
-
-For centered XNOR, the largest transverse singular value is greater than 1 at
-every epoch through the ordinary convergence point at epoch 728.
-
-The instantaneous expanding-channel dimension follows
-
-$
-2\rightarrow3\rightarrow2\rightarrow1
-$
-
-over the intervals 1–8, 9–131, 132–558 and 559–728.
-
-At epoch 728 the accumulated transverse singular values are approximately
-
-$
-(34.7030,\;24.1998,\;0.3200,\;7.18\times10^{-8}).
-$
-
-An actual \(10^{-6}\) mean-zero output-weight residual is amplified by about
-\(15.156\times\) by epoch 728 under the unmodified learning rule.
-
-This changes the status of the version-0.3 barrier closure: the expression
-
-$
-\mu(E_r)=\sigma(2\kappa-E_r)
-$
-
-remains a reduced-model example, but it is not the XNOR instability mechanism.
-The actual XNOR instability is already present from the start.
-
-Run the diagnostics from Python with
-<code>scan_transverse_growth</code> and
-<code>transverse_residual</code>.
-
-See <code>docs/XNOR_TRANSVERSE_EXTRACTION.md</code>.
-
-Version 0.5 performs that nonlinear extraction directly.
-
----
-
-## Actual XNOR quadratic anisotropy
-
-Residual \(C_3\) symmetry does more than permit a threefold term. At quadratic
-order it forces the copy-space harmonic.
-
-If
-
-$
+\[
 Z\mapsto\omega Z,
 \qquad
-\omega=e^{2\pi i/3},
-$
+\omega=e^{2\pi i/3}.
+\]
 
-then an equivariant quadratic transverse map cannot use \(ZZ\) or
-\(Z\bar Z\). The only quadratic term that transforms like \(Z\) is
+At quadratic order, equivariance forces the copy-space structure
 
-$
+\[
 \boxed{
-Q(\bar Z,\bar Z).
-}
-$
-
-Thus the reduced-model term
-
-$
-\nu\bar z^2
-$
-
-is the unique quadratic copy-space harmonic allowed by the residual threefold
-symmetry.
-
-The coefficient can be extracted directly from the actual nonlinear training
-map by a phase Fourier transform.
-
-For a seeded channel direction \(v\),
-
-$
-Z_0=\varepsilon e^{i\theta}v,
-$
-
-and a projected output \(y(\theta)\),
-
-$
-y(\theta)
+F(Z)
 =
-\lambda\varepsilon e^{i\theta}
-+
-\nu\varepsilon^2e^{-2i\theta}
-+
-O(\varepsilon^3).
-$
-
-For the dominant 728-epoch linear channel, the measured coefficients are
-
-$
-\lambda\approx34.70306,
-\qquad
-\nu\approx-87.21614
-$
-
-in the fixed code orientation.
-
-For the original hidden-to-output residual channel,
-
-$
-\boxed{
-\lambda_{\mathrm{out}}\approx15.15569,
-\qquad
-\nu_{\mathrm{out}}\approx+6.65860.
+LZ+Q(\bar Z,\bar Z)+O(\|Z\|^3).
 }
-$
+\]
 
-That positive coefficient gives the small-amplitude phase law
+The abstract existence of this conjugate-square harmonic is established
+equivariant theory. The repository-specific step is to extract its coefficient
+from the actual nonlinear XNOR training map.
 
-$
+For the original hidden-to-output residual channel, a phase-Fourier
+decomposition of the 728-epoch course gives approximately
+
+\[
+\lambda_{\rm out}\approx15.15569,
+\qquad
+\nu_{\rm out}\approx6.65860.
+\]
+
+The induced small-amplitude phase shift is
+
+\[
 \boxed{
 \Delta\theta
 =
--\frac{\nu}{\lambda}
-r\sin3\theta
+-\frac{\nu}{\lambda}r\sin3\theta
 +
-O(r^2),
+O(r^2).
 }
-$
+\]
 
-which points toward the three oriented singleton rays
+For
 
-$
+\[
+r=0.01,
+\qquad
+\theta=\frac{\pi}{6},
+\]
+
+the quadratic reduction predicts
+
+\[
+\theta_{\rm pred}\approx0.5192053,
+\]
+
+while the full nonlinear network gives
+
+\[
+\theta_{\rm actual}\approx0.5192082.
+\]
+
+The full map also shows angular attraction toward the three oriented singleton
+rays
+
+\[
 0,\qquad
 +\frac{2\pi}{3},\qquad
 -\frac{2\pi}{3}.
-$
+\]
 
-For example, with input amplitude \(0.01\) and phase \(\pi/6\), the extracted
-quadratic model predicts
+See
+[`docs/XNOR_QUADRATIC_ANISOTROPY.md`](docs/XNOR_QUADRATIC_ANISOTROPY.md).
 
-$
-\theta_{\mathrm{out}}\approx0.5192053,
-$
+Run:
 
-while the full nonlinear XNOR run gives
-
-$
-\theta_{\mathrm{out}}\approx0.5192082.
-$
-
-The actual network therefore contains the same threefold anisotropy that the
-reduced model required.
-
-What it does **not** yet do is complete exact asymptotic locking from a generic
-off-ray residual before the ordinary XNOR updates die away. It transports,
-amplifies, and directionally sorts a nonzero history; it still does not create
-history from exact zero.
-
-See <code>docs/XNOR_QUADRATIC_ANISOTROPY.md</code>.
+~~~bash
+python examples/xnor_quadratic_anisotropy.py
+~~~
 
 ---
 
-## Recursive spring extension
+## 7. What remains open
 
-If a selected child axis becomes the axis of another copy of the same
-dimensionless dynamics, then a local helix can seed a smaller child helix.
+The current XNOR system now supplies:
 
-With a fixed scale factor
+\[
+\boxed{
+\text{nonzero residual}
+\rightarrow
+\text{transport}
+\rightarrow
+\text{amplification}
+\rightarrow
+\text{threefold directional sorting}.
+}
+\]
 
-$$
-0<\lambda<1,
-$$
+But two boundaries remain explicit.
 
-and repeated tetrahedral branching, the construction gives an explicit route
-to a self-similar multiscale spring/tree geometry.
+First, exact deterministic symmetry still cannot create a branch from
+nothing:
 
-This is a mathematical extension of the model, not yet an empirical result of
-the XNOR network.
+\[
+Z_0=0
+\Rightarrow
+Z_e=0.
+\]
 
----
+Second, ordinary XNOR training eventually converges, so its updates weaken
+before a generic tiny off-ray residual necessarily reaches exact asymptotic
+locking.
 
-## What is new here
+The present sharp question is therefore:
 
-The project does not claim that symmetry breaking in neural-network
-initialization is new. It is not.
+> **What mechanism keeps a retained transverse difference dynamically active
+> long enough to become a persistent specialized state?**
 
-The contribution is narrower:
-
-- isolate a historically observed accidental asymmetry as an explicit operator,
-- make the symmetric control first-class,
-- make the perturbation magnitude \(\varepsilon\) sweepable,
-- isolate a centered control that preserves the initial network function,
-- expose the regular-tetrahedron geometry of the four centered 3+1 directions,
-- identify the axis plus two-dimensional transverse plane generated by a 3+1 split,
-- provide an explicit dual-tetrahedral relative-rotation model,
-- expose oriented area/parity as the invariant structure that a
-  configuration-only snapshot can discard,
-- derive an exact conservative rotation threshold,
-- prove that an exactly symmetric deterministic present cannot choose a
-  residual branch by itself,
-- add the minimal (C_3)-equivariant next-branch normal form,
-- show how a retained hidden residual can be transported and amplified into a
-  persistent next-1 branch,
-- keep the barrier-coupled instability law explicitly provisional,
-- extract the actual complex three-copy residual from the original XNOR network,
-- derive its exact transverse Jacobian and finite-time growth rates,
-- verify that the exact symmetric manifold is invariant but transversely
-  amplifying throughout centered XNOR training,
-- derive the symmetry-forced quadratic conjugate-square harmonic,
-- extract its coefficient directly from the nonlinear XNOR course,
-- verify the predicted threefold phase drift against the full network,
-- verify angular attraction toward the three oriented singleton rays,
-- move the remaining open problem from anisotropy to persistence: how a tiny
-  residual keeps receiving updates long enough to complete the next-1 lock.
-
-It remains a laboratory object, not a production ML library.
+That is the next research step.
 
 ---
 
-## Scaling question
+## 8. Exploratory geometric layer
 
-The tiny 3+1 system also suggests a larger experimental question: do wide
-networks begin training with groups of units whose activations and gradients
-are highly correlated, so that their effective dynamical dimension is much
-smaller than their raw width?
+The repository also contains a dual-tetrahedral rotor model derived from
+earlier Spark Engine geometry.
 
-That remains a hypothesis, not a conclusion.
+That model studies:
 
-See <code>docs/SCALING_HYPOTHESIS.md</code>.
+- oriented area / parity,
+- relative frame motion,
+- persistent rotation,
+- recursive axis generation.
+
+It is intentionally separated from the empirical XNOR layer.
+
+Nothing in the current repository establishes that standard SGD literally
+implements the dual-tetrahedral rotor.
+
+See
+[`docs/DUAL_TETRAHEDRAL_DYNAMICS.md`](docs/DUAL_TETRAHEDRAL_DYNAMICS.md).
 
 ---
 
-## Historical inspiration
+## 9. Documentation map
 
-The project was inspired by studying a 1996 AMOS neural-network program by
+Start here:
+
+- [`PRIOR_ART_AND_POSITIONING.md`](docs/PRIOR_ART_AND_POSITIONING.md) —
+  established theory vs repository-specific claims
+- [`MATHEMATICS.md`](docs/MATHEMATICS.md) —
+  symmetry decomposition and controlled seed
+- [`EXPERIMENTS.md`](docs/EXPERIMENTS.md) —
+  reproducible controls
+- [`AXIS_GENERATION.md`](docs/AXIS_GENERATION.md) —
+  tetrahedral contrast geometry
+- [`XNOR_TRANSVERSE_EXTRACTION.md`](docs/XNOR_TRANSVERSE_EXTRACTION.md) —
+  exact hidden residual and tangent dynamics
+- [`XNOR_QUADRATIC_ANISOTROPY.md`](docs/XNOR_QUADRATIC_ANISOTROPY.md) —
+  nonlinear phase harmonic
+- [`NEXT_ONE_SELECTION.md`](docs/NEXT_ONE_SELECTION.md) —
+  reduced branch-selection model and its corrections
+- [`DUAL_TETRAHEDRAL_DYNAMICS.md`](docs/DUAL_TETRAHEDRAL_DYNAMICS.md) —
+  separate exploratory geometry
+- [`SCALING_HYPOTHESIS.md`](docs/SCALING_HYPOTHESIS.md) —
+  unverified scaling questions
+- [`PROVENANCE.md`](docs/PROVENANCE.md) —
+  historical source separation
+
+---
+
+## 10. Historical provenance
+
+The project was inspired by study of a 1996 AMOS neural-network program by
 Lee Atkins recovered from Aminet.
 
-The original program is **not included** in this repository and this package
-does not adopt or relicense its source code.
+The original source is not included or relicensed here.
 
-See <code>docs/PROVENANCE.md</code>.
+`three-plus-one` is a new implementation using conventional backpropagation
+and a controlled seed family
 
-A short historical note is kept in <code>docs/LEE_NOTE.md</code>.
+\[
+a^{(0)}
+=
+a_0\mathbf1+\varepsilon s.
+\]
+
+See [`docs/PROVENANCE.md`](docs/PROVENANCE.md).
 
 ---
 
 ## License
 
-The new three-plus-one implementation is released under the MIT License.
+The new implementation and documentation in this repository are released
+under the MIT License.
 
-That license applies only to this repository's new implementation and
-documentation. It does not grant rights to Lee Atkins' original 1996 source.
+That license does not apply to the historical 1996 source.

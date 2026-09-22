@@ -1,5 +1,16 @@
 # Changelog
 
+## Documentation positioning — 2026-09-22
+
+- add a prior-art and claim-boundary map
+- explicitly import standard-representation and equivariant-bifurcation theory
+- separate established symmetry theory from system-specific XNOR measurements
+- reframe the regular tetrahedron as standard-representation geometry
+- reframe the conjugate-square term as established equivariant structure
+- keep direct coefficient extraction and XNOR phase measurements as the narrow empirical contribution
+- separate the dual-tetrahedral rotor as an exploratory model rather than an SGD-derived mechanism
+- reorganize the README and experiment map around those distinctions
+
 ## 0.5.0 — 2026-09-22
 
 - derive that C3/S3 equivariance forces the quadratic transverse term to have conjugate-square form

@@ -6,12 +6,13 @@ A small experimental framework that began with one question:
 > What happens when a perfectly symmetric hidden population receives one
 > deliberately asymmetric seed?
 
-The project started from a tiny neural-network observation and now keeps three
+The project started from a tiny neural-network observation and now keeps four
 connected layers in one repository:
 
 1. a reproducible 3+1 symmetry-breaking experiment,
 2. a geometric/dynamical model of what the 3+1 split creates,
-3. a history-seeded model for how one residual branch can become the next 1.
+3. a history-seeded model for how one residual branch can become the next 1,
+4. an exact transverse linearization of the original XNOR learning dynamics.
 
 This project is **not** a port of the 1996 AMOS program that inspired it.
 It is a new implementation of the underlying phenomenon.
@@ -519,6 +520,95 @@ residual and instability parameter directly in the learning dynamics.
 
 ---
 
+## Actual XNOR transverse extraction
+
+Version 0.4 returns from the reduced model to the original centered XNOR
+network.
+
+For hidden units 1, 2 and 3, collect the local parameter vectors
+
+$
+q_i=(a_i,b_i,w_{i1},w_{i2})\in\mathbb R^4.
+$
+
+Using the branch-aligned copy-space basis
+
+$
+c_R=\frac1{\sqrt6}(2,-1,-1),
+\qquad
+c_I=\frac1{\sqrt2}(0,1,-1),
+$
+
+define the actual hidden residual
+
+$
+\boxed{
+Z=
+\sum_{i=1}^3
+(c_{R,i}+i c_{I,i})q_i
+\in\mathbb C^4.
+}
+$
+
+On the exact three-copy symmetric trajectory, the existing SGD rule gives
+
+$
+\boxed{
+Z_{e+1}=M_eZ_e+O(\|Z_e\|^2),
+}
+$
+
+where \(M_e\) is the exact epoch transverse Jacobian.
+
+A finite-time instability rate is therefore available directly from the
+network:
+
+$
+\boxed{
+\mu_e=\log\sigma_1(M_e).
+}
+$
+
+For centered XNOR, the largest transverse singular value is greater than 1 at
+every epoch through the ordinary convergence point at epoch 728.
+
+The instantaneous expanding-channel dimension follows
+
+$
+2\rightarrow3\rightarrow2\rightarrow1
+$
+
+over the intervals 1–8, 9–131, 132–558 and 559–728.
+
+At epoch 728 the accumulated transverse singular values are approximately
+
+$
+(34.7030,\;24.1998,\;0.3200,\;7.18\times10^{-8}).
+$
+
+An actual \(10^{-6}\) mean-zero output-weight residual is amplified by about
+\(15.156\times\) by epoch 728 under the unmodified learning rule.
+
+This changes the status of the version-0.3 barrier closure: the expression
+
+$
+\mu(E_r)=\sigma(2\kappa-E_r)
+$
+
+remains a reduced-model example, but it is not the XNOR instability mechanism.
+The actual XNOR instability is already present from the start.
+
+Run the diagnostics from Python with
+<code>scan_transverse_growth</code> and
+<code>transverse_residual</code>.
+
+See <code>docs/XNOR_TRANSVERSE_EXTRACTION.md</code>.
+
+The remaining sharp edge is nonlinear: extract the actual \(C_3\) anisotropy
+that can turn an amplified historical phase into a discrete three-way branch.
+
+---
+
 ## Recursive spring extension
 
 If a selected child axis becomes the axis of another copy of the same
@@ -560,8 +650,12 @@ The contribution is narrower:
 - add the minimal (C_3)-equivariant next-branch normal form,
 - show how a retained hidden residual can be transported and amplified into a
   persistent next-1 branch,
-- keep the barrier-coupled instability law explicitly provisional until it is
-  extracted from the original learning dynamics.
+- keep the barrier-coupled instability law explicitly provisional,
+- extract the actual complex three-copy residual from the original XNOR network,
+- derive its exact transverse Jacobian and finite-time growth rates,
+- verify that the exact symmetric manifold is invariant but transversely
+  amplifying throughout centered XNOR training,
+- move the remaining open problem to the nonlinear (C_3) branch-locking term.
 
 It remains a laboratory object, not a production ML library.
 

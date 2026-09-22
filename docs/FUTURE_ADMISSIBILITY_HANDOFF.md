@@ -7,6 +7,21 @@ This note is deliberately conservative. It does **not** claim backward
 physical causation. It isolates the mathematical components that would be
 needed before such a claim could even be formulated.
 
+
+> **Persistence-test update.** A direct centered-XNOR test now shows that the
+> retained residual survives and threefold selector action continues to
+> accumulate well after the ordinary task target is reached (verified through
+> 100,000 epochs). The remaining issue is therefore not simply "does the drive
+> die?" but whether cumulative selector action is summable:
+>
+> \[
+> \mathcal A_\infty<\infty
+> \quad\text{or}\quad
+> \mathcal A_\infty=\infty.
+> \]
+>
+> See [`SELECTOR_PERSISTENCE.md`](SELECTOR_PERSISTENCE.md).
+
 ---
 
 ## 1. Current empirical starting point
@@ -424,16 +439,21 @@ operations can later detect}.
 }
 $$
 
-What is still missing is
+The tested XNOR residual does remain dynamically present over the measured
+finite horizon. What is still unresolved is whether the continuing
+directional contraction has infinite cumulative action:
 
-$$
+$
 \boxed{
-\text{why those required differences remain dynamically present long enough
-to matter}.
+\mathcal A_\infty
+=
+\infty
+\quad\text{or}\quad
+<\infty.
 }
-$$
+$
 
-That is the persistence gap.
+That is the selector-action summability gap.
 
 ---
 
@@ -552,7 +572,7 @@ K_s^{(k)}
 \rightarrow
 E_s/K_s^{(k)}
 \rightarrow
-\text{persistence gap}.
+\text{selector-action summability gap}.
 }
 $$
 
@@ -607,7 +627,7 @@ Read from left to right:
 
 ### Not yet established
 
-- a self-sustaining persistence mechanism;
+- the asymptotic summability class of the actual selector action;
 - future-to-present physical force;
 - a proof that Time Engine future causality follows from the present mathematics.
 
@@ -626,15 +646,13 @@ The next exact task is:
 > continuation families \(\mathcal P_k\), and compute the resulting
 > \(K_s^{(k)}\) / retained quotient.
 
-Then ask one falsifiable question:
+In parallel, the direct persistence diagnostic should be pushed from a finite
+horizon to an asymptotic statement:
 
-> Does the actual measured XNOR update preserve every difference required by
-> its own branch-conditioned future continuation family, or does it erase some
-> of them before branch locking completes?
+> Does \(\mathcal A_N\) remain bounded, or does it diverge?
 
-If it preserves them, persistence may already be partly internal.
-
-If it erases them, the missing persistence mechanism is a real additional
-structure rather than a vocabulary gap.
+The finite-horizon test already shows that the residual is not simply erased
+when ordinary task convergence is reached. The unresolved issue is whether
+the selector action is summable.
 
 That is the current handoff point.

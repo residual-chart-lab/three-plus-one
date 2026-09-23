@@ -892,6 +892,83 @@ def _projected_residual(
     )
 
 
+
+def branch_ray_phase_derivative(
+    net: ThreePlusOneMLP,
+    samples: Iterable[Sample],
+    *,
+    singled_unit: int = 0,
+    pair_unit: int = 1,
+    group: Sequence[int] = (0, 1, 2),
+) -> float:
+    """
+    Exact infinitesimal one-epoch phase derivative on a reflection-fixed
+    singleton branch ray.
+
+    On the phase-0 ray, one unit is singled out while the other two are equal.
+    An infinitesimal copy-space rotation splits the equal pair antisymmetrically.
+    Because that perturbation has zero first-order network-output effect, it is
+    transported by the same 4x4 local tangent matrix as any zero-sum copy
+    perturbation, evaluated at one member of the equal pair.
+
+    Let R be the real transverse residual vector before the epoch and R+ after
+    the ordinary nonlinear epoch. Let M_pair be the exact tangent map for the
+    antisymmetric pair-splitting mode. Then
+
+        dZ_in/dtheta = i R
+
+    and
+
+        dZ_out/dtheta = i M_pair R.
+
+    Projecting onto the outgoing branch ray gives the exact phase derivative
+
+        rho = <R+, M_pair R> / ||R+||^2.
+
+    This removes finite-angle and finite-radius approximations from the local
+    selector-action measurement.
+    """
+    data = list(samples)
+    if not data:
+        raise ValueError("samples must not be empty")
+    if len(group) != 3:
+        raise ValueError("group must contain exactly three units")
+
+    singled_unit = int(singled_unit)
+    pair_unit = int(pair_unit)
+    if singled_unit not in group or pair_unit not in group:
+        raise ValueError("singled_unit and pair_unit must belong to group")
+
+    before = transverse_residual(net, group)
+    if max(abs(z.imag) for z in before) > 1e-9:
+        raise ValueError("branch_ray_phase_derivative requires a phase-0 real residual")
+    radial_before = [float(z.real) for z in before]
+
+    pair_map = epoch_transverse_matrix(
+        net,
+        data,
+        representative_unit=pair_unit,
+    )
+    angular_after = _matvec(pair_map, radial_before)
+
+    work = deepcopy(net)
+    for x, target in data:
+        work.train_one(x, target)
+    after = transverse_residual(work, group)
+    if max(abs(z.imag) for z in after) > 1e-9:
+        raise ValueError("ordinary epoch left the reflection-fixed branch ray")
+    radial_after = [float(z.real) for z in after]
+
+    denom = sum(value * value for value in radial_after)
+    if denom == 0.0:
+        raise ValueError("outgoing branch residual vanished")
+
+    return float(
+        sum(radial_after[i] * angular_after[i] for i in range(4))
+        / denom
+    )
+
+
 def scan_selector_persistence(
     net: ThreePlusOneMLP,
     samples: Iterable[Sample],

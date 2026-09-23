@@ -384,27 +384,46 @@ Z_0=0
 Z_e=0.
 \]
 
-Second, a direct persistence scan shows that ordinary task convergence does
-**not** immediately terminate branch sorting.  For a finite off-ray residual,
-the branch-ray phase contraction continues to accumulate through at least
-100,000 epochs while the residual itself remains present.
+Second, ordinary task convergence does **not** immediately terminate branch
+sorting.  The retained residual continues to move toward a singleton branch
+for a very long tail.
 
-The sharp question is therefore no longer simply whether the drive survives.
-It is whether cumulative selector action is summable:
+A longer exact branch-tangent scan now indicates that this tail is nevertheless
+summable:
 
 \[
 \boxed{
-\mathcal A_\infty<\infty
-\quad\text{or}\quad
-\mathcal A_\infty=\infty.
+a_N
+\sim
+\frac{C}{N(\log N)^{3/2}},
 }
 \]
 
-If the action diverges, the existing XNOR dynamics can in principle produce
-asymptotic branch locking even though the instantaneous updates tend to zero.
+with
+
+\[
+N(\log N)^{3/2}a_N
+\approx
+0.446
+\]
+
+over the extended asymptotic window.
+
+Therefore the present best model is
+
+\[
+\boxed{
+\mathcal A_\infty<\infty.
+}
+\]
+
+So the base SGD supplies a long-lived endogenous selector but not complete
+asymptotic branch locking.  The remaining open problem is now sharper: what
+additional mechanism changes the selector tail from summable to non-summable,
+or otherwise freezes the selected branch?
 
 See
-[`docs/SELECTOR_PERSISTENCE.md`](docs/SELECTOR_PERSISTENCE.md).
+[`docs/HIDDEN_TAIL_CLOSURE.md`](docs/HIDDEN_TAIL_CLOSURE.md).
 
 ---
 
@@ -462,6 +481,8 @@ Start here:
   direct one-epoch verification of the 1/N task tail and 1/(N log N) selector tail
 - [`ANALYTIC_SELECTOR_TAIL.md`](docs/ANALYTIC_SELECTOR_TAIL.md) —
   exact quadratic copy-space map and exact branch-ray phase derivative
+- [`HIDDEN_TAIL_CLOSURE.md`](docs/HIDDEN_TAIL_CLOSURE.md) —
+  corrected hidden log-log tail and summable selector asymptotics
 - [`PROVENANCE.md`](docs/PROVENANCE.md) —
   historical source separation
 

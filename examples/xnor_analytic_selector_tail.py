@@ -95,6 +95,32 @@ def local_quadratic_sources(net, x, target, direction):
     }
 
 
+
+def hidden_epoch_cancellation(net, data, unit=0):
+    work = deepcopy(net)
+    contributions = []
+    total = [0.0, 0.0, 0.0]
+
+    for x, target in data:
+        before = work.hidden_w[unit][:]
+        work.train_one(x, target)
+        delta = [
+            work.hidden_w[unit][j] - before[j]
+            for j in range(3)
+        ]
+        contributions.append(delta)
+        for j in range(3):
+            total[j] += delta[j]
+
+    total_norm = math.sqrt(sum(v * v for v in total))
+    l1_vector_norm = sum(
+        math.sqrt(sum(v * v for v in delta))
+        for delta in contributions
+    )
+    ratio = total_norm / l1_vector_norm if l1_vector_norm else 0.0
+    return total_norm, l1_vector_norm, ratio
+
+
 def epoch_source_decomposition(net, data, direction):
     work = deepcopy(net)
     linear = [float(v) for v in direction]
@@ -147,6 +173,8 @@ if __name__ == "__main__":
         "N,r,va,vw_norm,mean_d,N_mean_d,mean_g,logN_mean_g,"
         "mean_gp,logN_mean_gp,mean_gpp,logN_mean_gpp,"
         "mean_a,mean_a_over_logN,mean_s,"
+        "hidden_epoch_update,NlogN_hidden_epoch_update,"
+        "hidden_cancel_ratio,logN_hidden_cancel_ratio,"
         "lambda,nu_out,nu_cross,nu_curvature,nu_total,"
         "action_out,action_cross,action_curvature,action_total,"
         "measured_action,NlogN_action_total"
@@ -184,6 +212,9 @@ if __name__ == "__main__":
         _, measured_action = one_epoch_phase_contraction(ray, data)
 
         logn = math.log(epoch)
+        hidden_update, hidden_abs_sum, cancel_ratio = hidden_epoch_cancellation(
+            ray, data
+        )
         vw_norm = math.sqrt(sum(value * value for value in direction[1:]))
 
         print(
@@ -202,6 +233,10 @@ if __name__ == "__main__":
             f"{stats['a']:.15g},"
             f"{stats['a'] / logn:.15g},"
             f"{stats['s']:.15g},"
+            f"{hidden_update:.15g},"
+            f"{epoch * logn * hidden_update:.15g},"
+            f"{cancel_ratio:.15g},"
+            f"{logn * cancel_ratio:.15g},"
             f"{lam:.15g},"
             f"{projected['out']:.15g},"
             f"{projected['cross']:.15g},"

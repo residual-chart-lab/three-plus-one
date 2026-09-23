@@ -527,9 +527,16 @@ a_N
 
 for all sufficiently large \(N\), or an equivalent asymptotic expansion.
 
-The remaining mathematical work is therefore no longer to guess the scaling.
-It is to derive the measured scaling from the exact one-sample sigmoid SGD
-map.
+A follow-up derivation now gives the exact one-sample quadratic
+copy-space map and an exact infinitesimal branch-ray phase derivative.  Those
+formulas isolate the (d g') sector responsible for the observed
+(1/(N\log N)) selector class.
+
+See [ANALYTIC_SELECTOR_TAIL.md](ANALYTIC_SELECTOR_TAIL.md).
+
+The remaining mathematical work is now narrower: prove positive asymptotic
+tail bounds and the required non-cancellation condition from the exact SGD
+trajectory.
 
 ---
 

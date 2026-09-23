@@ -115,7 +115,10 @@ def coeff_walsh(terms):
 if __name__ == "__main__":
     data = xnor()
     net = ray_net()
-    checkpoints = (10_000, 20_000, 50_000, 100_000, 200_000, 500_000, 1_000_000)
+    checkpoints = (
+        10_000, 20_000, 50_000, 100_000, 200_000, 500_000,
+        1_000_000, 2_000_000, 5_000_000, 10_000_000,
+    )
 
     header = [
         "N",
@@ -123,6 +126,8 @@ if __name__ == "__main__":
         "coarse_w0_over_loglog",
         "coarse_w1_over_loglog",
         "coarse_w2_over_loglog",
+        "coarse_a",
+        "coarse_a_over_logN_2over3",
         "u00_over_loglog2",
         "u01_over_loglog2",
         "u10_over_loglog2",
@@ -153,6 +158,9 @@ if __name__ == "__main__":
         "actual_mean_du01_scaled",
         "actual_mean_du10_scaled",
         "actual_mean_du11_scaled",
+        "actual_du01_dloglog",
+        "actual_du10_dloglog",
+        "actual_absdu11_dloglog",
     ]
     print(",".join(header))
 
@@ -185,6 +193,8 @@ if __name__ == "__main__":
             coarse.hidden_w[0][0] / loglogn,
             coarse.hidden_w[0][1] / loglogn,
             coarse.hidden_w[0][2] / loglogn,
+            abs(coarse.output_w[1]),
+            abs(coarse.output_w[1]) / (logn ** (2.0 / 3.0)),
             terms[0]["u"] / (loglogn * loglogn),
             terms[1]["u"] / (loglogn * loglogn),
             terms[2]["u"] / (loglogn * loglogn),
@@ -215,6 +225,9 @@ if __name__ == "__main__":
             epoch * logn * (actual_mean_delta[0] + actual_mean_delta[2]) / (2.0 * loglogn),
             epoch * logn * (actual_mean_delta[0] + actual_mean_delta[1]) / (2.0 * loglogn),
             epoch * logn * sum(actual_mean_delta) / (-2.0 * loglogn),
+            epoch * logn * (actual_mean_delta[0] + actual_mean_delta[2]),
+            epoch * logn * (actual_mean_delta[0] + actual_mean_delta[1]),
+            -epoch * logn * sum(actual_mean_delta),
         ]
         print(",".join(f"{float(v):.15g}" if not isinstance(v, int) else str(v) for v in row))
 

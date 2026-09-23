@@ -134,6 +134,29 @@ def hidden_epoch_cancellation(net, data, unit=0):
 
 
 
+
+def hidden_sample_balance(net, data, unit=0):
+    work = deepcopy(net)
+    balanced = []
+    raw = []
+    for x, target in data:
+        h, y = work._forward(x)
+        hv = float(h[unit])
+        d = (float(target) - y) * y * (1.0 - y)
+        a = float(work.output_w[unit + 1])
+        g = hv * (1.0 - hv)
+        coeff = a * d * g
+        sign = 1.0 if target > 0.5 else -1.0
+        raw.append(coeff)
+        balanced.append(sign * coeff)
+        work.train_one(x, target)
+
+    mean = sum(balanced) / len(balanced)
+    spread = max(abs(v - mean) for v in balanced)
+    relative_spread = spread / abs(mean) if mean else math.inf
+    return balanced, raw, mean, spread, relative_spread
+
+
 def hidden_logit_tail(net, data, unit=0):
     values = []
     for x, target in data:
@@ -210,6 +233,8 @@ if __name__ == "__main__":
         "hidden_radial_update,NlogN_hidden_radial_update,hidden_update_cosine,"
         "u00,u01,u10,u11,min_abs_u,mean_abs_u,"
         "min_abs_u_over_loglogN,mean_abs_u_over_loglogN,"
+        "bal00,bal01,bal10,bal11,N_bal_mean,"
+        "bal_relative_spread,logN_bal_relative_spread,"
         "lambda,nu_out,nu_cross,nu_curvature,nu_total,"
         "action_out,action_cross,action_curvature,action_total,"
         "exact_action,finite_action,NlogN_exact_action,NlogN_action_total"
@@ -254,6 +279,9 @@ if __name__ == "__main__":
         )
         logits = hidden_logit_tail(coarse, data)
         abs_logits = [abs(u) for u, _ in logits]
+        balanced, raw_coeffs, bal_mean, bal_spread, bal_rel_spread = hidden_sample_balance(
+            coarse, data
+        )
         hidden_disp, hidden_disp_norm = hidden_displacement_from_initial(coarse)
         hidden_epoch_vec = hidden_epoch_vector(coarse, data)
         hidden_epoch_vec_norm = math.sqrt(sum(v * v for v in hidden_epoch_vec))
@@ -304,6 +332,13 @@ if __name__ == "__main__":
             f"{sum(abs_logits)/len(abs_logits):.15g},"
             f"{min(abs_logits)/loglogn:.15g},"
             f"{(sum(abs_logits)/len(abs_logits))/loglogn:.15g},"
+            f"{balanced[0]:.15g},"
+            f"{balanced[1]:.15g},"
+            f"{balanced[2]:.15g},"
+            f"{balanced[3]:.15g},"
+            f"{epoch * bal_mean:.15g},"
+            f"{bal_rel_spread:.15g},"
+            f"{logn * bal_rel_spread:.15g},"
             f"{lam:.15g},"
             f"{projected['out']:.15g},"
             f"{projected['cross']:.15g},"

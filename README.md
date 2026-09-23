@@ -384,27 +384,51 @@ Z_0=0
 Z_e=0.
 \]
 
-Second, a direct persistence scan shows that ordinary task convergence does
-**not** immediately terminate branch sorting.  For a finite off-ray residual,
-the branch-ray phase contraction continues to accumulate through at least
-100,000 epochs while the residual itself remains present.
-
-The sharp question is therefore no longer simply whether the drive survives.
-It is whether cumulative selector action is summable:
+Second, ordinary task convergence does **not** terminate branch sorting.
+The exact branch-ray tangent action has now been followed through
+\(10^7\) epochs and remains in the non-summable candidate class
 
 \[
 \boxed{
-\mathcal A_\infty<\infty
-\quad\text{or}\quad
-\mathcal A_\infty=\infty.
+a_N
+\asymp
+\frac{C}{N\log N}.
 }
 \]
 
-If the action diverges, the existing XNOR dynamics can in principle produce
-asymptotic branch locking even though the instantaneous updates tend to zero.
+The current tail reduction factors this as
+
+\[
+\boxed{
+R_N
+\asymp
+(\log N)^{2/3},
+\qquad
+|d_N|
+\asymp
+N^{-1},
+\qquad
+|g'_N|
+\asymp
+(\log N)^{-5/3},
+}
+\]
+
+so that
+
+\[
+R_N|d_N||g'_N|
+\asymp
+\frac1{N\log N}.
+\]
+
+Thus no additional persistence mechanism is currently needed merely to keep
+this tested selector active.  The remaining upstream mathematical gap is the
+full proof of the observed \(2/3\) law and control of the higher-order
+branch-tangent remainder.
 
 See
-[`docs/SELECTOR_PERSISTENCE.md`](docs/SELECTOR_PERSISTENCE.md).
+[`docs/HIDDEN_TAIL_CLOSURE.md`](docs/HIDDEN_TAIL_CLOSURE.md).
 
 ---
 
@@ -462,6 +486,8 @@ Start here:
   direct one-epoch verification of the 1/N task tail and 1/(N log N) selector tail
 - [`ANALYTIC_SELECTOR_TAIL.md`](docs/ANALYTIC_SELECTOR_TAIL.md) —
   exact quadratic copy-space map and exact branch-ray phase derivative
+- [`HIDDEN_TAIL_CLOSURE.md`](docs/HIDDEN_TAIL_CLOSURE.md) —
+  corrected 2/3–5/3 tail balance and ten-million-epoch closure check
 - [`PROVENANCE.md`](docs/PROVENANCE.md) —
   historical source separation
 

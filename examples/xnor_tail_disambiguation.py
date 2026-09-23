@@ -59,7 +59,7 @@ if __name__ == "__main__":
     )
 
     print(
-        "N,action,NlogN_action,"
+        "N,action,NlogN_action,NlogN32_action,"
         "u00,u01,u10,u11,"
         "abs_u11_over_logN,abs_u11_over_loglogN"
     )
@@ -80,6 +80,7 @@ if __name__ == "__main__":
             f"{epoch},"
             f"{action:.15g},"
             f"{epoch * logn * action:.15g},"
+            f"{epoch * (logn ** 1.5) * action:.15g},"
             f"{u00:.15g},"
             f"{u01:.15g},"
             f"{u10:.15g},"

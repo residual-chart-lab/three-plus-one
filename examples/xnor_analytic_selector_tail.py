@@ -122,6 +122,25 @@ def hidden_epoch_cancellation(net, data, unit=0):
     return total_norm, l1_vector_norm, ratio
 
 
+
+def hidden_logit_tail(net, data, unit=0):
+    values = []
+    for x, target in data:
+        xhat = (1.0, float(x[0]), float(x[1]))
+        u = sum(net.hidden_w[unit][j] * xhat[j] for j in range(3))
+        h = 1.0 / (1.0 + math.exp(-u))
+        g = h * (1.0 - h)
+        values.append((u, g))
+    return values
+
+
+def hidden_displacement_from_initial(net, unit=0):
+    base = [-1.0, -1.0, -1.0]
+    delta = [net.hidden_w[unit][j] - base[j] for j in range(3)]
+    norm = math.sqrt(sum(v * v for v in delta))
+    return delta, norm
+
+
 def epoch_source_decomposition(net, data, direction):
     work = deepcopy(net)
     linear = [float(v) for v in direction]
@@ -176,6 +195,9 @@ if __name__ == "__main__":
         "mean_a,mean_a_over_logN,mean_s,"
         "hidden_epoch_update,NlogN_hidden_epoch_update,"
         "hidden_cancel_ratio,logN_hidden_cancel_ratio,"
+        "hidden_disp_norm,hidden_disp_over_loglogN,"
+        "u00,u01,u10,u11,min_abs_u,mean_abs_u,"
+        "min_abs_u_over_loglogN,mean_abs_u_over_loglogN,"
         "lambda,nu_out,nu_cross,nu_curvature,nu_total,"
         "action_out,action_cross,action_curvature,action_total,"
         "exact_action,finite_action,NlogN_exact_action,NlogN_action_total"
@@ -218,6 +240,10 @@ if __name__ == "__main__":
         hidden_update, hidden_abs_sum, cancel_ratio = hidden_epoch_cancellation(
             ray, data
         )
+        logits = hidden_logit_tail(coarse, data)
+        abs_logits = [abs(u) for u, _ in logits]
+        _, hidden_disp_norm = hidden_displacement_from_initial(coarse)
+        loglogn = math.log(logn)
         vw_norm = math.sqrt(sum(value * value for value in direction[1:]))
 
         print(
@@ -240,6 +266,16 @@ if __name__ == "__main__":
             f"{epoch * logn * hidden_update:.15g},"
             f"{cancel_ratio:.15g},"
             f"{logn * cancel_ratio:.15g},"
+            f"{hidden_disp_norm:.15g},"
+            f"{hidden_disp_norm / loglogn:.15g},"
+            f"{logits[0][0]:.15g},"
+            f"{logits[1][0]:.15g},"
+            f"{logits[2][0]:.15g},"
+            f"{logits[3][0]:.15g},"
+            f"{min(abs_logits):.15g},"
+            f"{sum(abs_logits)/len(abs_logits):.15g},"
+            f"{min(abs_logits)/loglogn:.15g},"
+            f"{(sum(abs_logits)/len(abs_logits))/loglogn:.15g},"
             f"{lam:.15g},"
             f"{projected['out']:.15g},"
             f"{projected['cross']:.15g},"

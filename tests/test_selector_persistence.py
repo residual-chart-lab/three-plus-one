@@ -5,6 +5,9 @@ from threeplusone import (
     ThreePlusOneMLP,
     centered_singleton_seed,
     scan_selector_persistence,
+    branch_ray_phase_derivative,
+    add_transverse_vector_seed,
+    transverse_residual,
     xnor,
 )
 
@@ -16,7 +19,102 @@ def centered_net() -> ThreePlusOneMLP:
     )
 
 
+
+C_R = (
+    2.0 / math.sqrt(6.0),
+    -1.0 / math.sqrt(6.0),
+    -1.0 / math.sqrt(6.0),
+)
+C_I = (
+    0.0,
+    1.0 / math.sqrt(2.0),
+    -1.0 / math.sqrt(2.0),
+)
+
+
+def _local_state(net, unit):
+    return [
+        net.output_w[unit + 1],
+        net.hidden_w[unit][0],
+        net.hidden_w[unit][1],
+        net.hidden_w[unit][2],
+    ]
+
+
+def _set_local_state(net, unit, q):
+    net.output_w[unit + 1] = q[0]
+    net.hidden_w[unit][0] = q[1]
+    net.hidden_w[unit][1] = q[2]
+    net.hidden_w[unit][2] = q[3]
+
+
+def _rotate_copy_residual(net, angle):
+    states = [_local_state(net, i) for i in range(3)]
+    means = [
+        sum(states[i][j] for i in range(3)) / 3.0
+        for j in range(4)
+    ]
+    cc = math.cos(angle)
+    ss = math.sin(angle)
+
+    rotated = [[0.0] * 4 for _ in range(3)]
+    for j in range(4):
+        re = sum(C_R[i] * states[i][j] for i in range(3))
+        im = sum(C_I[i] * states[i][j] for i in range(3))
+        re2 = cc * re - ss * im
+        im2 = ss * re + cc * im
+        for i in range(3):
+            rotated[i][j] = means[j] + C_R[i] * re2 + C_I[i] * im2
+
+    for i in range(3):
+        _set_local_state(net, i, rotated[i])
+
+
+def _finite_one_epoch_phase_derivative(net, delta=1e-5):
+    import copy
+
+    center = copy.deepcopy(net)
+    plus = copy.deepcopy(net)
+    minus = copy.deepcopy(net)
+    _rotate_copy_residual(plus, +delta)
+    _rotate_copy_residual(minus, -delta)
+
+    for x, target in xnor():
+        center.train_one(x, target)
+        plus.train_one(x, target)
+        minus.train_one(x, target)
+
+    z0 = transverse_residual(center)
+    radial = [z.real for z in z0]
+    norm = math.sqrt(sum(v * v for v in radial))
+    direction = [v / norm for v in radial]
+
+    def phase(work):
+        z = transverse_residual(work)
+        projected = sum(direction[j] * z[j] for j in range(4))
+        return math.atan2(projected.imag, projected.real)
+
+    return (phase(plus) - phase(minus)) / (2.0 * delta)
+
+
 class SelectorPersistenceTests(unittest.TestCase):
+    def test_exact_branch_ray_phase_derivative_matches_finite_rotation(self):
+        net = centered_net()
+        add_transverse_vector_seed(
+            net,
+            direction=(1.0, 0.0, 0.0, 0.0),
+            amplitude=0.1,
+            phase=0.0,
+        )
+        for _ in range(1000):
+            for x, target in xnor():
+                net.train_one(x, target)
+
+        exact = branch_ray_phase_derivative(net, xnor())
+        finite = _finite_one_epoch_phase_derivative(net)
+
+        self.assertAlmostEqual(exact, finite, places=8)
+
     def test_selector_action_continues_after_task_target_is_reached(self):
         records = scan_selector_persistence(
             centered_net(),

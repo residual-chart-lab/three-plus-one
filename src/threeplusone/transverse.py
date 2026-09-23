@@ -275,6 +275,150 @@ def sample_transverse_matrix(
     return tuple(tuple(row) for row in out)
 
 
+
+def sample_transverse_quadratic_direction(
+    net: ThreePlusOneMLP,
+    x: Sequence[float],
+    target: float,
+    direction: Sequence[float],
+    *,
+    representative_unit: int = 0,
+) -> tuple[float, float, float, float]:
+    """
+    Exact second-order C3-equivariant coefficient for one real transverse
+    channel direction on the S3-symmetric manifold.
+
+    Write the complex transverse local state as
+
+        z = (z_a, z_w0, z_w1, z_w2)
+
+    and s = xhat . z_w.  For the copy-space basis used by
+    transverse_residual, pointwise products project according to
+
+        P_E(u_i v_i) = (1/sqrt(6)) * conj(z_u) * conj(z_v).
+
+    Therefore the one-sample local map
+
+        z+ = K z + Q(conj(z), conj(z)) + O(|z|^3)
+
+    has, along a real direction v, the exact quadratic vector
+
+        Q_a = eta*d*g' * s^2 / (2 sqrt(6))
+
+        Q_w = eta*d/sqrt(6)
+              * [g' * v_a * s + (a*g''/2) * s^2] * xhat.
+
+    Here g'=d g / d preactivation and g''=d^2 g / d preactivation^2.
+    The output-delta perturbation starts at second order but contributes only
+    at third order to the transverse projection, so the shared coarse d is
+    exact at quadratic order.
+    """
+    if len(direction) != 4:
+        raise ValueError("direction must have length 4")
+    if len(x) != net.inputs or net.inputs != 2:
+        raise ValueError("current quadratic direction implementation expects 2 inputs")
+
+    h, y = net._forward(x)
+    unit = int(representative_unit)
+    hv = float(h[unit])
+    d = (float(target) - y) * y * (1.0 - y)
+    a = float(net.output_w[unit + 1])
+    eta = float(net.learning_rate)
+
+    g = hv * (1.0 - hv)
+    g_prime = g * (1.0 - 2.0 * hv)
+    g_second = g * (1.0 - 6.0 * hv + 6.0 * hv * hv)
+
+    xhat = (1.0, float(x[0]), float(x[1]))
+    va = float(direction[0])
+    vw = tuple(float(direction[j + 1]) for j in range(3))
+    s = sum(xhat[j] * vw[j] for j in range(3))
+    copy_product = 1.0 / math.sqrt(6.0)
+
+    qa = eta * d * copy_product * 0.5 * g_prime * s * s
+    qw_coeff = eta * d * copy_product * (
+        g_prime * va * s
+        + 0.5 * a * g_second * s * s
+    )
+
+    return (
+        float(qa),
+        float(qw_coeff * xhat[0]),
+        float(qw_coeff * xhat[1]),
+        float(qw_coeff * xhat[2]),
+    )
+
+
+def epoch_transverse_quadratic_direction(
+    net: ThreePlusOneMLP,
+    samples: Iterable[Sample],
+    direction: Sequence[float],
+    *,
+    representative_unit: int = 0,
+) -> tuple[
+    tuple[float, float, float, float],
+    tuple[float, float, float, float],
+]:
+    """
+    Compose the exact linear and second-order transverse maps over one epoch
+    along one real input direction.
+
+    Returns (linear_response, quadratic_response), where
+
+        z_out = linear_response * r
+              + quadratic_response * r^2
+              + O(r^3)
+
+    for a phase-0 real seed z_in = r * direction.
+
+    For composition F2(F1(z)), the quadratic term obeys
+
+        q <- K q + Q(l, l)
+        l <- K l,
+
+    because every K is real in the chosen channel coordinates.
+    """
+    data = list(samples)
+    if not data:
+        raise ValueError("samples must not be empty")
+    if len(direction) != 4:
+        raise ValueError("direction must have length 4")
+
+    work = deepcopy(net)
+    linear = [float(v) for v in direction]
+    quadratic = [0.0, 0.0, 0.0, 0.0]
+
+    for x, target in data:
+        step = sample_transverse_matrix(
+            work,
+            x,
+            target,
+            representative_unit=representative_unit,
+        )
+        local_q = sample_transverse_quadratic_direction(
+            work,
+            x,
+            target,
+            linear,
+            representative_unit=representative_unit,
+        )
+        quadratic = [
+            sum(step[i][j] * quadratic[j] for j in range(4))
+            + local_q[i]
+            for i in range(4)
+        ]
+        linear = [
+            sum(step[i][j] * linear[j] for j in range(4))
+            for i in range(4)
+        ]
+        work.train_one(x, target)
+
+    return (
+        tuple(float(v) for v in linear),
+        tuple(float(v) for v in quadratic),
+    )
+
+
 def epoch_transverse_matrix(
     net: ThreePlusOneMLP,
     samples: Iterable[Sample],
@@ -745,6 +889,83 @@ def _projected_residual(
     return sum(
         float(output_direction[i]) * residual[i]
         for i in range(4)
+    )
+
+
+
+def branch_ray_phase_derivative(
+    net: ThreePlusOneMLP,
+    samples: Iterable[Sample],
+    *,
+    singled_unit: int = 0,
+    pair_unit: int = 1,
+    group: Sequence[int] = (0, 1, 2),
+) -> float:
+    """
+    Exact infinitesimal one-epoch phase derivative on a reflection-fixed
+    singleton branch ray.
+
+    On the phase-0 ray, one unit is singled out while the other two are equal.
+    An infinitesimal copy-space rotation splits the equal pair antisymmetrically.
+    Because that perturbation has zero first-order network-output effect, it is
+    transported by the same 4x4 local tangent matrix as any zero-sum copy
+    perturbation, evaluated at one member of the equal pair.
+
+    Let R be the real transverse residual vector before the epoch and R+ after
+    the ordinary nonlinear epoch. Let M_pair be the exact tangent map for the
+    antisymmetric pair-splitting mode. Then
+
+        dZ_in/dtheta = i R
+
+    and
+
+        dZ_out/dtheta = i M_pair R.
+
+    Projecting onto the outgoing branch ray gives the exact phase derivative
+
+        rho = <R+, M_pair R> / ||R+||^2.
+
+    This removes finite-angle and finite-radius approximations from the local
+    selector-action measurement.
+    """
+    data = list(samples)
+    if not data:
+        raise ValueError("samples must not be empty")
+    if len(group) != 3:
+        raise ValueError("group must contain exactly three units")
+
+    singled_unit = int(singled_unit)
+    pair_unit = int(pair_unit)
+    if singled_unit not in group or pair_unit not in group:
+        raise ValueError("singled_unit and pair_unit must belong to group")
+
+    before = transverse_residual(net, group)
+    if max(abs(z.imag) for z in before) > 1e-9:
+        raise ValueError("branch_ray_phase_derivative requires a phase-0 real residual")
+    radial_before = [float(z.real) for z in before]
+
+    pair_map = epoch_transverse_matrix(
+        net,
+        data,
+        representative_unit=pair_unit,
+    )
+    angular_after = _matvec(pair_map, radial_before)
+
+    work = deepcopy(net)
+    for x, target in data:
+        work.train_one(x, target)
+    after = transverse_residual(work, group)
+    if max(abs(z.imag) for z in after) > 1e-9:
+        raise ValueError("ordinary epoch left the reflection-fixed branch ray")
+    radial_after = [float(z.real) for z in after]
+
+    denom = sum(value * value for value in radial_after)
+    if denom == 0.0:
+        raise ValueError("outgoing branch residual vanished")
+
+    return float(
+        sum(radial_after[i] * angular_after[i] for i in range(4))
+        / denom
     )
 
 

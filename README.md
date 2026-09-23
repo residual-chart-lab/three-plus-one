@@ -460,6 +460,8 @@ Start here:
   long-horizon evidence for logarithmic-logarithmic cumulative selector action
 - [`SGD_TAIL_SCALING.md`](docs/SGD_TAIL_SCALING.md) —
   direct one-epoch verification of the 1/N task tail and 1/(N log N) selector tail
+- [`ANALYTIC_SELECTOR_TAIL.md`](docs/ANALYTIC_SELECTOR_TAIL.md) —
+  exact quadratic copy-space map and exact branch-ray phase derivative
 - [`PROVENANCE.md`](docs/PROVENANCE.md) —
   historical source separation
 

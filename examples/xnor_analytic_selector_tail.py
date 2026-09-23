@@ -6,6 +6,7 @@ from threeplusone import (
     centered_singleton_seed,
     sample_transverse_matrix,
     transverse_residual,
+    branch_ray_phase_derivative,
     xnor,
 )
 from threeplusone.core import ThreePlusOneMLP
@@ -177,7 +178,7 @@ if __name__ == "__main__":
         "hidden_cancel_ratio,logN_hidden_cancel_ratio,"
         "lambda,nu_out,nu_cross,nu_curvature,nu_total,"
         "action_out,action_cross,action_curvature,action_total,"
-        "measured_action,NlogN_action_total"
+        "exact_action,finite_action,NlogN_exact_action,NlogN_action_total"
     )
 
     checkpoint_index = 0
@@ -209,7 +210,9 @@ if __name__ == "__main__":
             for key in projected
         }
         action_total = nu_total * r / lam
-        _, measured_action = one_epoch_phase_contraction(ray, data)
+        exact_rho = branch_ray_phase_derivative(ray, data)
+        exact_action = -math.log(abs(exact_rho)) / 3.0
+        _, finite_action = one_epoch_phase_contraction(ray, data)
 
         logn = math.log(epoch)
         hidden_update, hidden_abs_sum, cancel_ratio = hidden_epoch_cancellation(
@@ -246,7 +249,9 @@ if __name__ == "__main__":
             f"{action['cross']:.15g},"
             f"{action['curvature']:.15g},"
             f"{action_total:.15g},"
-            f"{measured_action:.15g},"
+            f"{exact_action:.15g},"
+            f"{finite_action:.15g},"
+            f"{epoch * logn * exact_action:.15g},"
             f"{epoch * logn * action_total:.15g}"
         )
 

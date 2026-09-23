@@ -8,6 +8,7 @@ from threeplusone.transverse import (
     dominant_singular_pair,
     projected_course_phase,
     projected_training_harmonic,
+    epoch_transverse_quadratic_direction,
 )
 
 
@@ -23,6 +24,56 @@ def angle_distance(a: float, b: float) -> float:
 
 
 class XNORQuadraticAnisotropyTests(unittest.TestCase):
+    def test_exact_epoch_quadratic_direction_matches_fourier_extraction(self):
+        net = centered_net()
+        direction = (0.8, -0.3, 0.4, 0.2)
+        norm = math.sqrt(sum(v * v for v in direction))
+        direction = tuple(v / norm for v in direction)
+
+        linear_response, quadratic_response = epoch_transverse_quadratic_direction(
+            net,
+            xnor(),
+            direction,
+        )
+        linear_norm = math.sqrt(sum(v * v for v in linear_response))
+        output_direction = tuple(v / linear_norm for v in linear_response)
+
+        exact_linear = sum(
+            output_direction[i] * linear_response[i]
+            for i in range(4)
+        )
+        exact_quadratic = sum(
+            output_direction[i] * quadratic_response[i]
+            for i in range(4)
+        )
+
+        eps = 1e-4
+        measured_linear = projected_training_harmonic(
+            net,
+            xnor(),
+            epochs=1,
+            input_direction=direction,
+            output_direction=output_direction,
+            amplitude=eps,
+            harmonic=1,
+            phase_samples=12,
+        ) / eps
+        measured_quadratic = projected_training_harmonic(
+            net,
+            xnor(),
+            epochs=1,
+            input_direction=direction,
+            output_direction=output_direction,
+            amplitude=eps,
+            harmonic=-2,
+            phase_samples=12,
+        ) / (eps * eps)
+
+        self.assertAlmostEqual(measured_linear.real, exact_linear, places=8)
+        self.assertAlmostEqual(measured_linear.imag, 0.0, places=9)
+        self.assertAlmostEqual(measured_quadratic.real, exact_quadratic, places=6)
+        self.assertAlmostEqual(measured_quadratic.imag, 0.0, places=7)
+
     def test_dominant_course_extracts_clean_linear_and_quadratic_harmonics(self):
         result = dominant_course_anisotropy(
             centered_net(),

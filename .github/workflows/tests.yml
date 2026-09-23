@@ -20,6 +20,9 @@ jobs:
       - name: Run analytic selector tail decomposition
         if: startsWith(github.ref, 'refs/heads/research/analytic-selector-tail-') || startsWith(github.ref, 'refs/heads/research/hidden-loglog-tail-')
         run: python examples/xnor_analytic_selector_tail.py
+      - name: Run long tail disambiguation
+        if: startsWith(github.ref, 'refs/heads/research/hidden-loglog-tail-')
+        run: python examples/xnor_tail_disambiguation.py
       - name: Run direct SGD tail scaling diagnostic
         if: startsWith(github.ref, 'refs/heads/research/sgd-tail-scaling-')
         run: python examples/xnor_sgd_tail_scaling.py

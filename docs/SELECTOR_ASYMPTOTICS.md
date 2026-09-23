@@ -31,6 +31,31 @@ over the measured window \(2\times10^4\le N\le10^6\).
 
 This is evidence, not yet an asymptotic theorem.
 
+
+> **Tail-closure update.** A later exact branch-tangent and hidden-tail
+> analysis extends the deterministic check through \(10^7\) epochs.  The
+> selector still satisfies
+>
+> \[
+> a_N\asymp(N\log N)^{-1},
+> \]
+>
+> but the deeper factorization is
+>
+> \[
+> (\log N)^{2/3}
+> \times
+> N^{-1}
+> \times
+> (\log N)^{-5/3}
+> =
+> (N\log N)^{-1}.
+> \]
+>
+> Thus the earlier finite-window appearance \(|g'_N|\sim1/\log N\) should
+> not be used as the final mechanism.  See
+> [`HIDDEN_TAIL_CLOSURE.md`](HIDDEN_TAIL_CLOSURE.md).
+
 ---
 
 ## 1. Measured long-horizon course

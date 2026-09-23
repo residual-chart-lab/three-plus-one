@@ -527,16 +527,40 @@ a_N
 
 for all sufficiently large \(N\), or an equivalent asymptotic expansion.
 
-A follow-up derivation now gives the exact one-sample quadratic
-copy-space map and an exact infinitesimal branch-ray phase derivative.  Those
-formulas isolate the (d g') sector responsible for the observed
-(1/(N\log N)) selector class.
+A follow-up derivation gives the exact one-sample quadratic copy-space map
+and an exact infinitesimal branch-ray phase derivative.
 
-See [ANALYTIC_SELECTOR_TAIL.md](ANALYTIC_SELECTOR_TAIL.md).
+A still later hidden-tail reduction corrects the naive factorization:
+the active hidden sensitivity itself behaves as
 
-The remaining mathematical work is now narrower: prove positive asymptotic
-tail bounds and the required non-cancellation condition from the exact SGD
-trajectory.
+\[
+|g'_N|
+\asymp
+(\log N)^{-5/3},
+\]
+
+while the retained branch radius grows as
+
+\[
+R_N
+\asymp
+(\log N)^{2/3}.
+\]
+
+Their product restores the observed selector scale
+
+\[
+R_N|d_N||g'_N|
+\asymp
+\frac1{N\log N}.
+\]
+
+See [ANALYTIC_SELECTOR_TAIL.md](ANALYTIC_SELECTOR_TAIL.md) and
+[HIDDEN_TAIL_CLOSURE.md](HIDDEN_TAIL_CLOSURE.md).
+
+The remaining mathematical work is narrower still: prove the upstream
+\(2/3\) law and control the higher-order remainder in the exact branch-tangent
+map.
 
 ---
 

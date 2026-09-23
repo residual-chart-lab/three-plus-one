@@ -326,59 +326,95 @@ over the measured tail.
 
 ---
 
-## 6. Where the extra \(1/\log N\) comes from
+## 6. Hidden-tail correction
 
-The task-scale factor is
+A later tail reduction shows that the provisional estimate
+
+\[
+|g'_N|
+=
+\Theta((\log N)^{-1})
+\]
+
+is not the correct factorization.
+
+The relevant output-weight scale and retained branch radius obey
+
+\[
+A_N
+=
+\Theta((\log N)^{2/3}),
+\]
+
+\[
+R_N
+=
+\Theta((\log N)^{2/3})
+\]
+
+over the deterministic tail through \(10^7\) epochs.
+
+Together with
 
 \[
 |d_N|
 =
-\Theta(N^{-1}).
-\]
-
-The hidden sigmoid derivative supplies the additional slow factor.
-
-Measured on the corresponding coarse three-copy state:
-
-| \(N\) | \(N\overline{|d|}\) | \((\log N)\bar g\) | \((\log N)\overline{|g'|}\) |
-|---:|---:|---:|---:|
-| 10,000 | 1.39968 | 1.08346 | 0.68211 |
-| 100,000 | 1.18978 | 1.11059 | 0.78339 |
-| 1,000,000 | 1.11028 | 1.11636 | 0.84689 |
-
-Thus
-
-\[
-\boxed{
-d_N
-=
 \Theta(N^{-1}),
-}
 \]
 
-while
+this gives the effective hidden clock
+
+\[
+\tau_N
+\asymp
+\sum_{n\le N}
+\frac{(\log n)^{2/3}}{n}
+=
+\Theta((\log N)^{5/3}).
+\]
+
+The three active hidden support margins satisfy
+
+\[
+u_{01},
+u_{10},
+-u_{11}
+=
+\log\tau_N+O(1)
+=
+\frac53\log\log N+O(1).
+\]
+
+Therefore
 
 \[
 \boxed{
-g_N,\ |g'_N|
+|g'_N|
 =
-\Theta((\log N)^{-1})
+\Theta((\log N)^{-5/3})
 }
 \]
 
-over the measured tail.
+on the active support directions.
 
-The two explicitly positive \(g'\)-sector quadratic terms are therefore naturally of size
+The selector still has the observed \(1/(N\log N)\) tail because the broken
+branch radius multiplies the local hidden sensitivity:
 
 \[
-\boxed{
-d_N g'_N
+R_N|d_N||g'_N|
+\asymp
+(\log N)^{2/3}
+\frac1N
+(\log N)^{-5/3}
 =
-\Theta((N\log N)^{-1}).
-}
+\boxed{
+\frac1{N\log N}
+}.
 \]
 
-This is the local analytic origin of the selector tail.
+See
+[`HIDDEN_TAIL_CLOSURE.md`](HIDDEN_TAIL_CLOSURE.md)
+for the derivation and the \(10^7\)-epoch check.
 
 ---
 
@@ -482,11 +518,11 @@ Thus the quadratic map is not an exact finite-radius amplitude formula, but it d
 
 ---
 
-## 9. A conditional divergence proposition
+## 9. A corrected conditional divergence proposition
 
-The exact formulas isolate the remaining proof obligation.
+The exact formulas now isolate the proof obligation more sharply.
 
-Suppose that along the phase-0 branch there exist positive constants and a sufficiently large \(N_0\) such that for all \(N\ge N_0\),
+Suppose that for all sufficiently large \(N\):
 
 \[
 |d_N|
@@ -495,14 +531,21 @@ Suppose that along the phase-0 branch there exist positive constants and a suffi
 \]
 
 \[
-|g'_N|
+R_N
 \ge
-\frac{c_g}{\log N},
+c_R(\log N)^{2/3},
 \]
 
-the normalized branch geometry remains nondegenerate, and the total projected quadratic / higher-order correction does not cancel the positive \(g'\)-sector contribution beyond a fixed fraction.
+\[
+|g'_N|
+\ge
+c_g(\log N)^{-5/3},
+\]
 
-Then there is a constant \(c>0\) such that
+the branch geometry remains nondegenerate, and the projected higher-order
+terms do not cancel the stable selector beyond a fixed fraction.
+
+Then
 
 \[
 \boxed{
@@ -512,15 +555,15 @@ a_N
 }
 \]
 
-Therefore
+Hence
 
 \[
-\sum_{N=N_0}^{\infty}a_N
+\sum_N a_N
 =
-\infty,
+\infty
 \]
 
-and hence
+and
 
 \[
 \boxed{
@@ -530,129 +573,137 @@ and hence
 }
 \]
 
-So the asymptotic locking problem has now been reduced to proving tail bounds for ordinary sigmoid-SGD quantities and one non-cancellation condition.
+The important change is that non-summability no longer rests on
+\(g'_N\sim1/\log N\) by itself.
 
-No additional persistence force is required by the mathematics if those bounds hold.
+It rests on the compensated product
+
+\[
+\boxed{
+R_N g'_N
+\asymp
+(\log N)^{2/3-5/3}
+=
+(\log N)^{-1}.
+}
+\]
 
 ---
 
 ## 10. What remains unproved
 
-Three empirical tail statements still need analytic control:
-
-\[
-N|d_N|
-\to
-D>0,
-\]
-
-\[
-(\log N)|g'_N|
-\to
-G>0
-\quad\text{or at least stays bounded below},
-\]
-
-and
+The exact selector action is now verified through \(10^7\) epochs, with
 
 \[
 N\log N\,a_N
-\to
-C>0
-\quad\text{or at least stays bounded below}.
+:
+0.11416
+\rightarrow
+0.11019.
 \]
 
-The first is strongly tied to the exact binary-sigmoid identity
+The strongest remaining upstream gap is the \(2/3\) law itself:
 
 \[
-|d|
-=
-\epsilon^2(1-\epsilon)
+A_N
+\asymp
+(\log N)^{2/3},
+\qquad
+R_N
+\asymp
+(\log N)^{2/3}.
 \]
 
-and the observed margin law
+Given that law and the ordinary
 
 \[
-m_N
-\sim
-\frac12\log N.
+d_N\asymp N^{-1}
 \]
 
-The second is tied to the hidden-weight tail.
+tail, the effective-clock reduction yields the \(5/3\) hidden-margin and
+hidden-sensitivity exponents.
 
-The third now has an exact branch-tangent formula rather than a finite-angle proxy.
-
-The remaining proof problem is therefore much narrower than before.
+A full theorem would still require rigorous control of those \(2/3\) scales
+and the higher-order remainder in the exact branch-tangent map.
 
 ---
 
 ## 11. Current chain
 
-The selector mechanism can now be written as
+The corrected mechanism is
 
 \[
 \boxed{
-\text{output margin}
+A_N,\ R_N
 \sim
-\frac12\log N
+(\log N)^{2/3}
 }
 \]
 
-\[
-\Downarrow
-\]
+together with
 
 \[
 \boxed{
 d_N
 \sim
-N^{-1}
+N^{-1}.
 }
 \]
 
-while hidden saturation gives
+Therefore the effective hidden clock is
 
 \[
 \boxed{
-g'_N
+\tau_N
 \sim
-(\log N)^{-1}
+(\log N)^{5/3}.
 }
 \]
 
-and the exact copy-space quadratic map gives
+The active hidden margins obey
 
 \[
 \boxed{
-Q_N
+\gamma_N
 \sim
-d_Ng'_N
-\sim
-\frac1{N\log N}.
+\frac53\log\log N
 }
 \]
 
-The exact broken-branch tangent then measures
+and hence
 
 \[
 \boxed{
-a_N
+|g'_N|
+\sim
+(\log N)^{-5/3}.
+}
+\]
+
+Finally,
+
+\[
+\boxed{
+R_N d_N g'_N
 \sim
 \frac1{N\log N},
 }
 \]
 
-so
+so the exact branch action remains
 
 \[
 \boxed{
-\mathcal A_N
+a_N
 \sim
-\log\log N.
+\frac1{N\log N}
 }
 \]
 
-This is now the cleanest current account of why the selector keeps acting after ordinary task convergence.
+and the cumulative action remains non-summable.
+
+The \(1/\log N\) factor is therefore an exponent cancellation in the full
+history-bearing branch geometry, not the decay law of \(g'_N\) alone.
 
 ---
 

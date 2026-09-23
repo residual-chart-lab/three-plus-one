@@ -361,30 +361,46 @@ The run recorded here was executed in GitHub Actions on Python 3.12 after all
 
 ---
 
-## 10. Next exact move
+## 10. Direct local verification
 
-Do not add a new persistence mechanism yet.
-
-The next mathematical task is to derive the late-time scaling from the actual
-XNOR update.
-
-Specifically, seek asymptotic laws for:
+A follow-up one-epoch diagnostic now finds
 
 \[
-\text{MSE}_N,
-\qquad
-\rho_N,
-\qquad
-\mathcal A_N,
+\mathrm{MSE}_N
+=
+\Theta(N^{-1})
 \]
 
-and test whether the observed
+and, independently,
 
 \[
-\mathcal A_N\sim c\log\log N
+\boxed{
+a_N
+=
+-\frac13\log\rho_N^{(1)}
+=
+\Theta((N\log N)^{-1})
+}
 \]
 
-can be obtained analytically from the sigmoid/MSE SGD tail.
+over \(10^4\le N\le10^6\).
 
-If that derivation succeeds, the selector-action summability question closes
-without adding any new dynamics.
+Thus the local actual update has exactly the summation class required for
+
+\[
+\mathcal A_N
+=
+\Theta(\log\log N).
+\]
+
+A one-epoch Fourier extraction on the current coarse state also shows that the
+same quadratic \(\bar z^2\) selector tracks this tail scaling.
+
+See [`SGD_TAIL_SCALING.md`](SGD_TAIL_SCALING.md).
+
+The remaining task is no longer to guess the tail class. It is to derive a
+positive asymptotic lower bound, or equivalent expansion, from the exact
+one-sample sigmoid SGD equations.
+
+That analytic step would turn the finite-horizon non-summability evidence into
+a proof.

@@ -113,6 +113,29 @@ def one_epoch_phase_contraction(ray_net, data, delta=1e-2):
     return rho, action
 
 
+
+def one_epoch_update_norms(net, data):
+    work = deepcopy(net)
+    before_output = work.output_w[:]
+    before_hidden = [row[:] for row in work.hidden_w]
+    train_epoch(work, data)
+
+    output_update = math.sqrt(
+        sum(
+            (work.output_w[i] - before_output[i]) ** 2
+            for i in range(len(before_output))
+        )
+    )
+    hidden_update = math.sqrt(
+        sum(
+            (work.hidden_w[i][j] - before_hidden[i][j]) ** 2
+            for i in range(work.hidden)
+            for j in range(work.inputs + 1)
+        )
+    )
+    return output_update, hidden_update
+
+
 def tail_observables(net, data):
     mse = net.mse(data)
 
@@ -171,7 +194,9 @@ if __name__ == "__main__":
         "mean_hidden_g,min_margin,mean_margin,"
         "output_norm,output_norm_over_logN,"
         "hidden_norm,hidden_norm_over_loglogN,"
-        "rho1,action1,NlogN_action1"
+        "output_update,N_output_update,"
+        "hidden_update,NlogN_hidden_update,"
+        "rho1,action1,NlogN_action1,action_over_hidden_update"
     )
 
     checkpoint_index = 0
@@ -182,6 +207,7 @@ if __name__ == "__main__":
 
         obs = tail_observables(net, data)
         rho, action = one_epoch_phase_contraction(net, data)
+        output_update, hidden_update = one_epoch_update_norms(net, data)
         logn = math.log(epoch)
         loglogn = math.log(logn)
 
@@ -198,9 +224,14 @@ if __name__ == "__main__":
             f"{obs['output_norm'] / logn:.15g},"
             f"{obs['hidden_norm']:.15g},"
             f"{obs['hidden_norm'] / loglogn:.15g},"
+            f"{output_update:.15g},"
+            f"{epoch * output_update:.15g},"
+            f"{hidden_update:.15g},"
+            f"{epoch * logn * hidden_update:.15g},"
             f"{rho:.15g},"
             f"{action:.15g},"
-            f"{epoch * logn * action:.15g}"
+            f"{epoch * logn * action:.15g},"
+            f"{action / hidden_update:.15g}"
         )
 
         checkpoint_index += 1

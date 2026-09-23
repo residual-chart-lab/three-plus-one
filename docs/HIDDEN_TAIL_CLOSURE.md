@@ -91,6 +91,12 @@ a_N
 
 This is still numerical asymptotics, not a theorem.
 
+The repository reference script `examples/xnor_tail_disambiguation.py` runs the
+ordinary implementation through (10^7) epochs.  The (2	imes10^7) through
+(10^8) rows above were cross-checked with an accelerated mirror of the same
+deterministic update and exact branch-tangent formula.  They are used here as
+extended numerical evidence, not as CI reference constants.
+
 ---
 
 ## 2. Hidden state moves on a log-log scale

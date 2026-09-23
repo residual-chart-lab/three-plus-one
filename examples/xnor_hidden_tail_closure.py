@@ -41,6 +41,22 @@ def trio_coarse(net):
     return work
 
 
+
+def trio_mean_hidden(net):
+    return tuple(
+        sum(net.hidden_w[i][j] for i in range(3)) / 3.0
+        for j in range(3)
+    )
+
+
+def actual_trio_mean_epoch_update(net, data):
+    work = deepcopy(net)
+    before = trio_mean_hidden(work)
+    train_epoch(work, data)
+    after = trio_mean_hidden(work)
+    return tuple(after[j] - before[j] for j in range(3))
+
+
 def hidden_preactivation(net, unit, x):
     row = net.hidden_w[unit]
     return row[0] + row[1] * float(x[0]) + row[2] * float(x[1])
@@ -107,6 +123,10 @@ if __name__ == "__main__":
         "coarse_w0_over_loglog",
         "coarse_w1_over_loglog",
         "coarse_w2_over_loglog",
+        "u00_over_loglog2",
+        "u01_over_loglog2",
+        "u10_over_loglog2",
+        "absu11_over_loglog2",
     ]
     for label in ("00", "01", "10", "11"):
         header += [
@@ -129,6 +149,10 @@ if __name__ == "__main__":
         "walsh_x1_NlogN",
         "walsh_x2_NlogN",
         "walsh_parity_N",
+        "actual_mean_du00_scaled",
+        "actual_mean_du01_scaled",
+        "actual_mean_du10_scaled",
+        "actual_mean_du11_scaled",
     ]
     print(",".join(header))
 
@@ -142,6 +166,7 @@ if __name__ == "__main__":
         terms = frozen_hidden_gradient_terms(coarse, 0, data)
         frozen = vec_sum([t["vec"] for t in terms])
         exact = exact_hidden_epoch_update(coarse, 0, data)
+        actual_mean_delta = actual_trio_mean_epoch_update(net, data)
 
         logn = math.log(epoch)
         loglogn = math.log(logn)
@@ -160,6 +185,10 @@ if __name__ == "__main__":
             coarse.hidden_w[0][0] / loglogn,
             coarse.hidden_w[0][1] / loglogn,
             coarse.hidden_w[0][2] / loglogn,
+            terms[0]["u"] / (loglogn * loglogn),
+            terms[1]["u"] / (loglogn * loglogn),
+            terms[2]["u"] / (loglogn * loglogn),
+            abs(terms[3]["u"]) / (loglogn * loglogn),
         ]
         for t in terms:
             row += [
@@ -182,6 +211,10 @@ if __name__ == "__main__":
             epoch * logn * walsh["x1"],
             epoch * logn * walsh["x2"],
             epoch * walsh["parity"],
+            epoch * logn * actual_mean_delta[0] / (2.0 * loglogn),
+            epoch * logn * (actual_mean_delta[0] + actual_mean_delta[2]) / (2.0 * loglogn),
+            epoch * logn * (actual_mean_delta[0] + actual_mean_delta[1]) / (2.0 * loglogn),
+            epoch * logn * sum(actual_mean_delta) / (-2.0 * loglogn),
         ]
         print(",".join(f"{float(v):.15g}" if not isinstance(v, int) else str(v) for v in row))
 

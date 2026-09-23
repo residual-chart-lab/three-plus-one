@@ -20,6 +20,9 @@ jobs:
       - name: Run late-state structure diagnostic
         if: startsWith(github.ref, 'refs/heads/research/analytic-tail-derivation-')
         run: python examples/xnor_tail_state_structure.py
+      - name: Extend local selector tail to ten million epochs
+        if: startsWith(github.ref, 'refs/heads/research/analytic-tail-derivation-')
+        run: python examples/xnor_tail_scaling_10m.py
       - name: Run direct SGD tail scaling diagnostic
         if: startsWith(github.ref, 'refs/heads/research/sgd-tail-scaling-')
         run: python examples/xnor_sgd_tail_scaling.py

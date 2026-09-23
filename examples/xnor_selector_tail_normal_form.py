@@ -76,7 +76,7 @@ if __name__ == "__main__":
         gain = math.sqrt(sum(value * value for value in response))
         output_direction = tuple(value / gain for value in response)
 
-        eps = 1e-4
+        eps = 1e-2
         linear = projected_training_harmonic(
             coarse,
             data,

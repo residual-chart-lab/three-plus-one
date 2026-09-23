@@ -97,6 +97,17 @@ def local_quadratic_sources(net, x, target, direction):
 
 
 
+
+def hidden_epoch_vector(net, data, unit=0):
+    work = deepcopy(net)
+    before = work.hidden_w[unit][:]
+    train_epoch(work, data)
+    return [
+        work.hidden_w[unit][j] - before[j]
+        for j in range(3)
+    ]
+
+
 def hidden_epoch_cancellation(net, data, unit=0):
     work = deepcopy(net)
     contributions = []
@@ -196,6 +207,7 @@ if __name__ == "__main__":
         "hidden_epoch_update,NlogN_hidden_epoch_update,"
         "hidden_cancel_ratio,logN_hidden_cancel_ratio,"
         "hidden_disp_norm,hidden_disp_over_loglogN,"
+        "hidden_radial_update,NlogN_hidden_radial_update,hidden_update_cosine,"
         "u00,u01,u10,u11,min_abs_u,mean_abs_u,"
         "min_abs_u_over_loglogN,mean_abs_u_over_loglogN,"
         "lambda,nu_out,nu_cross,nu_curvature,nu_total,"
@@ -242,7 +254,20 @@ if __name__ == "__main__":
         )
         logits = hidden_logit_tail(coarse, data)
         abs_logits = [abs(u) for u, _ in logits]
-        _, hidden_disp_norm = hidden_displacement_from_initial(coarse)
+        hidden_disp, hidden_disp_norm = hidden_displacement_from_initial(coarse)
+        hidden_epoch_vec = hidden_epoch_vector(coarse, data)
+        hidden_epoch_vec_norm = math.sqrt(sum(v * v for v in hidden_epoch_vec))
+        if hidden_disp_norm > 0.0:
+            hidden_radial_update = sum(
+                hidden_disp[j] * hidden_epoch_vec[j]
+                for j in range(3)
+            ) / hidden_disp_norm
+        else:
+            hidden_radial_update = 0.0
+        if hidden_disp_norm > 0.0 and hidden_epoch_vec_norm > 0.0:
+            hidden_update_cosine = hidden_radial_update / hidden_epoch_vec_norm
+        else:
+            hidden_update_cosine = 0.0
         loglogn = math.log(logn)
         vw_norm = math.sqrt(sum(value * value for value in direction[1:]))
 
@@ -268,6 +293,9 @@ if __name__ == "__main__":
             f"{logn * cancel_ratio:.15g},"
             f"{hidden_disp_norm:.15g},"
             f"{hidden_disp_norm / loglogn:.15g},"
+            f"{hidden_radial_update:.15g},"
+            f"{epoch * logn * hidden_radial_update:.15g},"
+            f"{hidden_update_cosine:.15g},"
             f"{logits[0][0]:.15g},"
             f"{logits[1][0]:.15g},"
             f"{logits[2][0]:.15g},"

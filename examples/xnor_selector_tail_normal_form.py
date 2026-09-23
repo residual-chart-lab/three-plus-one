@@ -54,6 +54,7 @@ if __name__ == "__main__":
 
     print(
         "N,r,lambda,nu,nu_over_lambda,"
+        "q_eps005,q_eps01,q_eps02,q_rel_spread,"
         "predicted_action,measured_action,pred_over_measured,"
         "NlogN_nu_over_lambda,NlogN_predicted_action"
     )
@@ -76,29 +77,38 @@ if __name__ == "__main__":
         gain = math.sqrt(sum(value * value for value in response))
         output_direction = tuple(value / gain for value in response)
 
-        eps = 1e-2
-        linear = projected_training_harmonic(
-            coarse,
-            data,
-            epochs=1,
-            input_direction=direction,
-            output_direction=output_direction,
-            amplitude=eps,
-            harmonic=1,
-            phase_samples=12,
-        ) / eps
-        quadratic = projected_training_harmonic(
-            coarse,
-            data,
-            epochs=1,
-            input_direction=direction,
-            output_direction=output_direction,
-            amplitude=eps,
-            harmonic=-2,
-            phase_samples=12,
-        ) / (eps * eps)
+        ratios = []
+        linears = []
+        quadratics = []
+        for eps in (5e-3, 1e-2, 2e-2):
+            linear_eps = projected_training_harmonic(
+                coarse,
+                data,
+                epochs=1,
+                input_direction=direction,
+                output_direction=output_direction,
+                amplitude=eps,
+                harmonic=1,
+                phase_samples=12,
+            ) / eps
+            quadratic_eps = projected_training_harmonic(
+                coarse,
+                data,
+                epochs=1,
+                input_direction=direction,
+                output_direction=output_direction,
+                amplitude=eps,
+                harmonic=-2,
+                phase_samples=12,
+            ) / (eps * eps)
+            linears.append(linear_eps)
+            quadratics.append(quadratic_eps)
+            ratios.append(quadratic_eps.real / linear_eps.real)
 
-        ratio = quadratic.real / linear.real
+        linear = linears[1]
+        quadratic = quadratics[1]
+        ratio = ratios[1]
+        ratio_spread = (max(ratios) - min(ratios)) / abs(ratio)
         predicted_action = ratio * r
         _, measured_action = one_epoch_phase_contraction(ray, data)
 
@@ -109,6 +119,10 @@ if __name__ == "__main__":
             f"{linear.real:.15g},"
             f"{quadratic.real:.15g},"
             f"{ratio:.15g},"
+            f"{ratios[0]:.15g},"
+            f"{ratios[1]:.15g},"
+            f"{ratios[2]:.15g},"
+            f"{ratio_spread:.15g},"
             f"{predicted_action:.15g},"
             f"{measured_action:.15g},"
             f"{predicted_action / measured_action:.15g},"

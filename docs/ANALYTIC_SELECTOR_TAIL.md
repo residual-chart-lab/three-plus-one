@@ -2,6 +2,17 @@
 
 Status: exact local derivation + finite-horizon asymptotic verification.
 
+> **Asymptotic correction (2026-09-23).** The exact quadratic map and exact
+> branch-ray phase derivative derived here remain valid.  The provisional
+> asymptotic identification \(a_N\asymp1/(N\log N)\) does not.  A longer
+> scan shows
+> \[
+> a_N\sim C/[N(\log N)^{3/2}],
+> \]
+> consistent with a hidden log-log direction whose slow support margins have
+> coefficient \(3/2\).  See
+> [`HIDDEN_TAIL_CLOSURE.md`](HIDDEN_TAIL_CLOSURE.md).
+
 This note sharpens SGD_TAIL_SCALING.md.
 
 The late branch selector can now be written in two exact forms:

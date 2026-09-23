@@ -20,6 +20,9 @@ jobs:
       - name: Run late-state structure diagnostic
         if: startsWith(github.ref, 'refs/heads/research/analytic-tail-derivation-')
         run: python examples/xnor_tail_state_structure.py
+      - name: Verify exact branch secant-tangent identity
+        if: startsWith(github.ref, 'refs/heads/research/analytic-tail-derivation-')
+        run: python examples/xnor_branch_secant_tangent.py
       - name: Extend local selector tail to ten million epochs
         if: startsWith(github.ref, 'refs/heads/research/analytic-tail-derivation-')
         run: python examples/xnor_tail_scaling_10m.py

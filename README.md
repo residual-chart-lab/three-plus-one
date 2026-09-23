@@ -458,6 +458,8 @@ Start here:
   direct test of residual survival and cumulative branch-selector action after task convergence
 - [`SELECTOR_ASYMPTOTICS.md`](docs/SELECTOR_ASYMPTOTICS.md) —
   long-horizon evidence for logarithmic-logarithmic cumulative selector action
+- [`SGD_TAIL_SCALING.md`](docs/SGD_TAIL_SCALING.md) —
+  direct one-epoch verification of the 1/N task tail and 1/(N log N) selector tail
 - [`PROVENANCE.md`](docs/PROVENANCE.md) —
   historical source separation
 

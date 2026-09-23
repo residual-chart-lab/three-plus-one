@@ -3,6 +3,19 @@
 Status: finite-horizon verification of the scaling mechanism behind
 `SELECTOR_ASYMPTOTICS.md`.
 
+> **Asymptotic correction (2026-09-23).** The local
+> \(1/[N\log N]\) law reported over \(10^4\)–\(10^6\) is pre-asymptotic.
+> Extending the exact branch tangent to \(10^8\) gives a stable
+> \[
+> N(\log N)^{3/2}a_N\approx0.446,
+> \]
+> while \(N\log N\,a_N\) drifts downward.  The current interpretation is
+> \[
+> a_N\sim C/[N(\log N)^{3/2}],
+> \]
+> hence finite total selector action.  See
+> [`HIDDEN_TAIL_CLOSURE.md`](HIDDEN_TAIL_CLOSURE.md).
+
 The previous long-horizon experiment found
 
 \[

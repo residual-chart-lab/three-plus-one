@@ -6,6 +6,8 @@ from threeplusone import (
     add_transverse_vector_seed,
     centered_singleton_seed,
     xnor,
+    transverse_residual,
+    branch_ray_phase_derivative,
 )
 
 
@@ -161,6 +163,10 @@ if __name__ == "__main__":
         "actual_du01_dloglog",
         "actual_du10_dloglog",
         "actual_absdu11_dloglog",
+        "residual_radius",
+        "residual_radius_over_logN_2over3",
+        "exact_selector_action",
+        "NlogN_exact_selector_action",
     ]
     print(",".join(header))
 
@@ -208,6 +214,11 @@ if __name__ == "__main__":
                 logn * abs(t["gp"]),
                 epoch * abs(t["coeff"]),
             ]
+        residual = transverse_residual(net)
+        residual_radius = math.sqrt(sum(abs(z) ** 2 for z in residual))
+        rho_exact = branch_ray_phase_derivative(net, data)
+        selector_action = -math.log(abs(rho_exact)) / 3.0
+
         row += [
             rel_spread * logn,
             vec_norm(frozen),
@@ -228,6 +239,10 @@ if __name__ == "__main__":
             epoch * logn * (actual_mean_delta[0] + actual_mean_delta[2]),
             epoch * logn * (actual_mean_delta[0] + actual_mean_delta[1]),
             -epoch * logn * sum(actual_mean_delta),
+            residual_radius,
+            residual_radius / (logn ** (2.0 / 3.0)),
+            selector_action,
+            epoch * logn * selector_action,
         ]
         print(",".join(f"{float(v):.15g}" if not isinstance(v, int) else str(v) for v in row))
 

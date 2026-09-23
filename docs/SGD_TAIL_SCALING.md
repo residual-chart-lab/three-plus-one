@@ -415,8 +415,26 @@ Raising the probe to \(10^{-2}\) restores a stable signal.
 
 This is a numerical issue, not evidence that the quadratic term disappears.
 
-Probe-amplitude stability is checked separately before treating the late-time
-coefficient itself as a precision constant.
+Probe-amplitude stability was checked at amplitudes
+
+\[
+5\times10^{-3},\quad10^{-2},\quad2\times10^{-2}.
+\]
+
+At epoch \(10^6\), the extracted ratios \(\nu/\lambda\) were
+
+\[
+2.67036\times10^{-9},\quad
+2.67580\times10^{-9},\quad
+2.67527\times10^{-9},
+\]
+
+for a relative spread of about \(0.20\%\).
+
+Across the measured checkpoints, the three probe amplitudes agree well after
+the \(10^{-4}\) floating-point-floor problem is removed.  Thus the
+\(10^{-2}\) extraction is numerically stable enough for the scaling claim,
+though it is not promoted to an exact asymptotic coefficient.
 
 ---
 

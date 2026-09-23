@@ -3,6 +3,17 @@
 Status: long-horizon finite-time evidence from the actual centered-XNOR
 dynamics.
 
+> **Asymptotic correction (2026-09-23).** The \(10^4\)–\(10^6\) window in
+> this note supported a provisional \(\log\log N\) divergence.  A later
+> exact branch-tangent scan extended to \(10^8\) epochs resolves the tail as
+> approximately
+> \[
+> a_N\sim C/[N(\log N)^{3/2}],
+> \]
+> which is summable.  Treat the divergence interpretation below as a
+> documented pre-asymptotic fit.  The current result is in
+> [`HIDDEN_TAIL_CLOSURE.md`](HIDDEN_TAIL_CLOSURE.md).
+
 This note follows `SELECTOR_PERSISTENCE.md`.
 
 The question is now narrower:

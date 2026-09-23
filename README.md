@@ -476,9 +476,9 @@ Start here:
 - [`SELECTOR_PERSISTENCE.md`](docs/SELECTOR_PERSISTENCE.md) —
   direct test of residual survival and cumulative branch-selector action after task convergence
 - [`SELECTOR_ASYMPTOTICS.md`](docs/SELECTOR_ASYMPTOTICS.md) —
-  long-horizon evidence for logarithmic-logarithmic cumulative selector action
+  superseded pre-asymptotic log-log fit, retained for audit history
 - [`SGD_TAIL_SCALING.md`](docs/SGD_TAIL_SCALING.md) —
-  direct one-epoch verification of the 1/N task tail and 1/(N log N) selector tail
+  direct task-tail measurements and superseded early selector-tail fit
 - [`ANALYTIC_SELECTOR_TAIL.md`](docs/ANALYTIC_SELECTOR_TAIL.md) —
   exact quadratic copy-space map and exact branch-ray phase derivative
 - [`HIDDEN_TAIL_CLOSURE.md`](docs/HIDDEN_TAIL_CLOSURE.md) —

@@ -189,11 +189,20 @@ if __name__ == "__main__":
         1, 2, 3, 10, 100, 1_000, 10_000, 100_000, 1_000_000,
     )
 
+    rows = scan(starts, horizons)
+
+    reference = next(
+        row for row in rows
+        if row["start_epoch"] == 728 and row["horizon"] == 2
+    )
+    assert abs(reference["gamma"] - 0.998989829102497239) < 5e-12
+    assert abs(reference["local_product"] - 0.998986959696540323) < 5e-12
+
     print(
         "start,horizon,end,gamma,local_product,difference,relative_gap,"
         "minus_log_gamma,minus_log_local,hidden_fraction,branch_radius"
     )
-    for row in scan(starts, horizons):
+    for row in rows:
         print(
             f"{row['start_epoch']},"
             f"{row['horizon']},"

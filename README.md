@@ -432,10 +432,36 @@ exact future phase readouts there.
 Consequently, asymptotic locking requires control of the full four-channel
 tangent cocycle, in addition to the observed \(2/3\) law and nonlinear
 remainders. Multiplying local scalar derivatives omits the returning hidden
-components. See
-[`docs/FUTURE_PHASE_OBSERVABILITY.md`](docs/FUTURE_PHASE_OBSERVABILITY.md).
+components.
+
+That full cocycle has now been propagated directly through one million future
+epochs. The hidden return changes the cumulative phase derivative by a finite
+measured amount, but the discrepancy becomes much smaller for later starting
+epochs. In a moving phase/hidden splitting, the two-step hidden return falls
+from about \(5.6\times10^{-3}\) of the local phase defect at epoch 728 to
+about \(1.8\times10^{-8}\) at epoch \(10^6\).
+
+At the same time, rank-four future observability gives an exact four-sample
+phase-memory representation
+
+\[
+(y_n,y_{n+1},y_{n+2},y_{n+3}),
+\]
+
+with a time-varying fourth-order scalar recurrence. Its late coefficients
+approach the finite-difference pattern
+
+\[
+(-1,4,-6,4).
+\]
+
+The remaining tangent-level proof obligation is therefore to control the
+phase-hidden memory kernel asymptotically, not to restore a missing state
+dimension.
 
 See
+[`docs/FUTURE_PHASE_OBSERVABILITY.md`](docs/FUTURE_PHASE_OBSERVABILITY.md),
+[`docs/FULL_PHASE_COCYCLE.md`](docs/FULL_PHASE_COCYCLE.md), and
 [`docs/HIDDEN_TAIL_CLOSURE.md`](docs/HIDDEN_TAIL_CLOSURE.md).
 
 ---
@@ -498,6 +524,8 @@ Start here:
   corrected 2/3–5/3 tail balance and ten-million-epoch closure check
 - [`FUTURE_PHASE_OBSERVABILITY.md`](docs/FUTURE_PHASE_OBSERVABILITY.md) —
   certified four-channel future observability and correction to scalar phase composition
+- [`FULL_PHASE_COCYCLE.md`](docs/FULL_PHASE_COCYCLE.md) —
+  direct full-cocycle scan, phase-hidden coupling, and exact four-sample memory normal form
 - [`PROVENANCE.md`](docs/PROVENANCE.md) —
   historical source separation
 

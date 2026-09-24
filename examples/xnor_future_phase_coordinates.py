@@ -61,6 +61,18 @@ def checkpoint_coordinates(net, epoch):
     )
 
     last = [companion[3, j] for j in range(4)]
+
+    binomial = [mp.mpf(-1), mp.mpf(4), mp.mpf(-6), mp.mpf(4)]
+    defect = [last[j] - binomial[j] for j in range(4)]
+    cubic_mode = [mp.mpf(1), mp.mpf(-3), mp.mpf(3), mp.mpf(-1)]
+    denom = sum(x * x for x in cubic_mode)
+    epsilon = sum(defect[j] * cubic_mode[j] for j in range(4)) / denom
+    residual = [
+        defect[j] - epsilon * cubic_mode[j]
+        for j in range(4)
+    ]
+    residual_norm = mp.sqrt(sum(x * x for x in residual))
+
     print(
         "epoch",
         epoch,
@@ -70,6 +82,12 @@ def checkpoint_coordinates(net, epoch):
         mp.nstr(shift_error, 12),
         "recurrence",
         [mp.nstr(x, 30) for x in last],
+        "epsilon",
+        mp.nstr(epsilon, 30),
+        "N_epsilon",
+        mp.nstr(epoch * epsilon, 30),
+        "defect_residual_norm",
+        mp.nstr(residual_norm, 20),
         flush=True,
     )
 
@@ -89,7 +107,7 @@ if __name__ == "__main__":
         phase=0.0,
     )
 
-    checkpoints = (728, 10_000, 100_000)
+    checkpoints = (728, 10_000, 100_000, 1_000_000)
     for epoch in range(1, checkpoints[-1] + 1):
         train_epoch(net, data)
         if epoch in checkpoints:

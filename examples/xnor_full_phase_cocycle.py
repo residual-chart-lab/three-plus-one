@@ -23,7 +23,7 @@ from threeplusone import (
     transverse_residual,
     xnor,
 )
-from threeplusone.transverse import epoch_transverse_matrix
+from threeplusone.transverse import sample_transverse_matrix
 
 
 def matvec(matrix, vector):
@@ -52,6 +52,34 @@ def phase_data(net):
 def train_epoch(net, data):
     for x, target in data:
         net.train_one(x, target)
+
+
+def matmul(a, b):
+    return [
+        [
+            sum(a[i][k] * b[k][j] for k in range(4))
+            for j in range(4)
+        ]
+        for i in range(4)
+    ]
+
+
+def advance_epoch_with_tangent(net, data):
+    """Advance the actual network one epoch and return that epoch's tangent."""
+    matrix = [
+        [1.0 if i == j else 0.0 for j in range(4)]
+        for i in range(4)
+    ]
+    for x, target in data:
+        step = sample_transverse_matrix(
+            net,
+            x,
+            target,
+            representative_unit=1,
+        )
+        matrix = matmul(step, matrix)
+        net.train_one(x, target)
+    return matrix
 
 
 def make_net():
@@ -93,17 +121,18 @@ def scan(starts, horizons):
             }
 
         radial_before, _, _ = phase_data(net)
-        matrix = epoch_transverse_matrix(
-            net,
-            data,
-            representative_unit=1,
-        )
+        # Propagate copies only after the exact epoch tangent has been built.
+        # advance_epoch_with_tangent mutates net to the next SGD epoch.
+        tangent_inputs = {
+            start: state["tangent"][:]
+            for start, state in active.items()
+        }
+        matrix = advance_epoch_with_tangent(net, data)
         local_phase_image = matvec(matrix, radial_before)
 
-        for state in active.values():
-            state["tangent"] = matvec(matrix, state["tangent"])
+        for start, state in active.items():
+            state["tangent"] = matvec(matrix, tangent_inputs[start])
 
-        train_epoch(net, data)
         radial_after, ell_after, radius = phase_data(net)
         rho = dot(ell_after, local_phase_image)
 

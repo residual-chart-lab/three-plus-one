@@ -70,7 +70,7 @@ def _rotate_copy_residual(net, angle):
         _set_local_state(net, i, rotated[i])
 
 
-def _finite_one_epoch_phase_derivative(net, delta=1e-5):
+def _finite_phase_derivative(net, delta=1e-5, epochs=1):
     import copy
 
     center = copy.deepcopy(net)
@@ -79,10 +79,11 @@ def _finite_one_epoch_phase_derivative(net, delta=1e-5):
     _rotate_copy_residual(plus, +delta)
     _rotate_copy_residual(minus, -delta)
 
-    for x, target in xnor():
-        center.train_one(x, target)
-        plus.train_one(x, target)
-        minus.train_one(x, target)
+    for _ in range(epochs):
+        for x, target in xnor():
+            center.train_one(x, target)
+            plus.train_one(x, target)
+            minus.train_one(x, target)
 
     z0 = transverse_residual(center)
     radial = [z.real for z in z0]
@@ -111,9 +112,52 @@ class SelectorPersistenceTests(unittest.TestCase):
                 net.train_one(x, target)
 
         exact = branch_ray_phase_derivative(net, xnor())
-        finite = _finite_one_epoch_phase_derivative(net)
+        finite = _finite_phase_derivative(net)
 
         self.assertAlmostEqual(exact, finite, places=8)
+
+    def test_invisible_phase_component_returns_on_next_epoch(self):
+        import copy
+        from threeplusone.transverse import epoch_transverse_matrix
+
+        net = centered_net()
+        add_transverse_vector_seed(net, direction=(1, 0, 0, 0),
+                                   amplitude=0.1, phase=0)
+        for _ in range(728):
+            for x, target in xnor():
+                net.train_one(x, target)
+        initial = copy.deepcopy(net)
+
+        def radial(work):
+            return [z.real for z in transverse_residual(work)]
+
+        def apply(matrix, vector):
+            return [sum(a*b for a, b in zip(row, vector)) for row in matrix]
+
+        def readout(radius, vector):
+            return sum(a*b for a, b in zip(radius, vector))/sum(a*a for a in radius)
+
+        radius0 = radial(net)
+        matrix0 = epoch_transverse_matrix(net, xnor(), representative_unit=1)
+        tangent1 = apply(matrix0, radius0)
+        for x, target in xnor():
+            net.train_one(x, target)
+        radius1 = radial(net)
+        rho0 = readout(radius1, tangent1)
+        hidden = [a-rho0*b for a, b in zip(tangent1, radius1)]
+        self.assertAlmostEqual(readout(radius1, hidden), 0, places=14)
+
+        matrix1 = epoch_transverse_matrix(net, xnor(), representative_unit=1)
+        for x, target in xnor():
+            net.train_one(x, target)
+        radius2 = radial(net)
+        rho1 = readout(radius2, apply(matrix1, radius1))
+        full = readout(radius2, apply(matrix1, tangent1))
+        returned = readout(radius2, apply(matrix1, hidden))
+        self.assertGreater(returned, 1e-6)
+        self.assertAlmostEqual(full-rho0*rho1, returned, places=14)
+        self.assertAlmostEqual(full, _finite_phase_derivative(
+            initial, delta=1e-4, epochs=2), places=8)
 
     def test_selector_action_continues_after_task_target_is_reached(self):
         records = scan_selector_persistence(

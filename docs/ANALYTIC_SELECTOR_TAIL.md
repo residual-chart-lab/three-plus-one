@@ -4,6 +4,11 @@ Status: exact local derivation + finite-horizon asymptotic verification.
 
 This note sharpens SGD_TAIL_SCALING.md.
 
+Follow-up: [future phase observability](FUTURE_PHASE_OBSERVABILITY.md)
+shows that local scalar derivatives do not compose into the cumulative phase
+derivative. The exact one-epoch formulas here stand; conclusions about sums
+of local actions must be separated from actual asymptotic locking.
+
 The late branch selector can now be written in two exact forms:
 
 1. an exact second-order \(S_3\)-equivariant copy-space map on the symmetric three-copy manifold;
@@ -567,11 +572,14 @@ and
 
 \[
 \boxed{
-\mathcal A_\infty
+\mathcal A_\infty^{\mathrm{local}}
 =
 \infty.
 }
 \]
+
+Here the divergent quantity is the sum of local one-epoch actions. Inferring
+cumulative phase contraction requires an additional full-cocycle estimate.
 
 The important change is that non-summability no longer rests on
 \(g'_N\sim1/\log N\) by itself.
@@ -602,7 +610,7 @@ N\log N\,a_N
 0.11019.
 \]
 
-The strongest remaining upstream gap is the \(2/3\) law itself:
+One remaining upstream gap is the \(2/3\) law itself:
 
 \[
 A_N
@@ -723,4 +731,5 @@ epoch_transverse_quadratic_direction
 branch_ray_phase_derivative
 ~~~
 
-The full unit-test suite currently contains 32 passing tests.
+The full unit-test suite also checks the two-epoch return of a component
+that was invisible to the intermediate phase readout.

@@ -410,10 +410,11 @@ a_N
 
 over \(10^4\le N\le10^6\).
 
-Thus the local actual update has exactly the summation class required for
+The measured local update suggests the summation class which, if established
+asymptotically, would give the local-action sum
 
 \[
-\mathcal A_N
+\mathcal A_N^{\mathrm{local}}
 =
 \Theta(\log\log N).
 \]
@@ -429,3 +430,7 @@ one-sample sigmoid SGD equations.
 
 That analytic step would turn the finite-horizon non-summability evidence into
 a proof.
+
+Follow-up: [future phase observability](FUTURE_PHASE_OBSERVABILITY.md)
+identifies returning hidden tangent components. A proof for the local sum
+would still leave the full cumulative phase cocycle to be controlled.

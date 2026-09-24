@@ -619,6 +619,8 @@ The sharper question is:
 > **What mechanism keeps the update alive long enough for an arbitrarily small
 > retained residual to complete asymptotic locking onto one singleton ray?**
 
-The present centered XNOR task sorts and sharpens a nonzero history, but its
-updates eventually die away before generic off-ray residuals reach exact
-locking.
+The present centered XNOR task sorts and sharpens a nonzero history through
+the measured finite windows. Its ultimate locking behavior remains open.
+The [future-observability check](FUTURE_PHASE_OBSERVABILITY.md) identifies
+four coupled tangent channels whose cumulative phase response must be
+controlled to settle that question.

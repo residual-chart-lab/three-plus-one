@@ -422,10 +422,18 @@ R_N|d_N||g'_N|
 \frac1{N\log N}.
 \]
 
-Thus no additional persistence mechanism is currently needed merely to keep
-this tested selector active.  The remaining upstream mathematical gap is the
-full proof of the observed \(2/3\) law and control of the higher-order
-branch-tangent remainder.
+The local selector remains active throughout the measured window. A subsequent
+observability check finds three tangent directions invisible to the present
+phase readout which later affect phase. At checkpoints 728, 10,000 and
+100,000, current-through-three-epoch phase readouts have certified ranks
+**1, 2, 3, 4** as the horizon grows. All four tangent channels are required for
+exact future phase readouts there.
+
+Consequently, asymptotic locking requires control of the full four-channel
+tangent cocycle, in addition to the observed \(2/3\) law and nonlinear
+remainders. Multiplying local scalar derivatives omits the returning hidden
+components. See
+[`docs/FUTURE_PHASE_OBSERVABILITY.md`](docs/FUTURE_PHASE_OBSERVABILITY.md).
 
 See
 [`docs/HIDDEN_TAIL_CLOSURE.md`](docs/HIDDEN_TAIL_CLOSURE.md).
@@ -488,6 +496,8 @@ Start here:
   exact quadratic copy-space map and exact branch-ray phase derivative
 - [`HIDDEN_TAIL_CLOSURE.md`](docs/HIDDEN_TAIL_CLOSURE.md) —
   corrected 2/3–5/3 tail balance and ten-million-epoch closure check
+- [`FUTURE_PHASE_OBSERVABILITY.md`](docs/FUTURE_PHASE_OBSERVABILITY.md) —
+  certified four-channel future observability and correction to scalar phase composition
 - [`PROVENANCE.md`](docs/PROVENANCE.md) —
   historical source separation
 

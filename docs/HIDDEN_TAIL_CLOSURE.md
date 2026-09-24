@@ -2,7 +2,7 @@
 
 Status: analytic reduction plus deterministic long-horizon evidence.
 
-This note closes the tail question left open by
+This note records the proposed hidden-tail reduction following
 `ANALYTIC_SELECTOR_TAIL.md`.
 
 The main correction is:
@@ -574,40 +574,26 @@ This is the sharper mechanism.
 
 ---
 
-## 10. Consequence for cumulative branch selection
+## 10. Consequence for the local action sum
 
-Because
-
-\[
-a_N
-\asymp
-\frac{C}{N\log N},
-\]
-
-we again obtain
+Conditional on the positive asymptotic comparison
 
 \[
-\boxed{
-\sum_N a_N
-=
-\infty.
-}
+a_N\asymp\frac{1}{N\log N},
 \]
 
-Hence the reduced branch contraction has infinite cumulative action:
+the sum of local actions satisfies
 
 \[
-\boxed{
-\mathcal A_N
-\sim
-C\log\log N
-}
+\mathcal A_N^{\mathrm{local}}:=\sum_{n\le N}a_n
+=\Theta(\log\log N)\longrightarrow\infty.
 \]
 
-at the current level of asymptotic reduction.
-
-So no additional persistence mechanism is required merely to keep this tested
-selector active.
+This is the action of the product of one-epoch scalar projections. The
+actual cumulative phase derivative propagates a four-component tangent.
+Components invisible to one phase readout can return in the next epoch,
+so the local sum does not by itself establish asymptotic branch locking.
+See [the future-observability check](FUTURE_PHASE_OBSERVABILITY.md).
 
 ---
 
@@ -656,10 +642,10 @@ selector active.
 The upstream \(2/3\) law itself has not yet been proved from the full SGD
 recurrence.
 
-A full asymptotic theorem would still need control of that law and of the
-higher-order remainder in the exact branch-tangent map.
-
-For the present project stage, this is the clean stopping point.
+A full asymptotic theorem would need control of that law, the coupled
+four-channel tangent cocycle, and the nonlinear remainder. The returning
+hidden components identified in `FUTURE_PHASE_OBSERVABILITY.md` make the
+cocycle estimate an additional substantive requirement.
 
 ---
 

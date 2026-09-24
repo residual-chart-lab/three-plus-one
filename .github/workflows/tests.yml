@@ -23,6 +23,9 @@ jobs:
       - name: Run future-readout coordinate diagnostic
         if: startsWith(github.ref, 'refs/heads/research/full-phase-cocycle-')
         run: python examples/xnor_future_phase_coordinates.py
+      - name: Run phase-hidden coupling diagnostic
+        if: startsWith(github.ref, 'refs/heads/research/full-phase-cocycle-')
+        run: python examples/xnor_phase_hidden_coupling.py
       - name: Run full phase cocycle scan
         if: startsWith(github.ref, 'refs/heads/research/full-phase-cocycle-')
         run: python examples/xnor_full_phase_cocycle.py

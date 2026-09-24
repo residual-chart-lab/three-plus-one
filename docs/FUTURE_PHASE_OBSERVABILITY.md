@@ -186,18 +186,33 @@ print identically; their distinct exact bounds are retained in the JSON.
 
 ## 6. Consequence for branch locking
 
-The next asymptotic quantity is
+The relevant asymptotic quantity is
 
-$$
+$
 \Gamma_{N,n}=\ell_NJ_{N-1}\cdots J_n v_n.
-$$
+$
 
 Divergence of the local sum $\sum_n(-\log|\rho_n|)/3$ alone does not prove
-$\Gamma_{N,n}\to0$: the discarded components can return. The proposed
-$2/3$--$5/3$ balance remains a candidate description of local coefficients.
-Its application to locking needs estimates for the coupled four-channel
-cocycle. Nonlinear locking additionally needs control of finite perturbations
-and remainders.
+$\Gamma_{N,n}\to0$: the discarded components can return.
+
+A follow-up calculation now propagates this full four-channel tangent directly
+for up to one million future epochs. The returned hidden components increase
+the cumulative phase derivative relative to the product of local projections,
+but the discrepancy becomes much smaller for later starting epochs.
+
+The same follow-up gives an exact four-sample future-readout coordinate system
+whenever the rank-four observability matrix is invertible. In those coordinates
+the tangent phase obeys a time-varying fourth-order scalar recurrence. The late
+recurrence approaches the coefficient pattern $(-1,4,-6,4)$, while direct
+phase-hidden coupling measurements show rapidly weakening off-diagonal
+coupling.
+
+See [FULL_PHASE_COCYCLE.md](FULL_PHASE_COCYCLE.md).
+
+The proposed $2/3$--$5/3$ balance remains a candidate description of the
+instantaneous phase channel. Its application to full locking now reduces to
+an asymptotic estimate of the phase-hidden memory kernel. Nonlinear locking
+additionally needs control of finite perturbations and remainders.
 
 The practical bridge to Free Numbers is precise: a presently invisible
 kernel direction has a nonzero allowed future response, and the intersection

@@ -1,0 +1,45 @@
+{
+  "format": "summary of observed run; finite-check rows abbreviated",
+  "base_commit": "508a113aeb13c2bf94cee8002992aeade2e4622c",
+  "scope": "ordered XNOR, 728->729->730, supplied base orbit, antisymmetric equal-pair tangent",
+  "hidden_present_readout": -3.813081982235502e-18,
+  "hidden_return_at_730": 0.0000028694059569115697,
+  "tangent_cases": {
+    "keep": {
+      "present": 0.9994917996536619,
+      "next": 0.9989898291024972
+    },
+    "erase": {
+      "present": 0.9994917996536619,
+      "next": 0.9989869596965405
+    },
+    "restore": {
+      "present": 0.9994917996536619,
+      "next": 0.9989898291024972
+    }
+  },
+  "nonlinear_finite_checks": [
+    {
+      "amplitude": 0.01,
+      "keep_minus_erase": 0.000002869372762615008,
+      "error_vs_tangent_return": -3.3194296561825533e-11
+    },
+    {
+      "amplitude": 0.001,
+      "keep_minus_erase": 0.0000028694053975097944,
+      "error_vs_tangent_return": -5.594017752715192e-13
+    },
+    {
+      "amplitude": 0.0001,
+      "keep_minus_erase": 0.0000028694070771662084,
+      "error_vs_tangent_return": 1.12025463868388e-12
+    }
+  ],
+  "checks": "PASS; diagnostic assertions and two existing regression tests",
+  "source_sha256": {
+    "src/threeplusone/core.py": "5270849643a4367a391a59c3b6c74e0f5137474ddf4a74eaf37c40b6e5f9013c",
+    "src/threeplusone/transverse.py": "726d0036dedeaf0d9d3882e0974fda3c3b64f30d6fef5e0b8808b3c45e5c9d18",
+    "src/threeplusone/datasets.py": "278eeadb22f9ea721f22942bd9973a230954a8516dcfd2449241e11e1c2b7068",
+    "examples/xnor_retained_difference.py": "3dad9ca8d8aaa74fa67b3530e9870cc8994c5a09fe59da4b954d72a675020996"
+  }
+}

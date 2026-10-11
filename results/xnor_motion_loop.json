@@ -1,0 +1,238 @@
+{
+  "scope": "finite 8-epoch tangent loop, equal-pair antisymmetric sector",
+  "initial_epoch": 728,
+  "base_included": "full 17-parameter network advanced online, not reduced away",
+  "controls": "full tangent vs phase/hidden reassembly vs erase hidden each epoch",
+  "inputs_including_targets": [
+    [
+      [
+        0.0,
+        0.0
+      ],
+      1.0
+    ],
+    [
+      [
+        0.0,
+        1.0
+      ],
+      0.0
+    ],
+    [
+      [
+        1.0,
+        0.0
+      ],
+      0.0
+    ],
+    [
+      [
+        1.0,
+        1.0
+      ],
+      1.0
+    ]
+  ],
+  "records": [
+    {
+      "step": 1,
+      "epoch": 729,
+      "phase": 0.9994917996536619,
+      "erase_each_step_phase": 0.9994917996536619,
+      "keep_minus_erase": 0.0,
+      "return_from_previous_hidden": 0.0,
+      "new_hidden_norm": 0.002041754516134087,
+      "carried_hidden_norm": 0.0,
+      "total_hidden_norm": 0.002041754516134087,
+      "reconstruction_error": 0.0,
+      "nonlinear_checks": [
+        {
+          "amplitude": 0.01,
+          "derivative": 0.9994917955459903,
+          "error_vs_full_tangent": -4.107671536246471e-09
+        },
+        {
+          "amplitude": 0.001,
+          "derivative": 0.9994917996127147,
+          "error_vs_full_tangent": -4.094713457192256e-11
+        }
+      ]
+    },
+    {
+      "step": 2,
+      "epoch": 730,
+      "phase": 0.9989898291024975,
+      "erase_each_step_phase": 0.9989869596965405,
+      "keep_minus_erase": 2.8694059569511765e-06,
+      "return_from_previous_hidden": 2.8694059569115697e-06,
+      "new_hidden_norm": 0.0020308471011032106,
+      "carried_hidden_norm": 0.0020043771753764923,
+      "total_hidden_norm": 0.0040351990563722755,
+      "reconstruction_error": 1.1102230246251565e-16,
+      "nonlinear_checks": [
+        {
+          "amplitude": 0.01,
+          "derivative": 0.9989898214942959,
+          "error_vs_full_tangent": -7.608201291198213e-09
+        },
+        {
+          "amplitude": 0.001,
+          "derivative": 0.9989898290263205,
+          "error_vs_full_tangent": -7.617673158932803e-11
+        }
+      ]
+    },
+    {
+      "step": 3,
+      "epoch": 731,
+      "phase": 0.9984939534714574,
+      "erase_each_step_phase": 0.9984854465731067,
+      "keep_minus_erase": 8.506898350746361e-06,
+      "return_from_previous_hidden": 5.6389328978676935e-06,
+      "new_hidden_norm": 0.002020029115052909,
+      "carried_hidden_norm": 0.003961823604150637,
+      "total_hidden_norm": 0.0059817775550803955,
+      "reconstruction_error": 4.440892098500626e-16,
+      "nonlinear_checks": [
+        {
+          "amplitude": 0.01,
+          "derivative": 0.998493942841125,
+          "error_vs_full_tangent": -1.0630332281102994e-08
+        },
+        {
+          "amplitude": 0.001,
+          "derivative": 0.9984939533651507,
+          "error_vs_full_tangent": -1.063066301654203e-10
+        }
+      ]
+    },
+    {
+      "step": 4,
+      "epoch": 732,
+      "phase": 0.9980040418625179,
+      "erase_each_step_phase": 0.9979872271378942,
+      "keep_minus_erase": 1.6814724623670507e-05,
+      "return_from_previous_hidden": 8.312071003963062e-06,
+      "new_hidden_norm": 0.0020092995605189884,
+      "carried_hidden_norm": 0.005873735446654776,
+      "total_hidden_norm": 0.007882885670871816,
+      "reconstruction_error": 4.440892098500626e-16,
+      "nonlinear_checks": [
+        {
+          "amplitude": 0.01,
+          "derivative": 0.9980040285896769,
+          "error_vs_full_tangent": -1.3272840937439412e-08
+        },
+        {
+          "amplitude": 0.001,
+          "derivative": 0.9980040417297519,
+          "error_vs_full_tangent": -1.3276590937749688e-10
+        }
+      ]
+    },
+    {
+      "step": 5,
+      "epoch": 733,
+      "phase": 0.9975199672129841,
+      "erase_each_step_phase": 0.9974922686501625,
+      "keep_minus_erase": 2.7698562821587558e-05,
+      "return_from_previous_hidden": 1.0892177573781861e-05,
+      "new_hidden_norm": 0.001998657456280482,
+      "carried_hidden_norm": 0.007741462331245872,
+      "total_hidden_norm": 0.00973987254592641,
+      "reconstruction_error": 4.440892098500626e-16,
+      "nonlinear_checks": [
+        {
+          "amplitude": 0.01,
+          "derivative": 0.9975199516011471,
+          "error_vs_full_tangent": -1.56118367122815e-08
+        },
+        {
+          "amplitude": 0.001,
+          "derivative": 0.9975199670568071,
+          "error_vs_full_tangent": -1.561767382085577e-10
+        }
+      ]
+    },
+    {
+      "step": 6,
+      "epoch": 734,
+      "phase": 0.9970416061595241,
+      "erase_each_step_phase": 0.9970005387686156,
+      "keep_minus_erase": 4.1067390908477996e-05,
+      "return_from_previous_hidden": 1.3382482539552036e-05,
+      "new_hidden_norm": 0.001988101836914172,
+      "carried_hidden_norm": 0.009566309044817659,
+      "total_hidden_norm": 0.011554042495814746,
+      "reconstruction_error": 6.661338147750939e-16,
+      "nonlinear_checks": [
+        {
+          "amplitude": 0.01,
+          "derivative": 0.9970415884532273,
+          "error_vs_full_tangent": -1.7706296207009586e-08
+        },
+        {
+          "amplitude": 0.001,
+          "derivative": 0.9970416059823372,
+          "error_vs_full_tangent": -1.7718637668195925e-10
+        }
+      ]
+    },
+    {
+      "step": 7,
+      "epoch": 735,
+      "phase": 0.9965688389076801,
+      "erase_each_step_phase": 0.9965120055461759,
+      "keep_minus_erase": 5.6833361504193824e-05,
+      "return_from_previous_hidden": 1.578609373908611e-05,
+      "new_hidden_norm": 0.0019776317523772465,
+      "carried_hidden_norm": 0.011349537156760642,
+      "total_hidden_norm": 0.013326656632803278,
+      "reconstruction_error": 4.440892098500626e-16,
+      "nonlinear_checks": [
+        {
+          "amplitude": 0.01,
+          "derivative": 0.9965688193055032,
+          "error_vs_full_tangent": -1.9602176548616512e-08
+        },
+        {
+          "amplitude": 0.001,
+          "derivative": 0.996568838711835,
+          "error_vs_full_tangent": -1.9584478483380963e-10
+        }
+      ]
+    },
+    {
+      "step": 8,
+      "epoch": 736,
+      "phase": 0.9961015491066195,
+      "erase_each_step_phase": 0.9960266374248222,
+      "keep_minus_erase": 7.491168179729613e-05,
+      "return_from_previous_hidden": 1.810600194838494e-05,
+      "new_hidden_norm": 0.001967246267603979,
+      "carried_hidden_norm": 0.013092366579210066,
+      "total_hidden_norm": 0.015058934425467069,
+      "reconstruction_error": 6.661338147750939e-16,
+      "nonlinear_checks": [
+        {
+          "amplitude": 0.01,
+          "derivative": 0.9961015277711763,
+          "error_vs_full_tangent": -2.1335442745851196e-08
+        },
+        {
+          "amplitude": 0.001,
+          "derivative": 0.9961015488933583,
+          "error_vs_full_tangent": -2.13260742398802e-10
+        }
+      ]
+    }
+  ],
+  "checks": "PASS",
+  "source_sha256": {
+    "src/threeplusone/core.py": "5270849643a4367a391a59c3b6c74e0f5137474ddf4a74eaf37c40b6e5f9013c",
+    "src/threeplusone/transverse.py": "726d0036dedeaf0d9d3882e0974fda3c3b64f30d6fef5e0b8808b3c45e5c9d18",
+    "src/threeplusone/datasets.py": "278eeadb22f9ea721f22942bd9973a230954a8516dcfd2449241e11e1c2b7068",
+    "examples/xnor_retained_difference.py": "3dad9ca8d8aaa74fa67b3530e9870cc8994c5a09fe59da4b954d72a675020996",
+    "examples/xnor_motion_loop.py": "15bd8216931af0aa2a94be389f8bf046fe1331f1d1c8f37cef2fa49dd4ea87a0"
+  }
+}

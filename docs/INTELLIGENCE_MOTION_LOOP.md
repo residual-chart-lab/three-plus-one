@@ -81,3 +81,7 @@ PYTHONPATH=src python examples/xnor_motion_loop.py
 binary64での有限計算。診断内で再結合、隠れ成分の不可視性、二周目の既存値との一致、非線形中心差分を検査する。
 本稿は[最初の保持／消去試験](INTELLIGENCE_MINIMAL_START.md)を、同日の方針確認に沿って反復へ進めたもの。
 数理上の元の分解と長時間の研究記録は[FULL_PHASE_COCYCLE.md](FULL_PHASE_COCYCLE.md)に残す。
+
+## 入力別の区別を調べた次段階（2026-10-12）
+
+[保持差と入力応答の関係](INTELLIGENCE_DISCRIMINATION_LOOP.md)で、全体の倍率・共通ずれを除いても残る応答パターンの変化を検査した。固定した位相読出し・接触後の位相読出し・内部活性差を分け、保持／消去／復元と同ノルム対照を記録する。外部出力の分類境界変更とは区別する。

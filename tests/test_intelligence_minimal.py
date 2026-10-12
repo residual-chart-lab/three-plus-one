@@ -4,10 +4,10 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]/"examples"))
 from xnor_discrimination_loop import run as discrimination_run
-from xnor_intelligence_teacher import course
+from xnor_intelligence_minimal import course
 
 
-class IntelligenceTeacherTests(unittest.TestCase):
+class IntelligenceMinimalTests(unittest.TestCase):
     def test_kept_difference_changes_input_relations(self):
         result = discrimination_run()
         guard = result["representative_effect_guard"]

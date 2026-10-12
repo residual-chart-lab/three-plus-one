@@ -1,4 +1,4 @@
-"""A working 3+1 intelligence teacher: contact, carry, change discrimination.
+"""A working 3+1 intelligence minimal model: contact, carry, change discrimination.
 
 Response geometry is measured, not injected into training. No new learning rule.
 One visible phase plus three hidden tangent directions; the 17-weight base stays.
@@ -124,9 +124,9 @@ def run():
     root = Path(__file__).resolve().parents[1]
     files = ["src/threeplusone/core.py","src/threeplusone/transverse.py","src/threeplusone/datasets.py",
              "examples/xnor_retained_difference.py","examples/xnor_discrimination_loop.py",
-             "examples/xnor_intelligence_teacher.py", "tests/test_intelligence_teacher.py"]
+             "examples/xnor_intelligence_minimal.py", "tests/test_intelligence_minimal.py"]
     return {"source_base_commit":"db99cf56688304a255292df09d394eeefc4254c6",
-            "model":"3+1 intelligence teacher v1",
+            "model":"3+1 intelligence minimal model v1",
             "scope":"one visible phase plus three hidden tangent directions, with full base network retained",
             "condition":"component of centered A h perpendicular to centered A(yR) is nonzero",
             "numerics":"binary64 finite diagnostic, not a general minimality proof",
@@ -137,7 +137,7 @@ def run():
 
 if __name__ == "__main__":
     result = run()
-    target = Path(__file__).resolve().parents[1]/"results"/"xnor_intelligence_teacher.json"
+    target = Path(__file__).resolve().parents[1]/"results"/"xnor_intelligence_minimal.json"
     target.parent.mkdir(parents=True,exist_ok=True)
     target.write_text(json.dumps(result,ensure_ascii=False,indent=2)+"\n",encoding="utf-8")
     for c in result["courses"]:

@@ -144,6 +144,14 @@ def run():
             full = mv(j, full)
             epoch(base)
             erased_y *= read(radial(base), jr)
+    # Protect this published representative, not every possible learning orbit.
+    # A vanished effect must not silently retain the PASS label.
+    initial_effect = records[0]["comparisons"]["fixed_phase_change"]["erase_same_phase"]["affine_residual_relative"]
+    final_effect = records[-1]["comparisons"]["fixed_phase_change"]["erase_same_phase"]["affine_residual_relative"]
+    activation_effect = records[-1]["comparisons"]["hidden_activation"]["erase_same_phase"]["affine_residual_relative"]
+    assert initial_effect < 1e-9, "zero-hidden baseline changed"
+    assert .03 < final_effect < .09, "representative nonuniform contact effect disappeared or changed materially"
+    assert .01 < activation_effect < .04, "target-free internal effect disappeared or changed materially"
     root = Path(__file__).resolve().parents[1]
     files = ["src/threeplusone/core.py", "src/threeplusone/transverse.py", "src/threeplusone/datasets.py",
              "examples/xnor_retained_difference.py", "examples/xnor_discrimination_loop.py"]
@@ -154,6 +162,8 @@ def run():
             "secondary_readout": "moving-phase contact change and target-free hidden activation contrast; external network output is zero to first order",
             "controls": "same-phase erase/restore; hidden sign flip with same norm and phase; norm-matched erase; pure gain null; erase each epoch",
             "arithmetic": "binary64 diagnostic, not an interval proof", "checks": "PASS", "records": records,
+            "representative_effect_guard": {"fixed_phase_relative_residual": final_effect,
+                                             "hidden_activation_relative_residual": activation_effect},
             "source_sha256": {p: hashlib.sha256((root/p).read_bytes()).hexdigest() for p in files}}
 
 

@@ -1,4 +1,18 @@
 # three-plus-one
+
+## 独立研究完結 / Independent research concluded — 2026-10-16
+
+**3+1は「知性の最小モデル v1」をもって独立研究として完結する。以後の発展は、Time Engineへの組み込みとして進める。**
+
+- [完結宣言と引渡し方針](docs/RESEARCH_CLOSURE.md)
+- [知性の最小モデル v1・固定原典](https://github.com/residual-chart-lab/three-plus-one/blob/b6daea3801504ddfa34b0a26d8e86ade94d06e06/docs/INTELLIGENCE_MINIMAL_V1.md)
+- [実装・検算を含む固定スナップショット](https://github.com/residual-chart-lab/three-plus-one/tree/b6daea3801504ddfa34b0a26d8e86ade94d06e06)
+
+成果と履歴は保存する。未解決事項は未解決のまま残し、以下の本文は完結前の研究記録として保持する。Time Engineとの接続は今後の作業であり、組み込み済みという宣言ではない。
+
+Independent research is concluded at the intelligence minimal model v1. Further development proceeds through integration into Time Engine. The existing results, code, history, and open questions are preserved.
+
+---
 ## Controlled symmetry breaking in a tiny neural network
 
 `three-plus-one` is a small research laboratory for one concrete question:

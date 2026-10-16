@@ -17,6 +17,18 @@ jobs:
           python-version: "3.12"
       - run: python -m pip install -e .
       - run: python -m unittest discover -s tests -v
+      - name: Install optional high-precision diagnostic dependency
+        if: startsWith(github.ref, 'refs/heads/research/full-phase-cocycle-')
+        run: python -m pip install mpmath==1.4.1
+      - name: Run future-readout coordinate diagnostic
+        if: startsWith(github.ref, 'refs/heads/research/full-phase-cocycle-')
+        run: python examples/xnor_future_phase_coordinates.py
+      - name: Run phase-hidden coupling diagnostic
+        if: startsWith(github.ref, 'refs/heads/research/full-phase-cocycle-')
+        run: python examples/xnor_phase_hidden_coupling.py
+      - name: Run full phase cocycle scan
+        if: startsWith(github.ref, 'refs/heads/research/full-phase-cocycle-')
+        run: python examples/xnor_full_phase_cocycle.py
       - name: Run hidden-tail closure diagnostic
         if: startsWith(github.ref, 'refs/heads/research/hidden-tail-closure-')
         run: python examples/xnor_hidden_tail_closure.py

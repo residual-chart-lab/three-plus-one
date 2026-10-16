@@ -642,10 +642,17 @@ See [the future-observability check](FUTURE_PHASE_OBSERVABILITY.md).
 The upstream \(2/3\) law itself has not yet been proved from the full SGD
 recurrence.
 
-A full asymptotic theorem would need control of that law, the coupled
-four-channel tangent cocycle, and the nonlinear remainder. The returning
-hidden components identified in `FUTURE_PHASE_OBSERVABILITY.md` make the
-cocycle estimate an additional substantive requirement.
+The coupled four-channel tangent has now been propagated directly through
+one-million-epoch future windows, and its phase/hidden blocks have been
+measured. The hidden return is nonzero but becomes rapidly weak in the SGD
+tail. Rank-four observability also gives an exact four-sample scalar memory
+form for the tangent phase.
+
+See [FULL_PHASE_COCYCLE.md](FULL_PHASE_COCYCLE.md).
+
+A full asymptotic theorem would now need control of the \(2/3\) law, a
+summable bound on the induced phase-hidden memory kernel, and the nonlinear
+finite-perturbation remainder.
 
 ---
 
